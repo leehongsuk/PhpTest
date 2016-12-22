@@ -34,6 +34,7 @@
 
     <script type="text/javascript">
 
+    var jsonObject;
     var myUpload         = new AXUpload5();
     var grid_PremiumRate = new AXGrid() ; // 부율 그리드
 
@@ -46,7 +47,7 @@
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
 
-         	// 방화/외화 구분
+         	// 방화/외화 구분 셀렉터
             jQuery("#AXSelect_KorabdGbn").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",
                 onChange: function(){
@@ -54,6 +55,7 @@
                 }
             });
 
+			// 부율그리드
             grid_PremiumRate.setConfig(
             {
                 targetID : "AXgrid_PremiumRate",
@@ -80,7 +82,30 @@
 
         formatter : function()
         {
-            return '<input type="text" name="" style="text-align: right; padding-right:5px;" loc="'+this.key+'" a_seq="'+this.item.a_seq+'" id_code="'+this.item.id_code+'" ua_seq="'+this.item.ua_seq+'" class="AXInput W40 dot"  value="'+this.value +'" onkeyup="fnKeyup(this)"/>' ;
+            var location_nm = "";
+
+
+            for (var i = 0; i < jsonObject.options.length; i++)
+            {
+                if (jsonObject.options[i].seq == this.key)
+                {
+                    location_nm = jsonObject.options[i].location_nm ;
+                }
+            }
+
+            return   '<input type="text"                                      '
+                   + '        name=""                                         '
+                   + '         style="text-align: right; padding-right:5px;"  '
+                   + '         loc="'+this.key+'"                             '
+                   + '         location_nm="'+location_nm+'"                  '
+                   + '         a_seq="'+this.item.a_seq+'"                    '
+                   + '         id_code="'+this.item.id_code+'"                '
+                   + '         ua_seq="'+this.item.ua_seq+'"                  '
+                   + '         title1="'+this.item.title1+'"                  '
+                   + '         title2="'+this.item.title2+'"                  '
+                   + '         class="AXInput W40 dot"                        '
+                   + '         value="'+this.value +'"                        '
+                   + '         onkeyup="fnKeyup(this)"/>                      ' ;
 		},
 
         // '조회'버튼을 누를때
@@ -113,7 +138,9 @@
 	      				o['width'] = '100';
 	      				colgrp.push(o);
 
-						var jsonObject = eval("("+data+")");
+						jsonObject = eval("("+data+")");
+
+						trace(jsonObject); ////////////
 
 						for (var i=0;i<jsonObject.options.length ;i++)
 						{
@@ -143,23 +170,35 @@
 	                      	},
 	                      	onLoad  : function(){
 	                          //trace(this);
-            					trace(jQuery(':input').size());
-            					jQuery(':input').each(function(index)
-                    			{
-                        			if  ($(this).attr('type')=='text')
-                        			{
-                 		                result += "태그명 : " +  $(this).get(0).tagName
-                 		                    + ", type 속성명 : " + $(this).attr('type')
-                 		                    + ", value 속성명 : " + $(this).attr('value')
-                 		                    + '\n';
-
-                 						trace( result );
-                        			}
-            		            });
+	                      	  jQuery("#btnSave").removeAttr("disabled");
+	                          trace("-------");
 	                      	}
 	                  	});
 	              });
 
+        },
+
+        // '저장' 버튼을 누를때
+        save_premium_rate: function()
+        {
+        	//
+        	var result = '' ;
+
+            jQuery(':input').each(function(index)
+        			{
+            			if  ($(this).attr('type')=='text')
+            			{
+     		                result += "태그명 : " +  $(this).get(0).tagName
+     		                    + ", type  : " + $(this).attr('type')
+     		                    + ", title1  : " + $(this).attr('title1')
+     		                    + ", title2  : " + $(this).attr('title2')
+     		                    + ", location_nm  : " + $(this).attr('location_nm')
+     		                    + ", value  : " + $(this).attr('value')
+     		                    + '\n';
+
+     						trace( result );
+            			}
+		            });
         }
 
     };
@@ -212,7 +251,9 @@
 
     <select name="KorabdGbn" class="AXSelectSmall W100" id="AXSelect_KorabdGbn" tabindex="1"></select>
 
-    <button type="button" class="AXButtonSmall" id="button" tabindex="2" onclick="fnObj.search_premium_rate();"><i class="axi axi-search2"></i> 조회</button>
+    <button type="button" class="AXButtonSmall" id="btnSearch" tabindex="2" onclick="fnObj.search_premium_rate();"><i class="axi axi-search2  W100"></i> 조회</button>
+
+    <button type="button" class="AXButtonSmall" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" disabled="disabled"><i class="axi axi-save  W100"></i> 저장</button>
 
     <br>
 
