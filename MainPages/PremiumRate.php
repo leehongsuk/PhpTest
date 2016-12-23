@@ -34,7 +34,7 @@
 
     <script type="text/javascript">
 
-    var jsonObject;
+    var jsonObjLoc;
     var myUpload         = new AXUpload5();
     var grid_PremiumRate = new AXGrid() ; // 부율 그리드
 
@@ -80,16 +80,17 @@
 
         }, // end (pageStart: function())
 
+        // 부율값으로 text박스를 만든다.
         formatter : function()
         {
             var location_nm = "";
 
 
-            for (var i = 0; i < jsonObject.options.length; i++)
+            for (var i = 0; i < jsonObjLoc.options.length; i++)
             {
-                if (jsonObject.options[i].seq == this.key)
+                if (jsonObjLoc.options[i].seq == this.key)
                 {
-                    location_nm = jsonObject.options[i].location_nm ;
+                    location_nm = jsonObjLoc.options[i].location_nm ;
                 }
             }
 
@@ -111,16 +112,6 @@
         // '조회'버튼을 누를때
         search_premium_rate: function()
         {
-            /*
-			var o={} ;
-			o['a'] = '1';
-			o['b'] = 'b';
-			console.log(o);
-
-			var j = JSON.stringify(o); // object를 json으로 변환한다.
-			console.log(j);
-            */
-
             jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})
 	              .done(function( data ) {
 
@@ -138,18 +129,18 @@
 	      				o['width'] = '100';
 	      				colgrp.push(o);
 
-						jsonObject = eval("("+data+")");
+						jsonObjLoc = eval("("+data+")");
 
-						trace(jsonObject); ////////////
+						trace(jsonObjLoc); ////////////
 
-						for (var i=0;i<jsonObject.options.length ;i++)
+						for (var i=0;i<jsonObjLoc.options.length ;i++)
 						{
 							var o={} ;
 
-							for (var prop in jsonObject.options[i])
+							for (var prop in jsonObjLoc.options[i])
 							{
-						         if  (prop=="seq")         o['key']   = jsonObject.options[i][prop];
-						         if  (prop=="location_nm") o['label'] = jsonObject.options[i][prop];
+						         if  (prop=="seq")         o['key']   = jsonObjLoc.options[i][prop];
+						         if  (prop=="location_nm") o['label'] = jsonObjLoc.options[i][prop];
 						    }
 						    o['width'] = '70';
 						    o['formatter'] = fnObj.formatter;// <input typw="text"> 태그를 단다...
@@ -168,8 +159,9 @@
 	                      	ajaxPars: {
 	                          "korabd_gbn": jQuery("#AXSelect_KorabdGbn").val()
 	                      	},
-	                      	onLoad  : function(){
-	                          //trace(this);
+	                      	onLoad : function()
+	                      	{
+	                          trace(this);
 	                      	  jQuery("#btnSave").removeAttr("disabled");
 	                          trace("-------");
 	                      	}
@@ -181,24 +173,21 @@
         // '저장' 버튼을 누를때
         save_premium_rate: function()
         {
-        	//
-        	var result = '' ;
-
             jQuery(':input').each(function(index)
-        			{
-            			if  ($(this).attr('type')=='text')
-            			{
-     		                result += "태그명 : " +  $(this).get(0).tagName
-     		                    + ", type  : " + $(this).attr('type')
-     		                    + ", title1  : " + $(this).attr('title1')
-     		                    + ", title2  : " + $(this).attr('title2')
-     		                    + ", location_nm  : " + $(this).attr('location_nm')
-     		                    + ", value  : " + $(this).attr('value')
-     		                    + '\n';
+      		{
+          			if  ($(this).attr('type')=='text')
+          			{
+   		                var result = "태그명 : " +  $(this).get(0).tagName
+           		                    + ", type  : " + $(this).attr('type')
+           		                    + ", title1  : " + $(this).attr('title1')
+           		                    + ", title2  : " + $(this).attr('title2')
+           		                    + ", location_nm  : " + $(this).attr('location_nm')
+           		                    + ", value  : " + $(this).attr('value')
+           		                    + '\n';
 
-     						trace( result );
-            			}
-		            });
+   						trace( result );
+          			}
+            });
         }
 
     };
@@ -206,10 +195,12 @@
 	jQuery(document).ready(fnObj.pageStart.delay(0.1));
 
 
-	var parseInput = function(val) {
+	var parseInput = function(val)
+	{
          var floatValue = parseFloat(val);
          return isNaN(floatValue) ? '' : floatValue;
     }
+
     function fnKeyup(my)
     {
         var value = $(my).val()+'';
@@ -223,7 +214,7 @@
             if  (value.substring(1, value.length-1).indexOf(".") > -1)
                 $(my).val(parseInput(value));
         }
-
+        /*
         console.log( $(my).attr("a_seq"));
         console.log( $(my).attr("id_code"));
         console.log( $(my).attr("ua_seq"));
@@ -236,10 +227,8 @@
                   ua_seq   : $(my).attr("ua_seq"),
                   value    : $(my).val()
                 })
-               .done(function( data ) {
-
-                 });
-
+               .done(function( data ) {});
+        */
     }
 
     </script>
