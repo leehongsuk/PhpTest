@@ -34,7 +34,9 @@
 
     <script type="text/javascript">
 
-    var jsonObjLoc;
+    var jsonLocChldAll ; // 지역리스트의 json
+    var jsonPremiumRate ; // 부율전체 json
+
     var myUpload         = new AXUpload5();
     var grid_PremiumRate = new AXGrid() ; // 부율 그리드
 
@@ -85,28 +87,30 @@
         {
             var location_nm = "";
 
-
-            for (var i = 0; i < jsonObjLoc.options.length; i++)
+			// 지역리스트 json에서 지역코드로 지역명을 구한다.
+            for (var i = 0; i < jsonLocChldAll.options.length; i++)
             {
-                if (jsonObjLoc.options[i].seq == this.key)
+                if (jsonLocChldAll.options[i].seq == this.key)
                 {
-                    location_nm = jsonObjLoc.options[i].location_nm ;
+                    location_nm = jsonLocChldAll.options[i].location_nm ;
                 }
             }
 
-            return   '<input type="text"                                      '
-                   + '        name=""                                         '
-                   + '         style="text-align: right; padding-right:5px;"  '
-                   + '         loc="'+this.key+'"                             '
-                   + '         location_nm="'+location_nm+'"                  '
-                   + '         a_seq="'+this.item.a_seq+'"                    '
-                   + '         id_code="'+this.item.id_code+'"                '
-                   + '         ua_seq="'+this.item.ua_seq+'"                  '
-                   + '         title1="'+this.item.title1+'"                  '
-                   + '         title2="'+this.item.title2+'"                  '
-                   + '         class="AXInput W40 dot"                        '
-                   + '         value="'+this.value +'"                        '
-                   + '         onkeyup="fnKeyup(this)"/>                      ' ;
+            var name = "pr_"+this.key+"_"+this.item.a_seq+"_"+this.item.id_code+"_"+this.item.ua_seq ;
+
+            return   '<input type="text"                                    '
+                   + '       name="'+name+'"                                '
+                   + '       style="text-align: right; padding-right:5px;"  '
+                   + '       loc="'+this.key+'"                             '
+                   + '       location_nm="'+location_nm+'"                  '
+                   + '       a_seq="'+this.item.a_seq+'"                    '
+                   + '       id_code="'+this.item.id_code+'"                '
+                   + '       ua_seq="'+this.item.ua_seq+'"                  '
+                   + '       title1="'+this.item.title1+'"                  '
+                   + '       title2="'+this.item.title2+'"                  '
+                   + '       class="AXInput W40 dot"                        '
+                   + '       value="'+this.value +'"                        '
+                   + '       onkeyup="fnKeyup(this)"/>                      ' ;
 		},
 
         // '조회'버튼을 누를때
@@ -129,18 +133,18 @@
 	      				o['width'] = '100';
 	      				colgrp.push(o);
 
-						jsonObjLoc = eval("("+data+")");
+						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
 
-						trace(jsonObjLoc); ////////////
+						//trace(jsonLocChldAll); ////////////
 
-						for (var i=0;i<jsonObjLoc.options.length ;i++)
+						for (var i=0;i<jsonLocChldAll.options.length ;i++)
 						{
 							var o={} ;
 
-							for (var prop in jsonObjLoc.options[i])
+							for (var prop in jsonLocChldAll.options[i])
 							{
-						         if  (prop=="seq")         o['key']   = jsonObjLoc.options[i][prop];
-						         if  (prop=="location_nm") o['label'] = jsonObjLoc.options[i][prop];
+						         if  (prop=="seq")         o['key']   = jsonLocChldAll.options[i][prop];
+						         if  (prop=="location_nm") o['label'] = jsonLocChldAll.options[i][prop];
 						    }
 						    o['width'] = '70';
 						    o['formatter'] = fnObj.formatter;// <input typw="text"> 태그를 단다...
@@ -157,13 +161,13 @@
 	                  	grid_PremiumRate.setList({
 	                      	ajaxUrl : "<?=$path_AjaxJSON?>/bas_premium_rate_sel.php",
 	                      	ajaxPars: {
-	                          "korabd_gbn": jQuery("#AXSelect_KorabdGbn").val()
+	                          	"korabd_gbn": jQuery("#AXSelect_KorabdGbn").val()
 	                      	},
 	                      	onLoad : function()
 	                      	{
-	                          trace(this);
-	                      	  jQuery("#btnSave").removeAttr("disabled");
-	                          trace("-------");
+								//trace(this);
+								jsonPremiumRate = this;
+	                      	  	jQuery("#btnSave").removeAttr("disabled");
 	                      	}
 	                  	});
 	              });
@@ -173,22 +177,80 @@
         // '저장' 버튼을 누를때
         save_premium_rate: function()
         {
-            jQuery(':input').each(function(index)
-      		{
-          			if  ($(this).attr('type')=='text')
-          			{
-   		                var result = "태그명 : " +  $(this).get(0).tagName
-           		                    + ", type  : " + $(this).attr('type')
-           		                    + ", title1  : " + $(this).attr('title1')
-           		                    + ", title2  : " + $(this).attr('title2')
-           		                    + ", location_nm  : " + $(this).attr('location_nm')
-           		                    + ", value  : " + $(this).attr('value')
-           		                    + '\n';
+            //trace(jsonPremiumRate.list);
 
-   						trace( result );
-          			}
-            });
-        }
+            for (var i=0; i<jsonPremiumRate.list.length;i++)
+            {
+                var keys = Object.keys(jsonPremiumRate.list[i]) ;
+                var values = Object.values(jsonPremiumRate.list[i]) ;
+
+                var nonLoc = [ 'a_seq'
+                              ,'a_affiliate_nm'
+                              ,'id_code'
+                              ,'id_direct_nm'
+                              ,'ua_seq'
+                              ,'ua_affiliate_nm'
+                              ,'title1'
+                              ,'title2'
+                             ] ;
+
+                var locs = jQuery(keys).not(nonLoc).get() ; // 지역이 아닌건 차집합으로 빼고.. 순수지역만..
+
+                jQuery.each(locs,function(idx,value){
+                    var name = "pr_"+value+"_"
+                              + values[ jQuery.inArray('a_seq',keys) ]+"_"
+                              + values[ jQuery.inArray('id_code',keys) ]+"_"
+                              + values[ jQuery.inArray('ua_seq',keys) ] ;
+
+					var premium_rate = jQuery('input[name='+name+']').val() ;
+					var title1       = jQuery('input[name='+name+']').attr('title1') ;
+					var title2       = jQuery('input[name='+name+']').attr('title2') ;
+	                var location_nm  = jQuery('input[name='+name+']').attr('location_nm') ;
+
+					if  (premium_rate == '') alert('값이없습니다.'+title1+title2+location_nm)
+					else
+					{
+					    if  (parseInput(premium_rate) >= 100.0)	alert('값이100보다 크면 안돼요'+title1+title2+location_nm)
+					}
+
+                    //trace(name+' , '+premium_rate);
+                });
+                /*
+                jQuery(':input').each(function(index)
+          		{
+              			if  ($(this).attr('type')=='text')
+              			{
+       		                var result = "태그명 : " +  $(this).get(0).tagName
+               		                    + ", type  : " + $(this).attr('type')
+               		                    + ", title1  : " + $(this).attr('title1')
+               		                    + ", title2  : " + $(this).attr('title2')
+               		                    + ", location_nm  : " + $(this).attr('location_nm')
+               		                    + ", value  : " + $(this).attr('value')
+               		                    + '\n';
+
+       						trace( result );
+              			}
+                });
+                */
+            }
+
+            //jQuery("form[name=frmPremiumRate]").submit();
+
+            var formData = jQuery("form[name=frmPremiumRate]").serialize();
+
+            trace(formData);
+
+            jQuery.ajax({
+	 					type : "POST",
+	 					url : "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",
+	 					cache : false,
+	 					data : formData
+	 					//,
+	 					//success : onSuccess,
+	 					//error : onError
+			});
+
+		}
 
     };
 
@@ -214,22 +276,9 @@
             if  (value.substring(1, value.length-1).indexOf(".") > -1)
                 $(my).val(parseInput(value));
         }
-        /*
-        console.log( $(my).attr("a_seq"));
-        console.log( $(my).attr("id_code"));
-        console.log( $(my).attr("ua_seq"));
-        console.log( $(my).val() );
-
-        jQuery.post( "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",
-                {
-                  a_seq    : $(my).attr("a_seq"),
-                  id_code  : $(my).attr("id_code"),
-                  ua_seq   : $(my).attr("ua_seq"),
-                  value    : $(my).val()
-                })
-               .done(function( data ) {});
-        */
     }
+
+
 
     </script>
 </head>
@@ -237,6 +286,8 @@
 <body>
 
     <h1>기본부율</h1>
+
+    <form name="frmPremiumRate" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php">
 
     <select name="KorabdGbn" class="AXSelectSmall W100" id="AXSelect_KorabdGbn" tabindex="1"></select>
 
@@ -246,9 +297,13 @@
 
     <br>
 
-	<div style="padding-top: 10px;">
-		<div id="AXgrid_PremiumRate"></div>
-	</div>
+
+     	<div style="padding-top: 10px;">
+     		<div id="AXgrid_PremiumRate"></div>
+     	</div>
+
+    </form>
+
 
 
 </body>
