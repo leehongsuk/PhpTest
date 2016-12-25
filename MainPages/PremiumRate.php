@@ -110,7 +110,10 @@
                    + '       title2="'+this.item.title2+'"                  '
                    + '       class="AXInput W40 dot"                        '
                    + '       value="'+this.value +'"                        '
-                   + '       onkeyup="fnKeyup(this)"/>                      ' ;
+                   //+ '       onkeydown="fnKeydown(event)"                   '
+                   + '       onkeyup="fnKeyup(this)"                        '
+				   + '       onblur="fnBlur(this)"/>                        '
+                    ;
 		},
 
         // '조회'버튼을 누를때
@@ -238,7 +241,7 @@
 
             var formData = jQuery("form[name=frmPremiumRate]").serialize();
 
-            trace(formData);
+            //trace(formData);
 
             jQuery.ajax({
 	 					type : "POST",
@@ -250,6 +253,8 @@
 	 					//error : onError
 			});
 
+			// 다시 검색버튼을 누른다.
+            fnObj.search_premium_rate();
 		}
 
     };
@@ -259,12 +264,47 @@
 
 	var parseInput = function(val)
 	{
+		if  (isNaN(parseFloat(val))) return '';
+
          var floatValue = parseFloat(val);
          return isNaN(floatValue) ? '' : floatValue;
     }
 
+    function fnKeydown(event)
+    {
+        trace(event.keyCode);
+
+        if (event.keyCode == 13)
+        {
+            //trace($(this).attr(tabindex));
+        }
+
+        //this.value.replace(/[\a-zㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        //obj.value = obj.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+    }
+
+
     function fnKeyup(my)
     {
+        	trace(event.keyCode);
+/*
+        if (event.keyCode == 13)
+        {
+            trace($(this).attr(tabindex));
+        	trace($(my).next());
+        	trace($(my).index(this));
+        	$( my ).blur();
+            //$(my).next().focus();
+        }
+*/
+        if (event.keyCode==13 ) return;
+		if (event.keyCode==9 ) return;
+
+		if (event.keyCode== 37) return;
+		if (event.keyCode== 38) return;
+		if (event.keyCode== 39) return;
+		if (event.keyCode== 40) return;
+
         var value = $(my).val()+'';
 
         if (value[value.length-1] !== '.')
@@ -278,7 +318,19 @@
         }
     }
 
+    function fnBlur(my)
+    {
+        var value = $(my).val();
 
+        if  (parseInput(value)!='')
+        {
+            $(my).val(eval(value).toFixed(2));
+        }
+        else
+        {
+            $(my).val('');
+        }
+    }
 
     </script>
 </head>
