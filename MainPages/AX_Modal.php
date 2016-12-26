@@ -1,7 +1,7 @@
 ﻿<?php require_once("../config/CONFIG.php"); ?>
 <?php
-$a = $_POST["title"];
-$b = $_POST["content"];
+$title   = $_POST["title"];
+$content = $_POST["content"];
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -34,18 +34,44 @@ $b = $_POST["content"];
             padding:10px;border-top:1px solid #ccc;
         }
     </style>
+
+    <script>
+
+        var fnObj = {
+            pageStart: function()
+            {
+            },
+            close: function()
+            {
+                if(opener){
+                    window.close();
+                }
+                else
+                if(parent){
+                    if(parent.myModal) parent.myModal.close();
+                }
+                else
+                {
+                    window.close();
+                }
+            }
+        };
+
+        jQuery(document).ready(fnObj.pageStart);
+    </script>
+
 </head>
 
 <body>
 
     <div class="bodyHeightDiv">
-        <div class="modalProgramTitle">
-            <?=$a?>
-        </div>
+
+        <div class="modalProgramTitle"><?=$title?></div>
+
         <div class="masterModalBody" id="masterModalBody">
             <div id="AXSearchTarget" style=""></div>
             <div style="padding:15px;">
-                <div id="AXGridTarget"><?=$b?></div>
+                <div id="AXGridTarget"><?=$content?></div>
             </div>
         </div>
         <div class="modalButtonBox" align="center">
@@ -57,36 +83,3 @@ $b = $_POST["content"];
 
 </html>
 
-<script>
-
-    var myModal = new AXModal();
-
-    var fnObj = {
-        pageStart: function()
-        {
-            myModal.setConfig({
-                windowID:"myModalCT",
-                mediaQuery: {
-                    mx:{min:0, max:320}, dx:{min:320}
-                },
-                displayLoading:true
-            });
-        },
-        close: function()
-        {
-            if(opener){
-                window.close();
-            }
-            else
-            if(parent){
-                if(parent.myModal) parent.myModal.close();
-            }
-            else
-            {
-                window.close();
-            }
-        }
-    };
-
-    jQuery(document).ready(fnObj.pageStart);
-</script>

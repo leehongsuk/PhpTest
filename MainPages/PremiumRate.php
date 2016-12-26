@@ -68,8 +68,8 @@
                 mediaQuery: {
                     mx: {min: 0, max: 767}, dx: {min: 767}
                 },
-                displayLoading: true,
-                scrollLock: true,
+                displayLoading: false,
+                scrollLock: false,
                 onclose: function ()
                 {
                     //toast.push("모달 close");
@@ -293,7 +293,7 @@
             {
                 jQuery("#modalContent").html(errorMsg);
 
-                fnObj.modalOpen(400,-1,errorMsg) ;
+                fnObj.modalOpen(500,-1,errorMsg) ;
             }
 
         },
@@ -330,7 +330,10 @@
             myModal.open({
                 url: "AX_Modal.php",
                 pars: pars.queryToObject(),
-                top: 100,
+                width: width,
+                //top: 100,
+                verticalAlign: true, // 씨발 안먹네..!!
+                closeButton: true,
                 closeByEscKey: true
             });
         }
