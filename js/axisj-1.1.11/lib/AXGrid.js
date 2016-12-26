@@ -347,7 +347,7 @@ var AXGrid = Class.create(AXJ, {
                     displayLabel: (CG.displayLabel || false),
                     addClass: CG.addClass
                 };
-                if (cfg._colHead_rows) adder.sort = cfg._colHead_rows[0][cidx].sort; // redrawGrid 호출된 경우 예외처리
+                //if (cfg._colHead_rows) adder.sort = cfg._colHead_rows[0][cidx].sort; // redrawGrid 호출된 경우 예외처리
                 colHeadRows[0].push(adder);
                 cfg.colHead._maps[0].push({r: 0, c: cidx});
             }

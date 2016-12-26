@@ -17,47 +17,80 @@
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXGrid.css" />
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.min.css" />
 
+
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/dist/AXJ.min.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXInput.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXSelect.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXGrid.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXUpload5.js"></script>
 
+    <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXModal.js"></script>
+
     <!-- 아이콘사용을 위해서..(http://axicon.axisj.com/) -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axicon/axicon.min.css"/>
 
 
-  	<!-- css block -->
+    <!-- css block -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
+    <style type="text/css">
+        .modalProgramTitle{
+            height:38px;
+            line-height:40px;
+            color:#282828;
+            font-size:14px;
+            font-weight:bold;
+            padding-left:15px;
+            border-bottom:1px solid #a6a6a6;
+        }
+    </style>
+
+
     <script type="text/javascript">
 
-    var jsonLocChldAll ; // 지역리스트의 json
+    var jsonLocChldAll ;  // 지역리스트의 json
     var jsonPremiumRate ; // 부율전체 json
 
-    var myUpload         = new AXUpload5();
     var grid_PremiumRate = new AXGrid() ; // 부율 그리드
+    var myModal = new AXModal();
 
 
     var fnObj =
     {
         pageStart: function()
         {
+
+            myModal.setConfig({
+                windowID: "myModalCT",
+                width: 740,
+                mediaQuery: {
+                    mx: {min: 0, max: 767}, dx: {min: 767}
+                },
+                displayLoading: true,
+                scrollLock: true,
+                onclose: function ()
+                {
+                    //toast.push("모달 close");
+                }
+            });
+
+
+
             // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
 
-         	// 방화/외화 구분 셀렉터
+             // 방화/외화 구분 셀렉터
             jQuery("#AXSelect_KorabdGbn").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
-			// 부율그리드
+            // 부율그리드
             grid_PremiumRate.setConfig(
             {
                 targetID : "AXgrid_PremiumRate",
@@ -75,7 +108,7 @@
                     }
                 },
                 page:{
-                	paging:false
+                    paging:false
                 }
 
             });
@@ -87,7 +120,7 @@
         {
             var location_nm = "";
 
-			// 지역리스트 json에서 지역코드로 지역명을 구한다.
+            // 지역리스트 json에서 지역코드로 지역명을 구한다.
             for (var i = 0; i < jsonLocChldAll.options.length; i++)
             {
                 if (jsonLocChldAll.options[i].seq == this.key)
@@ -110,77 +143,97 @@
                    + '       title2="'+this.item.title2+'"                  '
                    + '       class="AXInput W40 dot"                        '
                    + '       value="'+this.value +'"                        '
-                   //+ '       onkeydown="fnKeydown(event)"                   '
-                   + '       onkeyup="fnKeyup(this)"                        '
-				   + '       onblur="fnBlur(this)"/>                        '
+                   + '       onkeyup="fnKeyup(this,event)"                        '
+                   + '       onblur="fnBlur(this)"/>                        '
                     ;
-		},
+        },
 
         // '조회'버튼을 누를때
         search_premium_rate: function()
         {
             jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})
-	              .done(function( data ) {
-
-	      				var colgrp = [];
-
-	                  	var o={} ;
-						o['key'] = 'title1';
-	      				o['label'] = ' ';
-	      				o['width'] = '100';
-	      				colgrp.push(o);
-
-	      				var o={} ;
-						o['key'] = 'title2';
-	      				o['label'] = ' ';
-	      				o['width'] = '100';
-	      				colgrp.push(o);
+                  .done(function( data ) {
 
 						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
+                        //trace(jsonLocChldAll); ////////////
 
-						//trace(jsonLocChldAll); ////////////
 
-						for (var i=0;i<jsonLocChldAll.options.length ;i++)
-						{
-							var o={} ;
+                        var colgrp = [];
 
-							for (var prop in jsonLocChldAll.options[i])
-							{
-						         if  (prop=="seq")         o['key']   = jsonLocChldAll.options[i][prop];
-						         if  (prop=="location_nm") o['label'] = jsonLocChldAll.options[i][prop];
-						    }
-						    o['width'] = '70';
-						    o['formatter'] = fnObj.formatter;// <input typw="text"> 태그를 단다...
+                        var o={} ;
+                        o['key'] = 'title1';
+                        o['label'] = ' ';
+                        o['width'] = '100';
+                        colgrp.push(o);
 
-						    colgrp.push(o);
-						}
+                        var o={} ;
+                        o['key'] = 'title2';
+                        o['label'] = ' ';
+                        o['width'] = '100';
+                        colgrp.push(o);
 
-	      				//var j = JSON.stringify(colgrp); // object를 json으로 변환한다.
-	      				//console.log(j);
 
-	      				grid_PremiumRate.setConfig({colGroup : colgrp});
+                        /***/
+                        for (var i=0;i<jsonLocChldAll.options.length ;i++)
+                        {
+                            var o={} ;
 
-	      				var result = '' ;
-	                  	grid_PremiumRate.setList({
-	                      	ajaxUrl : "<?=$path_AjaxJSON?>/bas_premium_rate_sel.php",
-	                      	ajaxPars: {
-	                          	"korabd_gbn": jQuery("#AXSelect_KorabdGbn").val()
-	                      	},
-	                      	onLoad : function()
-	                      	{
-								//trace(this);
+                            for (var prop in jsonLocChldAll.options[i])
+                            {
+                                 if  (prop=="seq")         o['key']   = jsonLocChldAll.options[i][prop];
+                                 if  (prop=="location_nm") o['label'] = jsonLocChldAll.options[i][prop];
+                            }
+                            o['width'] = '70';
+                            o['formatter'] = fnObj.formatter;// <input typw="text"> 태그를 단다...
+
+                            colgrp.push(o);
+                        }
+
+                        grid_PremiumRate.setConfig({colGroup : colgrp}); // 컬럼 그룹정보를 설정한다...
+
+                        var result = '' ;
+                        grid_PremiumRate.setList({
+                              ajaxUrl : "<?=$path_AjaxJSON?>/bas_premium_rate_sel.php",
+                              ajaxPars: {
+                                  "korabd_gbn": jQuery("#AXSelect_KorabdGbn").val()
+                              },
+                              onLoad : function()
+                              {
 								jsonPremiumRate = this;
-	                      	  	jQuery("#btnSave").removeAttr("disabled");
-	                      	}
-	                  	});
-	              });
 
+                                jQuery("#btnSave").removeAttr("disabled"); // 저장가능하도록 한다.
+
+                                    // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
+                                $('body').on('keydown', 'input, select, textarea', function(e)
+                                {
+                                    var self = $(this);
+                                    var form = self.parents('form:eq(0)');
+                                    var focusable;
+                                     var next;
+
+                                    if (e.keyCode == 13)
+                                    {
+                                        focusable = form.find('input,a,select,button,textarea').filter(':visible');
+                                        next = focusable.eq(focusable.index(this)+1);
+                                        if (next.length) {
+                                            next.focus();
+                                            next.select(); // 전체가 선택되도록 한다.
+                                        } else {
+                                            form.submit();
+                                        }
+                                        return false;
+                                    }
+                                });
+                              }
+                        });
+                  });
         },
 
         // '저장' 버튼을 누를때
         save_premium_rate: function()
         {
             //trace(jsonPremiumRate.list);
+            var errorMsg = '' ;
 
             for (var i=0; i<jsonPremiumRate.list.length;i++)
             {
@@ -205,105 +258,113 @@
                               + values[ jQuery.inArray('id_code',keys) ]+"_"
                               + values[ jQuery.inArray('ua_seq',keys) ] ;
 
-					var premium_rate = jQuery('input[name='+name+']').val() ;
-					var title1       = jQuery('input[name='+name+']').attr('title1') ;
-					var title2       = jQuery('input[name='+name+']').attr('title2') ;
-	                var location_nm  = jQuery('input[name='+name+']').attr('location_nm') ;
+                    var premium_rate = jQuery('input[name='+name+']').val() ;
+                    var title1       = jQuery('input[name='+name+']').attr('title1') ;
+                    var title2       = jQuery('input[name='+name+']').attr('title2') ;
+                    var location_nm  = jQuery('input[name='+name+']').attr('location_nm') ;
 
-					if  (premium_rate == '') alert('값이없습니다.'+title1+title2+location_nm)
-					else
-					{
-					    if  (parseInput(premium_rate) >= 100.0)	alert('값이100보다 크면 안돼요'+title1+title2+location_nm)
-					}
-
-                    //trace(name+' , '+premium_rate);
+                    if  (premium_rate == '')
+                    {
+                        errorMsg += title1+title2+'의 '+location_nm+'에 값이없습니다.<br>';
+                    }
+                    else
+                    {
+                        if  (parseInput(premium_rate) >= 100.0)
+                            errorMsg += title1+title2+'의 '+location_nm+'에 값이100보다 크면 안됍니다.<br>';
+                    }
                 });
-                /*
-                jQuery(':input').each(function(index)
-          		{
-              			if  ($(this).attr('type')=='text')
-              			{
-       		                var result = "태그명 : " +  $(this).get(0).tagName
-               		                    + ", type  : " + $(this).attr('type')
-               		                    + ", title1  : " + $(this).attr('title1')
-               		                    + ", title2  : " + $(this).attr('title2')
-               		                    + ", location_nm  : " + $(this).attr('location_nm')
-               		                    + ", value  : " + $(this).attr('value')
-               		                    + '\n';
+            } // for (var i=0; i<jsonPremiumRate.list.length;i++)
 
-       						trace( result );
-              			}
+            if (errorMsg == '')
+            {
+                // 저장할 값들을 취합한다.
+                var formData = jQuery("form[name=frmPremiumRate]").serialize();
+
+                jQuery.ajax({
+                             type : "POST",
+                             url : "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",
+                             cache : false,
+                             data : formData,
+                             success : fnObj.onSuccessPreminumRate,
+                             error : fnObj.onErrorPreminumRate
                 });
-                */
+            }
+            else
+            {
+                jQuery("#modalContent").html(errorMsg);
+
+                fnObj.modalOpen(400,-1,errorMsg) ;
             }
 
-            //jQuery("form[name=frmPremiumRate]").submit();
+        },
 
-            var formData = jQuery("form[name=frmPremiumRate]").serialize();
-
-            //trace(formData);
-
-            jQuery.ajax({
-	 					type : "POST",
-	 					url : "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",
-	 					cache : false,
-	 					data : formData
-	 					//,
-	 					//success : onSuccess,
-	 					//error : onError
-			});
-
-			// 다시 검색버튼을 누른다.
+        // 부율 업데이트가 성공적일때..
+        onSuccessPreminumRate : function()
+        {
+             // 다시 검색버튼을 누른다.
             fnObj.search_premium_rate();
-		}
+        },
 
-    };
+        // 부울 업데이트가 실패하면..
+        onErrorPreminumRate : function(request,status,error)
+        {
+            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        },
 
-	jQuery(document).ready(fnObj.pageStart.delay(0.1));
+		// 모달창을 띄운다.
+        modalOpen: function (width,top,errorMsg)
+        {
+            /*
+            myModal.openDiv({
+                modalID: "modalDiv02",
+                targetID: "modalContent2",
+                width: width,
+                top: top,
+                verticalAlign: true,
+                closeByEscKey: true,
+                closeButton: true
+            });
+            */
+
+            var pars = "title=입력오류&content="+errorMsg ;
+            myModal.open({
+                url: "AX_Modal.php",
+                pars: pars.queryToObject(),
+                top: 100,
+                closeByEscKey: true
+            });
+        }
+
+    }; // var fnObj =
+
+    jQuery(document).ready(fnObj.pageStart.delay(0.1));
 
 
-	var parseInput = function(val)
-	{
-		if  (isNaN(parseFloat(val))) return '';
+
+
+    var parseInput = function(val)
+    {
+        if  (isNaN(parseFloat(val))) return '';
 
          var floatValue = parseFloat(val);
          return isNaN(floatValue) ? '' : floatValue;
     }
 
-    function fnKeydown(event)
+    function fnKeyup(my,event)
     {
-        trace(event.keyCode);
+		//trace(event.keyCode);
 
-        if (event.keyCode == 13)
-        {
-            //trace($(this).attr(tabindex));
-        }
+        if (event.keyCode==46 ) return;
+        if (event.keyCode==8 ) return;
 
-        //this.value.replace(/[\a-zㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-        //obj.value = obj.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    }
-
-
-    function fnKeyup(my)
-    {
-        	trace(event.keyCode);
-/*
-        if (event.keyCode == 13)
-        {
-            trace($(this).attr(tabindex));
-        	trace($(my).next());
-        	trace($(my).index(this));
-        	$( my ).blur();
-            //$(my).next().focus();
-        }
-*/
         if (event.keyCode==13 ) return;
-		if (event.keyCode==9 ) return;
+        if (event.keyCode==9 ) return;
+        if (event.keyCode==16 ) return;
 
-		if (event.keyCode== 37) return;
-		if (event.keyCode== 38) return;
-		if (event.keyCode== 39) return;
-		if (event.keyCode== 40) return;
+        if (event.keyCode== 37) return;
+        if (event.keyCode== 38) return;
+        if (event.keyCode== 39) return;
+        if (event.keyCode== 40) return;
 
         var value = $(my).val()+'';
 
@@ -332,6 +393,9 @@
         }
     }
 
+
+
+
     </script>
 </head>
 
@@ -339,23 +403,41 @@
 
     <h1>기본부율</h1>
 
-    <form name="frmPremiumRate" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php">
+    <form name="frmPremiumRate" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php" onsubmit="return false;">
 
-    <select name="KorabdGbn" class="AXSelectSmall W100" id="AXSelect_KorabdGbn" tabindex="1"></select>
+        <select name="KorabdGbn" class="AXSelectSmall W100" id="AXSelect_KorabdGbn" tabindex="1"></select>
 
-    <button type="button" class="AXButtonSmall" id="btnSearch" tabindex="2" onclick="fnObj.search_premium_rate();"><i class="axi axi-search2  W100"></i> 조회</button>
+        <button type="button" class="AXButtonSmall" id="btnSearch" tabindex="2" onclick="fnObj.search_premium_rate();"><i class="axi axi-search2  W100"></i> 조회</button>
 
-    <button type="button" class="AXButtonSmall" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" disabled="disabled"><i class="axi axi-save  W100"></i> 저장</button>
+        <button type="button" class="AXButtonSmall" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" disabled="disabled"><i class="axi axi-save  W100"></i> 저장</button>
 
-    <br>
+        <br>
 
-
-     	<div style="padding-top: 10px;">
-     		<div id="AXgrid_PremiumRate"></div>
-     	</div>
+         <div style="padding-top: 10px;">
+             <div id="AXgrid_PremiumRate"></div>
+         </div>
 
     </form>
 
+    <div style="display:none;">
+
+		<div id="modalContent2">
+			<div class="modalProgramTitle">
+                입력오류
+            </div>
+
+            <div id="modalContent" style="padding:20px;"></div>
+
+            <br/>
+            <br/>
+            <br/>
+
+			<div class="modalButtonBox" align="center" style="height: 32px;background-color: silver;padding-top: 4px;">
+            	<input type="button" value="확 인" class="AXButton W60" onclick="myModal.close('modalDiv02');"/>
+            </div>
+        </div>
+
+    </div>
 
 
 </body>
