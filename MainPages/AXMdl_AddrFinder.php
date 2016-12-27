@@ -67,9 +67,7 @@
                             {label:"", labelWidth:"", type:"button", width:"60", key:"button", valueBoxStyle:"padding-left:0px;padding-right:5px;", value:"검색",
                                 onclick: function(){
                                     //AXUtil.alert(this);
-
                                     fnObj.searchAddr();
-
                                 }
                             }
                         ]}
@@ -91,7 +89,6 @@
                     body : {
                         onclick: function()
                         {
-
                             parent.fnObj.addr.set({zip:this.item.code, addr:this.item.address_nm});
                             parent.myModal.close();
                         }
@@ -134,7 +131,7 @@
             <div id="AXSearchTarget" style=""></div>
 
             <div style="padding:5px;">
-                <div id="AXGridTarget" style="height:300px;"></div>
+                <div id="AXGridTarget" style="height:390px;"></div>
             </div>
         </div>
 

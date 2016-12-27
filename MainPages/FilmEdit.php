@@ -386,8 +386,6 @@
 	{
     ?><h1>영화 편집</h1><?
 	}
-	$f = 0 ;
-	echo $f;
     ?>
 
 	<table cellpadding="0" cellspacing="0" class="AXFormTable">

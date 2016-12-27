@@ -62,7 +62,7 @@
     var grid_ShowRoom    = new AXGrid() ; // 상영관 그리드
     var grid_Distributor = new AXGrid() ; // 배급사 그리드
 
-    var myModal = new AXModal(); // 우편번호검색을 위한 팝업창
+    var myModal = new AXModal(); // 우편번호검색을 위한 팝업창과 범용팝업
 
     var fnObj =
     {
@@ -93,7 +93,7 @@
                         }
                   });
 
-
+            // 연락처 탭을 구성한다.
             $("#AXTabs_Contact").bindTab({
                 theme : "AXTabs",
                 //value:"S", // 첫번째가 바로 선택되도록..
@@ -125,48 +125,6 @@
                 }
             });
 
-
-
-
-            $("#unitprice").bindTagSelector({
-                selectorWidth: false, //selectorWidth 값이 없으면 인풋의 너비를 이용.
-                optionValue_inputName: "tagValue", // 태그가 추가될 때 생성되는 optionValue input hidden name값
-                optionText_inputName: "tagText", // 태그가 추가될 때 생성되는 optionText input hidden name값
-                /*
-                reserveKeys: {
-                    options: "options", // ajax 를 이용해서 options 리스트 구성할 때. 사용
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                */
-                options: [
-                    {optionValue:1, optionText:"Seoul"},
-                    {optionValue:2, optionText:"대구"},
-                    {optionValue:8, optionText:"전주"},
-                    {optionValue:9, optionText:"Gwangju"}
-                ]
-            });
-
-            $("#unitprice-02").bindTagSelector({
-                /*
-                reserveKeys: {
-                    options: "list",
-                    optionValue: "value",
-                    optionText: "optionText"
-                },
-                */
-                //direction: "bottom",
-                appendable: false,
-                ajaxUrl:"selectorData.php",
-                ajaxPars:""
-            });
-
-
-
-
-
-
-
             // 지역1 초기화
             jQuery("#AXSelect_Loccation1").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",
@@ -181,7 +139,7 @@
                             isspace: true,
                             isspaceTitle: "전체",
                             onChange: function(){
-                                console.log(this.value);
+                                //console.log(this.value);
                             }
                         });
                 }
@@ -200,7 +158,7 @@
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
@@ -210,7 +168,7 @@
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
@@ -220,7 +178,7 @@
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
@@ -230,12 +188,12 @@
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
 
-
+            // 연락처 그리드 초기화
             grid_Contact.setConfig(
             {
                 targetID : "AXgrid_Contact",
@@ -266,8 +224,7 @@
                 }
             });
 
-
-
+            // 변경정보 그리드 초기화
             grid_ChangeHist.setConfig(
             {
                 targetID : "AXGrid_ChangeHist",
@@ -309,7 +266,7 @@
                 }
             });
 
-
+			// 상영관 그리드 초기화
             grid_ShowRoom.setConfig(
             {
                 targetID : "AXGrid_ShowRoom",
@@ -335,6 +292,7 @@
                 }
             });
 
+			// 배급사 그리드 초기화
             grid_Distributor.setConfig(
             {
                 targetID : "AXGrid_Distributor",
@@ -357,6 +315,14 @@
                 },
                 page:{
                     paging:false
+                }
+            });
+
+            $("#AXInputDate").bindDate({
+                align:"right",
+                valign:"top",
+                onChange:function(){
+                    //toast.push(Object.toJSON(this));
                 }
             });
 
@@ -392,12 +358,13 @@
             jQuery("select[name=loc2]").setValueSelect(loc2);
         },
 
+        // 하나의 극장정보를 읽어 온다.
         readTheaterOne: function()
         {
             jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php", { code: '<?=$_GET['code']?>' })
                   .done(function( data )
                   {
-						console.log(data);
+						//console.log(data);
 
                       	theater_json = eval('('+data+')');
 
@@ -407,10 +374,14 @@
                         jQuery("input[name=addr1]").val(theater_json.addr1);
                         jQuery("input[name=addr2]").val(theater_json.addr2);
                         jQuery("textarea[name=memo]").text(theater_json.memo);
+                        jQuery("input[name=open_dt]").val(theater_json.open_dt);
+                        jQuery("input[name=gubun_code]").val(theater_json.gubun_code);
                         jQuery("input[name=saup_no]").val(theater_json.saup_no);
                         jQuery("input[name=owner]").val(theater_json.owner);
                         jQuery("input[name=sangho]").val(theater_json.sangho);
                         jQuery("input[name=homepage]").val(theater_json.homepage);
+
+                        jQuery("input[name=fund_free").prop('checked',(theater_json.fund_free=="Y"));
 
                         jQuery("input[name=score_tel").prop('checked',(theater_json.score_tel=="Y"));
                         jQuery("input[name=score_fax").prop('checked',(theater_json.score_fax=="Y"));
@@ -431,7 +402,7 @@
                             isspace: true,
                             isspaceTitle: "전체",
                             onChange: function(){
-                                console.log(this.value);
+                                //console.log(this.value);
 
                             }
                         });
@@ -463,6 +434,7 @@
             });
         },
 
+        // 우편번호를 모달로 검색하거나 선택한다.
         addr:
         {
 			search: function()
@@ -472,7 +444,7 @@
 					url:"AXMdl_AddrFinder.php",
 					pars:"",
 					closeByEscKey: true,
-					top:50,
+					top:100,
 					width:500
 				});
 			},
@@ -485,6 +457,7 @@
 			}
 		},
 
+		// 하나의 극장을 저장한다.
 		save_theater : function()
 		{
 		    var errorMsg = '' ;
@@ -494,13 +467,15 @@
                 // 저장할 값들을 취합한다.
                 var formData = jQuery("form[name=frmThearter]").serialize();
 
+                //trace(formData);
+
                 jQuery.ajax({
                              type : "POST",
                              url : "<?=$path_AjaxJSON?>/wrk_theater_save.php",
                              cache : false,
                              data : formData,
-                             success : fnObj.onSuccessPreminumRate,
-                             error : fnObj.onErrorPreminumRate
+                             success : fnObj.onSuccessTheater,
+                             error : fnObj.onErrorTheater
                 });
             }
             else
@@ -510,18 +485,59 @@
                 fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
             }
 
-
-
-
-
-
-
+			/*
 		    var a = AXUtil.clientHeight();
 		    var b = AXUtil.scrollHeight();
 		    var c = AXUtil.clientWidth();
 		    var d = AXUtil.scrollWidth();
 		    trace({a:a,b:b,c:c,d:d});
-		}
+		    */
+		},
+
+		onFnClose : function()
+        {
+		    location.href = "./TheaterList.php"
+        },
+
+		// 극장 저장이 성공적일때..
+        onSuccessTheater : function()
+        {
+            fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
+        },
+
+        // 극장 저장이 실패하면..
+        onErrorTheater : function(request,status,error)
+        {
+            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        },
+
+        // 모달창을 띄운다.
+        modalOpen: function (width,top,title,errorMsg,onFnClose)
+        {
+            /*
+            myModal.openDiv({
+                modalID: "modalDiv02",
+                targetID: "modalContent2",
+                width: width,
+                top: top,
+                verticalAlign: true,
+                closeByEscKey: true,
+                closeButton: true
+            });
+            */
+            myModal.setConfig({onclose: onFnClose});
+
+            var pars = "title="+title+"&content="+errorMsg ;
+            myModal.open({
+                url: "AX_Modal.php",
+                pars: pars.queryToObject(),
+                width: width,
+                //top: 100,
+                verticalAlign: true, // 씨발 안먹네..!!
+                closeButton: true,
+                closeByEscKey: true
+            });
+        }
 
     };
 
@@ -580,11 +596,28 @@
                 </tr>
                 <tr>
                     <th>
+                        <div class="tdRel">구분코드</div>
+                    </th>
+                    <td class="last">
+                        <div class="tdRel">
+                            <input type="text" name="gubun_code" placeholder="구분코드" value="" class="AXInput W200 av-bizno" />
+                            <label><input type="checkbox" name="fund_free" value="Y" id="AXCheck_Operation0" /> 기금면제여부</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         <div class="tdRel">사업자</div>
                     </th>
                     <td class="last">
                         <div class="tdRel">
                             <table>
+                            <tr>
+                                <td class="white_board"><label>개관일</label></td>
+                                <td class="white_board">
+                                    : <input type="text" name="open_dt" id="AXInputDate" placeholder="개관일" class="AXInput W100" />
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="white_board"><label>사업자등록번호</label></td>
                                 <td class="white_board">
@@ -671,20 +704,20 @@
                                 <td class="white_board">스코어</td>
                                 <td class="white_board">
                                     :
-                                    <label><input type="checkbox" name="score_tel" value="T1" id="AXCheck_Operation1" /> 전화</label>
-                                    <label><input type="checkbox" name="score_fax" value="T1" id="AXCheck_Operation2" /> FAX</label>
-                                    <label><input type="checkbox" name="score_mail" value="T1" id="AXCheck_Operation3" /> 메일</label>
-                                    <label><input type="checkbox" name="score_sms" value="T1" id="AXCheck_Operation4" /> SMS</label>
+                                    <label><input type="checkbox" name="score_tel" value="Y" id="AXCheck_Operation1" /> 전화</label>
+                                    <label><input type="checkbox" name="score_fax" value="Y" id="AXCheck_Operation2" /> FAX</label>
+                                    <label><input type="checkbox" name="score_mail" value="Y" id="AXCheck_Operation3" /> 메일</label>
+                                    <label><input type="checkbox" name="score_sms" value="Y" id="AXCheck_Operation4" /> SMS</label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="white_board">부금</td>
                                 <td class="white_board">
                                     :
-                                    <label><input type="checkbox" name="premium_tel" value="T1" id="AXCheck_Operation5" /> 전화</label>
-                                    <label><input type="checkbox" name="premium_fax" value="T1" id="AXCheck_Operation6" /> FAX</label>
-                                    <label><input type="checkbox" name="premium_mail" value="T1" id="AXCheck_Operation7" /> 메일</label>
-                                    <label><input type="checkbox" name="premium_sms" value="T1" id="AXCheck_Operation8" /> SMS</label>
+                                    <label><input type="checkbox" name="premium_tel" value="Y" id="AXCheck_Operation5" /> 전화</label>
+                                    <label><input type="checkbox" name="premium_fax" value="Y" id="AXCheck_Operation6" /> FAX</label>
+                                    <label><input type="checkbox" name="premium_mail" value="Y" id="AXCheck_Operation7" /> 메일</label>
+                                    <label><input type="checkbox" name="premium_sms" value="Y" id="AXCheck_Operation8" /> SMS</label>
                                 </td>
                             </tr>
                         </table>
@@ -739,7 +772,6 @@
                         <div class="tdRel">업로드<br>극장명</div>
                     </th>
                     <td class="last">
-                        <input type="text" name="tags2" id="unitprice" class="AXInput W200" />
                     </td>
                 </tr>
                 <tr>

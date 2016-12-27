@@ -3,7 +3,7 @@ require_once("../config/CONFIG.php");
 
 require_once("../config/DB_CONNECT.php");
 
-    $post_code = "TH0001";//$_POST["code"] ;
+    $post_code = $_POST["code"] ;
 
     $a_json        = array() ;
     $a_contact     = array() ;

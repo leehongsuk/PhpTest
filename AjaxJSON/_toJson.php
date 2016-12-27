@@ -3,7 +3,10 @@ require_once("../config/CONFIG.php");
 
 require_once("../config/DB_CONNECT.php");
 
+    // 쿼리에서 리터되어 오는 형태 그대로 json으로 리턴한다.
+
     $a_list  = array() ;
+
 
 
     //$query= "CALL  SP_BAS_AFFILIATE_SEL()";
