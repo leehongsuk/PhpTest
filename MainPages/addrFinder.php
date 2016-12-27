@@ -67,7 +67,7 @@
 							{label:"", labelWidth:"", type:"inputText", width:"150", key:"srchwrd", addClass:"secondItem", valueBoxStyle:"padding-left:10px;", placeholder:"검색어를 입력하세요", value:""},
 							{label:"", labelWidth:"", type:"button", width:"60", key:"button", valueBoxStyle:"padding-left:0px;padding-right:5px;", value:"검색",
 								onclick: function(){
-									AXUtil.alert(this);
+									//AXUtil.alert(this);
 
 									fnObj.searchAddr();
 
