@@ -454,7 +454,7 @@
 			{
 				myModal.open({
 					method:"get",
-					url:"addrFinder.php",
+					url:"AXMdl_AddrFinder.php",
 					pars:"",
 					closeByEscKey: true,
 					top:50,
