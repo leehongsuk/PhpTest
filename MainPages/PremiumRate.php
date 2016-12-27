@@ -365,17 +365,16 @@
     {
         //trace(event.keyCode);
 
-        if (event.keyCode==46 ) return;
-        if (event.keyCode==8 ) return;
+        if (event.keyCode == 46) return;
+        if (event.keyCode == 8 ) return;
 
-        if (event.keyCode==13 ) return;
-        if (event.keyCode==9 ) return;
-        if (event.keyCode==16 ) return;
-
-        if (event.keyCode== 37) return;
-        if (event.keyCode== 38) return;
-        if (event.keyCode== 39) return;
-        if (event.keyCode== 40) return;
+        if (event.keyCode == 13) return;
+        if (event.keyCode == 9 ) return;
+        if (event.keyCode == 16) return;
+        if (event.keyCode == 37) return;
+        if (event.keyCode == 38) return;
+        if (event.keyCode == 39) return;
+        if (event.keyCode == 40) return;
 
         var value = $(my).val()+'';
 
@@ -403,9 +402,6 @@
             $(my).val('');
         }
     }
-
-
-
 
     </script>
 </head>
