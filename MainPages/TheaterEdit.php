@@ -25,6 +25,8 @@
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXSelect.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXGrid.js"></script>
 
+    <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXModal.js"></script>
+
     <!-- 아이콘사용을 위해서..(http://axicon.axisj.com/) -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axicon/axicon.min.css"/>
 
@@ -44,6 +46,8 @@
     var grid_ShowRoom    = new AXGrid() ; // 상영관 그리드
     var grid_Distributor = new AXGrid() ; // 배급사 그리드
 
+    var myModal = new AXModal(); // 우편번호검색을 위한 팝업창
+
 
     var fnObj =
     {
@@ -52,6 +56,11 @@
             // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
+
+            myModal.setConfig({windowID:"myModalCT",
+                               displayLoading: false,
+                               scrollLock: false
+                              });  // 우편번호검색을 위한 팝업창
 
 
              // 담당자 종류를 가지고 온다.
@@ -437,8 +446,29 @@
                         });
 
             });
-        }
+        },
 
+        addr:
+        {
+			search: function()
+			{
+				myModal.open({
+					method:"get",
+					url:"addrFinder.php",
+					pars:"",
+					closeByEscKey: true,
+					top:50,
+					width:500
+				});
+			},
+			set: function(obj)
+			{
+				var frm = document.frmThearter;
+				frm.zip.value = obj.zip;
+				frm.addr1.value = obj.addr;
+				frm.addr2.focus();
+			}
+		}
     };
 
     jQuery(document).ready([ fnObj.pageStart.delay(0.1)
@@ -466,206 +496,210 @@
     if ($MODE=="EDIT")    { ?><h1>극장 편집</h1><?php     }
     ?>
 
-    <table cellpadding="0" cellspacing="0" class="AXFormTable">
-        <colgroup>
-            <col width="100" />
-            <col />
-        </colgroup>
-        <tbody>
-            <tr>
-                <th>
-                    <div class="tdRel">극장코드</div>
-                </th>
-                <td class="last">
-                    <div class="tdRel">
-                        <input type="text" name="code" placeholder="극장코드" value="" class="AXInput W50 av-bizno" readonly="readonly"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">극장명</div>
-                </th>
-                <td class="last">
-                    <div class="tdRel">
-                        <input type="text" name="theater_nm" placeholder="극장명" value="" class="AXInput W250 av-bizno" />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">사업자</div>
-                </th>
-                <td class="last">
-                    <div class="tdRel">
+	<form name="frmThearter" onsubmit="return false;">
+
+        <table cellpadding="0" cellspacing="0" class="AXFormTable">
+            <colgroup>
+                <col width="100" />
+                <col />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>
+                        <div class="tdRel">극장코드</div>
+                    </th>
+                    <td class="last">
+                        <div class="tdRel">
+                            <input type="text" name="code" placeholder="극장코드" value="" class="AXInput W50 av-bizno" readonly="readonly"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">극장명</div>
+                    </th>
+                    <td class="last">
+                        <div class="tdRel">
+                            <input type="text" name="theater_nm" placeholder="극장명" value="" class="AXInput W250 av-bizno" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">사업자</div>
+                    </th>
+                    <td class="last">
+                        <div class="tdRel">
+                            <table>
+                            <tr>
+                                <td class="white_board"><label>사업자등록번호</label></td>
+                                <td class="white_board">
+                                    : <input type="text" name="saup_no" value="" placeholder="사업자등록번호" class="AXInput W100" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="white_board"><label>대표자</label></td>
+                                <td class="white_board">
+                                    : <input type="text" name="owner" value="" placeholder="대표자" class="AXInput W80" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="white_board"><label>상호</label></td>
+                                <td class="white_board">
+                                    : <input type="text" name="sangho" value="" placeholder="상호" class="AXInput W200" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="white_board"><label>홈페이지</label></td>
+                                <td class="white_board">
+                                    : <input type="text" name="homepage" value="" placeholder="홈페이지" class="AXInput W250" />
+                                </td>
+                            </tr>
+                            </table>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">지역</div>
+                    </th>
+                    <td class="last">
+                        <label>지역1 :</label><select name="loc1" class="AXSelectSmall" id="AXSelect_Loccation1" style="width:100px;" tabindex="1"></select>
+                        <label>지역2 :</label><select name="loc2" class="AXSelectSmall" id="AXSelect_Loccation2" style="width:100px;" tabindex="2"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">주소</div>
+                    </th>
+                    <td class="last">
+                        <label>우편번호 :</label><input type="text" name="zip" value="" placeholder="우편번호" class="AXInput W50" />
+                        <button type="button" class="AXButtonSmall" id="button" tabindex="2" onclick="fnObj.addr.search();"><i class="axi axi-search2"></i> 조회</button>
+                        <label>주소 :</label>
+                        <input type="text" name="addr1" value="" placeholder="주소1" class="AXInput W200" disabled="disabled" />
+                        <input type="text" name="addr2" value="" placeholder="주소2" class="AXInput W200" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">계열사</div>
+                    </th>
+                    <td class="last">
+                        <label>계열사 :</label><select name="affiliate_seq" class="AXSelectSmall" id="AXSelect_Affiliate" style="width:100px;" tabindex="1"></select>
+                        <label>직·위 :</label><select name="isdirect" class="AXSelectSmall" id="AXSelect_IsDirect" style="width:100px;" tabindex="1"></select>
+                        <label>비계열 :</label><select name="unaffiliate_seq" class="AXSelectSmall" id="AXSelect_Unaffiliate" style="width:100px;" tabindex="1"></select>
+                        <label>사용자 그룹 :</label><select name="user_group_seq" class="AXSelectSmall" id="AXSelect_UserGroup" style="width:100px;" tabindex="1"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">연락처</div>
+                    </th>
+                    <td class="last">
+
+                        <!-- 관리자 연락처 탭 -->
+                        <div id="AXTabs_Contact"></div>
+
+                        <div style="padding: 5px;">
+                            <div id="AXgrid_Contact"></div>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">극장수신<br>연락처</div>
+                    </th>
+                    <td class="last">
                         <table>
-                        <tr>
-                            <td class="white_board"><label>사업자등록번호</label></td>
-                            <td class="white_board">
-                                : <input type="text" name="saup_no" value="" placeholder="사업자등록번호" class="AXInput W100" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="white_board"><label>대표자</label></td>
-                            <td class="white_board">
-                                : <input type="text" name="owner" value="" placeholder="대표자" class="AXInput W80" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="white_board"><label>상호</label></td>
-                            <td class="white_board">
-                                : <input type="text" name="sangho" value="" placeholder="상호" class="AXInput W200" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="white_board"><label>홈페이지</label></td>
-                            <td class="white_board">
-                                : <input type="text" name="homepage" value="" placeholder="홈페이지" class="AXInput W250" />
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="white_board">스코어</td>
+                                <td class="white_board">
+                                    :
+                                    <label><input type="checkbox" name="score_tel" value="T1" id="AXCheck_Operation1" /> 전화</label>
+                                    <label><input type="checkbox" name="score_fax" value="T1" id="AXCheck_Operation2" /> FAX</label>
+                                    <label><input type="checkbox" name="score_mail" value="T1" id="AXCheck_Operation3" /> 메일</label>
+                                    <label><input type="checkbox" name="score_sms" value="T1" id="AXCheck_Operation4" /> SMS</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="white_board">부금</td>
+                                <td class="white_board">
+                                    :
+                                    <label><input type="checkbox" name="premium_tel" value="T1" id="AXCheck_Operation5" /> 전화</label>
+                                    <label><input type="checkbox" name="premium_fax" value="T1" id="AXCheck_Operation6" /> FAX</label>
+                                    <label><input type="checkbox" name="premium_mail" value="T1" id="AXCheck_Operation7" /> 메일</label>
+                                    <label><input type="checkbox" name="premium_sms" value="T1" id="AXCheck_Operation8" /> SMS</label>
+                                </td>
+                            </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">극장특징</div>
+                    </th>
+                    <td class="last">
+                        <textarea name="memo" class="AXTextarea" style="width: 99%; height: 100px; resize:none;"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">변경정보</div>
+                    </th>
+                    <td class="last">
 
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">지역</div>
-                </th>
-                <td class="last">
-                    <label>지역1 :</label><select name="loc1" class="AXSelectSmall" id="AXSelect_Loccation1" style="width:100px;" tabindex="1"></select>
-                    <label>지역2 :</label><select name="loc2" class="AXSelectSmall" id="AXSelect_Loccation2" style="width:100px;" tabindex="2"></select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">주소</div>
-                </th>
-                <td class="last">
-                    <label>우편번호 :</label><input type="text" name="zip" value="" placeholder="우편번호" class="AXInput W50" />
-                    <button type="button" class="AXButtonSmall" id="button" tabindex="2" onclick="alert();"><i class="axi axi-search2"></i> 조회</button>
-                    <label>주소 :</label>
-                    <input type="text" name="addr1" value="" placeholder="주소1" class="AXInput W200" disabled="disabled" />
-                    <input type="text" name="addr2" value="" placeholder="주소2" class="AXInput W200" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">계열사</div>
-                </th>
-                <td class="last">
-                    <label>계열사 :</label><select name="affiliate_seq" class="AXSelectSmall" id="AXSelect_Affiliate" style="width:100px;" tabindex="1"></select>
-                    <label>직·위 :</label><select name="isdirect" class="AXSelectSmall" id="AXSelect_IsDirect" style="width:100px;" tabindex="1"></select>
-                    <label>비계열 :</label><select name="unaffiliate_seq" class="AXSelectSmall" id="AXSelect_Unaffiliate" style="width:100px;" tabindex="1"></select>
-                    <label>사용자 그룹 :</label><select name="user_group_seq" class="AXSelectSmall" id="AXSelect_UserGroup" style="width:100px;" tabindex="1"></select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">연락처</div>
-                </th>
-                <td class="last">
+                            <div style="padding: 5px;">
+                                <div id="AXGrid_ChangeHist"></div>
+                            </div>
 
-                    <!-- 관리자 연락처 탭 -->
-                    <div id="AXTabs_Contact"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">상영관<br>상세</div>
+                    </th>
+                    <td class="last">
 
-                    <div style="padding: 5px;">
-                        <div id="AXgrid_Contact"></div>
-                    </div>
+                            <div style="padding: 5px;">
+                                <div id="AXGrid_ShowRoom"></div>
+                            </div>
 
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">극장수신<br>연락처</div>
-                </th>
-                <td class="last">
-                    <table>
-                        <tr>
-                            <td class="white_board">스코어</td>
-                            <td class="white_board">
-                                :
-                                <label><input type="checkbox" name="score_tel" value="T1" id="AXCheck_Operation1" /> 전화</label>
-                                <label><input type="checkbox" name="score_fax" value="T1" id="AXCheck_Operation2" /> FAX</label>
-                                <label><input type="checkbox" name="score_mail" value="T1" id="AXCheck_Operation3" /> 메일</label>
-                                <label><input type="checkbox" name="score_sms" value="T1" id="AXCheck_Operation4" /> SMS</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="white_board">부금</td>
-                            <td class="white_board">
-                                :
-                                <label><input type="checkbox" name="premium_tel" value="T1" id="AXCheck_Operation5" /> 전화</label>
-                                <label><input type="checkbox" name="premium_fax" value="T1" id="AXCheck_Operation6" /> FAX</label>
-                                <label><input type="checkbox" name="premium_mail" value="T1" id="AXCheck_Operation7" /> 메일</label>
-                                <label><input type="checkbox" name="premium_sms" value="T1" id="AXCheck_Operation8" /> SMS</label>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">극장특징</div>
-                </th>
-                <td class="last">
-                    <textarea name="memo" class="AXTextarea" style="width: 99%; height: 100px; resize:none;"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">변경정보</div>
-                </th>
-                <td class="last">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">배급사</div>
+                    </th>
+                    <td class="last">
 
-                        <div style="padding: 5px;">
-                            <div id="AXGrid_ChangeHist"></div>
-                        </div>
+                            <div style="padding: 5px;">
+                                <div id="AXGrid_Distributor"></div>
+                            </div>
 
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">상영관<br>상세</div>
-                </th>
-                <td class="last">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">업로드<br>극장명</div>
+                    </th>
+                    <td class="last">
+                        <input type="text" name="tags2" id="unitprice" class="AXInput W200" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">요금체계</div>
+                    </th>
+                    <td class="last">
 
-                        <div style="padding: 5px;">
-                            <div id="AXGrid_ShowRoom"></div>
-                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">배급사</div>
-                </th>
-                <td class="last">
-
-                        <div style="padding: 5px;">
-                            <div id="AXGrid_Distributor"></div>
-                        </div>
-
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">업로드<br>극장명</div>
-                </th>
-                <td class="last">
-                    <input type="text" name="tags2" id="unitprice" class="AXInput W200" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="tdRel">요금체계</div>
-                </th>
-                <td class="last">
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
+	</form>
 
 </body>
 </html>
