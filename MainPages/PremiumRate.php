@@ -154,7 +154,7 @@
             jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})
                   .done(function( data ) {
 
-						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
+                        jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
                         //trace(jsonLocChldAll); ////////////
 
 
@@ -199,7 +199,7 @@
                               },
                               onLoad : function()
                               {
-								jsonPremiumRate = this;
+                                jsonPremiumRate = this;
 
                                 jQuery("#btnSave").removeAttr("disabled"); // 저장가능하도록 한다.
 
@@ -317,7 +317,7 @@
             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         },
 
-		// 모달창을 띄운다.
+        // 모달창을 띄운다.
         modalOpen: function (width,top,title,errorMsg,onFnClose)
         {
             /*
@@ -331,7 +331,7 @@
                 closeButton: true
             });
             */
-			trace(onFnClose);
+            trace(onFnClose);
             myModal.setConfig({onclose: onFnClose});
 
             var pars = "title="+title+"&content="+errorMsg ;
@@ -363,7 +363,7 @@
 
     function fnKeyup(my,event)
     {
-		//trace(event.keyCode);
+        //trace(event.keyCode);
 
         if (event.keyCode==46 ) return;
         if (event.keyCode==8 ) return;
@@ -432,8 +432,8 @@
 
     <div style="display:none;">
 
-		<div id="targetID">
-			<div class="modalProgramTitle">
+        <div id="targetID">
+            <div class="modalProgramTitle">
                 입력오류
             </div>
 
@@ -443,8 +443,8 @@
             <br/>
             <br/>
 
-			<div class="modalButtonBox" align="center" style="height: 32px;background-color: silver;padding-top: 4px;">
-            	<input type="button" value="확 인" class="AXButton W60" onclick="myModal.close('modalID');"/>
+            <div class="modalButtonBox" align="center" style="height: 32px;background-color: silver;padding-top: 4px;">
+                <input type="button" value="확 인" class="AXButton W60" onclick="myModal.close('modalID');"/>
             </div>
         </div>
 
