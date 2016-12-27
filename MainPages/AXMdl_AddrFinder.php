@@ -82,43 +82,35 @@
                 myGrid.setConfig({
                     targetID : "AXGridTarget",
                     colGroup : [
-                        {key:"zipnum", label:"우편번호", width:"100", align:"center"},
-                        {key:"addr", label:"주소", width:"300"}
+                        {key:"code", label:"우편번호", width:"100", align:"center"},
+                        {key:"address_nm", label:"주소", width:"370", align:"center"}
                     ],
                     body : {
                         onclick: function()
                         {
 
-                            parent.fnObj.addr.set({zip:this.item.zipnum, addr:this.item.addr});
+                            parent.fnObj.addr.set({zip:this.item.code, addr:this.item.address_nm});
                             parent.myModal.close();
                         }
                     },
                     page:
                     {
-                        paging: false
+                        paging:true,
+                        pageNo:1,
+                        pageSize:10
                     }
                 });
             }
         },
         searchAddr: function(){
 
-            var list = [
-                {zipnum:"001-001", addr:"검색된 주소명 1"},
-                {zipnum:"001-002", addr:"검색된 주소명 2"},
-                {zipnum:"001-003", addr:"검색된 주소명 3"},
-                {zipnum:"001-004", addr:"검색된 주소명 4"},
-                {zipnum:"001-005", addr:"검색된 주소명 5"},
-                {zipnum:"001-006", addr:"검색된 주소명 6"},
-                {zipnum:"001-007", addr:"검색된 주소명 7"},
-                {zipnum:"001-001", addr:"검색된 주소명 1"},
-                {zipnum:"001-002", addr:"검색된 주소명 2"},
-                {zipnum:"001-003", addr:"검색된 주소명 3"},
-                {zipnum:"001-004", addr:"검색된 주소명 4"},
-                {zipnum:"001-005", addr:"검색된 주소명 5"},
-                {zipnum:"001-006", addr:"검색된 주소명 6"},
-                {zipnum:"001-007", addr:"검색된 주소명 7"}
-            ];
-            myGrid.setList(list);
+            myGrid.setList({
+                           ajaxUrl : "<?=$path_AjaxJSON?>/bas_postzip_page.php",
+                           ajaxPars: {
+                               "dongNm": jQuery('input[name=srchwrd]').val()
+                           },
+                           onLoad  : function(){}
+            });
         }
     };
 

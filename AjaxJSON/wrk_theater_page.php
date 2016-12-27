@@ -28,6 +28,7 @@ require_once("../config/DB_CONNECT.php");
                                , $post_fundFree
                                );
     $stmt->execute();
+
     $stmt->bind_result($count);
     $stmt->fetch();
     $stmt->close();
