@@ -28,12 +28,15 @@
     .modalProgramTitle{
         height:38px;
         line-height:40px;
-        color:#282828;font-size:14px;font-weight:bold;
+        color:#282828;
+        font-size:14px;
+        font-weight:bold;
         padding-left:15px;
         border-bottom:1px solid #a6a6a6;
     }
     .modalButtonBox{
-        padding:10px;border-top:1px solid #ccc;
+        padding:10px;
+        border-top:1px solid #ccc;
     }
     </style>
 

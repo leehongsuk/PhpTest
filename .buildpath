@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
-	<buildpathentry kind="src" path=""/>
+	<buildpathentry kind="src" path="AjaxJSON"/>
+	<buildpathentry kind="src" path="axisj"/>
+	<buildpathentry kind="src" path="config"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXCore"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXEditor"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXEditor5"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXFrameUpload"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXGrid"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXGridRWD"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXInput"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXModal"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXSearch"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXSelect"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXTree"/>
+	<buildpathentry kind="src" path="js/axisj-1.1.11/samples/AXUpload5"/>
+	<buildpathentry kind="src" path="MainPages"/>
+	<buildpathentry kind="src" path="Test"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
 </buildpath>

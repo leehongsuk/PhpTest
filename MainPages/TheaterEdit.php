@@ -38,6 +38,22 @@
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
+    <style type="text/css">
+    .modalProgramTitle{
+        height:38px;
+        line-height:40px;
+        color:#282828;
+        font-size:14px;
+        font-weight:bold;
+        padding-left:15px;
+        border-bottom:1px solid #a6a6a6;
+    }
+    .modalButtonBox{
+        padding:10px;
+        border-top:1px solid #ccc;
+    }
+    </style>
+
     <script type="text/javascript">
 
     var theater_json ;
@@ -48,7 +64,6 @@
 
     var myModal = new AXModal(); // 우편번호검색을 위한 팝업창
 
-
     var fnObj =
     {
         pageStart: function()
@@ -58,9 +73,9 @@
             $('input[type=radio]').bindChecked();
 
             myModal.setConfig({windowID:"myModalCT",
-                               displayLoading: false,
-                               scrollLock: false
-                              });  // 우편번호검색을 위한 팝업창
+                displayLoading: false,
+                scrollLock: false
+               });  // 우편번호검색을 위한 팝업창
 
 
              // 담당자 종류를 가지고 온다.
@@ -468,7 +483,46 @@
 				frm.addr1.value = obj.addr;
 				frm.addr2.focus();
 			}
+		},
+
+		save_theater : function()
+		{
+		    var errorMsg = '' ;
+
+		    if (errorMsg == '')
+            {
+                // 저장할 값들을 취합한다.
+                var formData = jQuery("form[name=frmThearter]").serialize();
+
+                jQuery.ajax({
+                             type : "POST",
+                             url : "<?=$path_AjaxJSON?>/wrk_theater_save.php",
+                             cache : false,
+                             data : formData,
+                             success : fnObj.onSuccessPreminumRate,
+                             error : fnObj.onErrorPreminumRate
+                });
+            }
+            else
+            {
+                //jQuery("#content").html(errorMsg);
+
+                fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
+            }
+
+
+
+
+
+
+
+		    var a = AXUtil.clientHeight();
+		    var b = AXUtil.scrollHeight();
+		    var c = AXUtil.clientWidth();
+		    var d = AXUtil.scrollWidth();
+		    trace({a:a,b:b,c:c,d:d});
 		}
+
     };
 
     jQuery(document).ready([ fnObj.pageStart.delay(0.1)
@@ -496,7 +550,7 @@
     if ($MODE=="EDIT")    { ?><h1>극장 편집</h1><?php     }
     ?>
 
-	<form name="frmThearter" onsubmit="return false;">
+    <form name="frmThearter" onsubmit="return false;">
 
         <table cellpadding="0" cellspacing="0" class="AXFormTable">
             <colgroup>
@@ -577,7 +631,7 @@
                         <label>우편번호 :</label><input type="text" name="zip" value="" placeholder="우편번호" class="AXInput W50" />
                         <button type="button" class="AXButtonSmall" id="button" tabindex="2" onclick="fnObj.addr.search();"><i class="axi axi-search2"></i> 조회</button>
                         <label>주소 :</label>
-                        <input type="text" name="addr1" value="" placeholder="주소1" class="AXInput W200" disabled="disabled" />
+                        <input type="text" name="addr1" value="" placeholder="주소1" class="AXInput W200" readonly="readonly" />
                         <input type="text" name="addr2" value="" placeholder="주소2" class="AXInput W200" />
                     </td>
                 </tr>
@@ -699,7 +753,11 @@
             </tbody>
         </table>
 
-	</form>
+    </form>
+
+    <div class="modalButtonBox" align="center">
+        <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_theater();"><i class="axi axi-save "></i> 저장</button>
+    </div>
 
 </body>
 </html>

@@ -36,8 +36,7 @@
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
     <style type="text/css">
-        .modalProgramTitle
-        {
+        .modalProgramTitle{
             height:38px;
             line-height:40px;
             color:#282828;
@@ -78,6 +77,7 @@
             });
 
 
+
             // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
@@ -94,7 +94,7 @@
             grid_PremiumRate.setConfig(
             {
                 targetID : "AXgrid_PremiumRate",
-                height : 400,
+                height : 500,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
                 colGroup : [
@@ -154,7 +154,7 @@
             jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})
                   .done(function( data ) {
 
-                        jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
+						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
                         //trace(jsonLocChldAll); ////////////
 
 
@@ -199,7 +199,7 @@
                               },
                               onLoad : function()
                               {
-                                jsonPremiumRate = this;
+								jsonPremiumRate = this;
 
                                 jQuery("#btnSave").removeAttr("disabled"); // 저장가능하도록 한다.
 
@@ -291,24 +291,18 @@
             }
             else
             {
-                //jQuery("#content").html(errorMsg);
+                jQuery("#modalContent").html(errorMsg);
 
-                fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
+                fnObj.modalOpen(500,-1,errorMsg) ;
             }
 
-        },
-
-        onFnClose : function()
-        {
-            toast.push("다시 검색버튼을 누른다.");
-            // 다시 검색버튼을 누른다.
-            fnObj.search_premium_rate();
         },
 
         // 부율 업데이트가 성공적일때..
         onSuccessPreminumRate : function()
         {
-            fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
+             // 다시 검색버튼을 누른다.
+            fnObj.search_premium_rate();
         },
 
         // 부울 업데이트가 실패하면..
@@ -317,13 +311,13 @@
             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         },
 
-        // 모달창을 띄운다.
-        modalOpen: function (width,top,title,errorMsg,onFnClose)
+		// 모달창을 띄운다.
+        modalOpen: function (width,top,errorMsg)
         {
             /*
             myModal.openDiv({
-                modalID: "modalID",
-                targetID: "targetID",
+                modalID: "modalDiv02",
+                targetID: "modalContent2",
                 width: width,
                 top: top,
                 verticalAlign: true,
@@ -331,10 +325,8 @@
                 closeButton: true
             });
             */
-            trace(onFnClose);
-            myModal.setConfig({onclose: onFnClose});
 
-            var pars = "title="+title+"&content="+errorMsg ;
+            var pars = "title=입력오류&content="+errorMsg ;
             myModal.open({
                 url: "AX_Modal.php",
                 pars: pars.queryToObject(),
@@ -363,18 +355,19 @@
 
     function fnKeyup(my,event)
     {
-        //trace(event.keyCode);
+		//trace(event.keyCode);
 
-        if (event.keyCode == 46) return;
-        if (event.keyCode == 8 ) return;
+        if (event.keyCode==46 ) return;
+        if (event.keyCode==8 ) return;
 
-        if (event.keyCode == 13) return;
-        if (event.keyCode == 9 ) return;
-        if (event.keyCode == 16) return;
-        if (event.keyCode == 37) return;
-        if (event.keyCode == 38) return;
-        if (event.keyCode == 39) return;
-        if (event.keyCode == 40) return;
+        if (event.keyCode==13 ) return;
+        if (event.keyCode==9 ) return;
+        if (event.keyCode==16 ) return;
+
+        if (event.keyCode== 37) return;
+        if (event.keyCode== 38) return;
+        if (event.keyCode== 39) return;
+        if (event.keyCode== 40) return;
 
         var value = $(my).val()+'';
 
@@ -403,6 +396,9 @@
         }
     }
 
+
+
+
     </script>
 </head>
 
@@ -428,19 +424,19 @@
 
     <div style="display:none;">
 
-        <div id="targetID">
-            <div class="modalProgramTitle">
+		<div id="modalContent2">
+			<div class="modalProgramTitle">
                 입력오류
             </div>
 
-            <div id="content" style="padding:20px;"></div>
+            <div id="modalContent" style="padding:20px;"></div>
 
             <br/>
             <br/>
             <br/>
 
-            <div class="modalButtonBox" align="center" style="height: 32px;background-color: silver;padding-top: 4px;">
-                <input type="button" value="확 인" class="AXButton W60" onclick="myModal.close('modalID');"/>
+			<div class="modalButtonBox" align="center" style="height: 32px;background-color: silver;padding-top: 4px;">
+            	<input type="button" value="확 인" class="AXButton W60" onclick="myModal.close('modalDiv02');"/>
             </div>
         </div>
 
