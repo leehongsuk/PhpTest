@@ -21,7 +21,8 @@ $content = $_POST["content"];
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXModal.js"></script>
 
     <style type="text/css">
-        .modalProgramTitle{
+        .modalProgramTitle
+        {
             height:38px;
             line-height:40px;
             color:#282828;
@@ -30,8 +31,10 @@ $content = $_POST["content"];
             padding-left:15px;
             border-bottom:1px solid #a6a6a6;
         }
-        .modalButtonBox{
-            padding:10px;border-top:1px solid #ccc;
+        .modalButtonBox
+        {
+            padding:10px;
+            border-top:1px solid #ccc;
         }
     </style>
 
