@@ -1,6 +1,7 @@
 <?php
 require_once("../config/CONFIG.php");
 
+$PhpSelf = $_SERVER['PHP_SELF'];
 require_once("../config/DB_CONNECT.php");
 
     $post_film_code  = $_POST["film_code"] ;

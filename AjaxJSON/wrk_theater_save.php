@@ -1,9 +1,10 @@
 <?php
 require_once ("../config/CONFIG.php");
 
+$PhpSelf = $_SERVER['PHP_SELF'];
 require_once ("../config/DB_CONNECT.php");
 
-    print_r ( $_REQUEST );
+    //print_r ( $_REQUEST );
 
     foreach ( $_REQUEST as $key => $val ) {
 
@@ -23,16 +24,16 @@ require_once ("../config/DB_CONNECT.php");
     $post_zip              = $_POST["zip"] ;
     $post_addr1            = $_POST["addr1"] ;
     $post_addr2            = $_POST["addr2"] ;
-    $post_score_tel        = $_POST["score_tel"] ;
-    $post_score_fax        = $_POST["score_fax"] ;
-    $post_score_mail       = $_POST["score_mail"] ;
-    $post_score_sms        = $_POST["score_sms"] ;
-    $post_premium_tel      = $_POST["premium_tel"] ;
-    $post_premium_fax      = $_POST["premium_fax"] ;
-    $post_premium_mail     = $_POST["premium_mail"] ;
-    $post_premium_sms      = $_POST["premium_sms"] ;
+    $post_score_tel        = ($_POST["score_tel"]=="Y")?"Y":"N" ;
+    $post_score_fax        = ($_POST["score_fax"]=="Y")?"Y":"N" ;
+    $post_score_mail       = ($_POST["score_mail"]=="Y")?"Y":"N" ;
+    $post_score_sms        = ($_POST["score_sms"]=="Y")?"Y":"N" ;
+    $post_premium_tel      = ($_POST["premium_tel"]=="Y")?"Y":"N" ;
+    $post_premium_fax      = ($_POST["premium_fax"]=="Y")?"Y":"N" ;
+    $post_premium_mail     = ($_POST["premium_mail"]=="Y")?"Y":"N" ;
+    $post_premium_sms      = ($_POST["premium_sms"]=="Y")?"Y":"N" ;
     $post_memo             = $_POST["memo"] ;
-    $post_fund_free        = $_POST["fund_free"] ;
+    $post_fund_free        = ($_POST["fund_free"]=="Y")?"Y":"N" ;
     $post_gubun_code       = $_POST["gubun_code"] ;
     $post_saup_no          = $_POST["saup_no"] ;
     $post_owner            = $_POST["owner"] ;
@@ -41,7 +42,7 @@ require_once ("../config/DB_CONNECT.php");
     $post_images_no        = $_POST["images_no"] ;
 
 
-    $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@output)";
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("siiisiissssssssssssssssssssi"
@@ -75,9 +76,15 @@ require_once ("../config/DB_CONNECT.php");
                      ,$post_images_no
                      );
     $stmt->execute();
+
+    //echo $stmt->mysql_errno . ": " . $stmt->mysql_error;
+
     $stmt->close();
 
-    print_r ( $_REQUEST );
+    $result = $mysqli->query('SELECT @output');
+    list($output) = $result->fetch_row();
+
+    echo json_encode($output,JSON_UNESCAPED_UNICODE);
 
 
 require_once ("../config/DB_DISCONNECT.php");

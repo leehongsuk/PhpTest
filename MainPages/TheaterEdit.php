@@ -496,13 +496,18 @@
 
 		onFnClose : function()
         {
-		    location.href = "./TheaterList.php"
+		    //location.href = "./TheaterList.php"; // 히스토리에 저장이 된다.
+		    location.replace("./TheaterList.php") ; // 히스토리에 저장이 되지않는다.
         },
 
 		// 극장 저장이 성공적일때..
-        onSuccessTheater : function()
+        onSuccessTheater : function(data)
         {
-            fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
+            var obj = eval("("+data+")");
+            //trace(obj);
+
+            if  (obj=='-1') fnObj.modalOpen(500,-1,'확인','저장이 실패되었습니다.',null)
+            else            fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
         },
 
         // 극장 저장이 실패하면..
@@ -790,6 +795,7 @@
     <div class="modalButtonBox" align="center">
         <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_theater();"><i class="axi axi-save "></i> 저장</button>
     </div>
+
 
 </body>
 </html>
