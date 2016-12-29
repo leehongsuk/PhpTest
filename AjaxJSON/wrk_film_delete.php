@@ -7,7 +7,7 @@ require_once("../config/DB_CONNECT.php");
     $post_code = $_POST["code"] ;
 
 
-    $query= "CALL  SP_WRK_FILM_DELETE(?)";
+    $query= "CALL SP_WRK_FILM_DELETE(?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("i", $post_code);

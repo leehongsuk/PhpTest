@@ -148,7 +148,7 @@
   background-position: 50% 50%;
   background-size: 10px 10px;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/mx-checked.png', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='images/mx-checked.png', sizingMethod='scale')";
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='images/mx-checked.png', sizingMethod='scale?)" ; // <-----   
 }
 .AXbindCheckedHandle.checked {
   box-shadow: none;
@@ -174,7 +174,7 @@
   background-position: 50% 50%;
   background-size: 10px 10px;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/mx-checked.png', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='images/mx-checked.png', sizingMethod='scale')";
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='images/mx-checked.png', sizingMethod='scale?)" ; // <-----   
 }
 .AXbindCheckedHandle_radio.checked {
   box-shadow: none;
@@ -189,7 +189,7 @@
   background-position: 50% 50%;
   background-size: 10px 10px;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/mx-checked-radio.png', sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='images/mx-checked-radio.png', sizingMethod='scale')";
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='images/mx-checked-radio.png', sizingMethod='scale?)" ; // <-----   
 }
 .AXInputLabel {
   position: relative;

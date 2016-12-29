@@ -12,7 +12,7 @@ require_once("../config/DB_CONNECT.php");
     $a_distributor = array() ;
 
 
-    $query= "CALL  SP_BAS_CONTACT_SEL()";
+    $query= "CALL SP_BAS_CONTACT_SEL()" ; // <-----   
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
@@ -30,7 +30,7 @@ require_once("../config/DB_CONNECT.php");
     {
          $contactGbn = $a_contact[$x]["code"] ; // 연락처구분 코드.,
 
-         $query= "CALL  SP_WRK_CONTACT_SEL(?,?)";
+         $query= "CALL SP_WRK_CONTACT_SEL(?,?)" ; // <-----   
          $stmt = $mysqli->prepare($query);
 
          $stmt->bind_param("ss", $post_code, $contactGbn);
@@ -55,7 +55,7 @@ require_once("../config/DB_CONNECT.php");
          $a_contact[$x]["contacts"] = $a_temp ;
     }
 
-    $query= "CALL  SP_WRK_SHOWROOM_SEL(?)";
+    $query= "CALL SP_WRK_SHOWROOM_SEL(?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_code);
@@ -77,7 +77,7 @@ require_once("../config/DB_CONNECT.php");
     $stmt->close();
 
 
-    $query= "CALL  SP_WRK_THEATER_DISTRIBUTOR_SEL(?)";
+    $query= "CALL SP_WRK_THEATER_DISTRIBUTOR_SEL(?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_code);
@@ -98,7 +98,7 @@ require_once("../config/DB_CONNECT.php");
     $stmt->close();
 
 
-    $query= "CALL  SP_WRK_THEATER_SEL_ONE(?)";
+    $query= "CALL SP_WRK_THEATER_SEL_ONE(?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_code);

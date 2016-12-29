@@ -8,7 +8,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_BAS_GRADE_SEL()";
+    $query= "CALL SP_BAS_GRADE_SEL()" ; // <-----   
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 

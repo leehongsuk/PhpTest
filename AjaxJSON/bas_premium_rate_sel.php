@@ -13,7 +13,7 @@ require_once("../config/DB_CONNECT.php");
     $a_unaffiliate = array() ;
 
 
-    $query= "CALL  SP_LST_AFFILIATE_DIR_SEL()"; // 계열사와 직.위 구분
+    $query= "CALL SP_LST_AFFILIATE_DIR_SEL()" ; // <-----    // 계열사와 직.위 구분
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
@@ -27,7 +27,7 @@ require_once("../config/DB_CONNECT.php");
     $stmt->close();
 
 
-    $query= "CALL  SP_LST_UNAFFILIATE_SEL()"; // 비계열사
+    $query= "CALL SP_LST_UNAFFILIATE_SEL()" ; // <-----    // 비계열사
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
@@ -47,7 +47,7 @@ require_once("../config/DB_CONNECT.php");
         $p2 = $affiliate[0];
         $p3 = $affiliate[2];
 
-        $query= "CALL  SP_LST_PREMIUM_RATE_BY_AFFILIATE_SEL(?,?,?)"; // 계열사,직위별 부율구하기
+        $query= "CALL SP_LST_PREMIUM_RATE_BY_AFFILIATE_SEL(?,?,?)" ; // <-----    // 계열사,직위별 부율구하기
         $stmt = $mysqli->prepare($query);
 
         $stmt->bind_param("sis",$p1,$p2,$p3);
@@ -78,7 +78,7 @@ require_once("../config/DB_CONNECT.php");
         $p1 = $post_korabd_gbn;
         $p2 = $unaffiliate[0];
 
-        $query= "CALL  SP_LST_PREMIUM_RATE_BY_UNAFFILIATE_SEL(?,?)"; // 비계열사별 부율구하기
+        $query= "CALL SP_LST_PREMIUM_RATE_BY_UNAFFILIATE_SEL(?,?)" ; // <-----    // 비계열사별 부율구하기
         $stmt = $mysqli->prepare($query);
 
         $stmt->bind_param("si",$p1,$p2);

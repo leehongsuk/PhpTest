@@ -18,7 +18,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_WRK_THEATER_SEL_COUNT(?,?,?,?,?,?)";
+    $query= "CALL SP_WRK_THEATER_SEL_COUNT(?,?,?,?,?,?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("iiisss", $post_location1
@@ -36,7 +36,7 @@ require_once("../config/DB_CONNECT.php");
     $pageCount = floor($count / $post_pageSize) + ( ($count % $post_pageSize)>0 ? 1 : 0 ) ;
 
 
-    $query= "CALL  SP_WRK_THEATER_SEL_PAGE(?,?,?,?,?,?,?,?)";
+    $query= "CALL SP_WRK_THEATER_SEL_PAGE(?,?,?,?,?,?,?,?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("iiisssii", $post_location1

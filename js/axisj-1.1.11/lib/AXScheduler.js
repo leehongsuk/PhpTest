@@ -75,7 +75,7 @@ var AXScheduler = Class.create( AXJ, {
 			{ hour: "23:30", display: "11:30" },
 			{ hour: "23:59", display: "11:59" }
 		];
-		this.config.printFullFormat = "mm월 dd일(dw)";
+		this.config.printFullFormat = "mm월 dd일(d?)" ; // <-----   
 		this.config.printFormat = "dd";
 		this.config.titleFormat = "yyyy/mm/dd";
 		this.config.valueFormat = "yyyy-mm-dd";

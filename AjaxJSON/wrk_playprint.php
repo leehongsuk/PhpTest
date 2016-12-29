@@ -10,7 +10,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_WRK_PLAYPRINT_SEL(?)";
+    $query= "CALL SP_WRK_PLAYPRINT_SEL(?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_film_code);

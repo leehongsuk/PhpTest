@@ -8,7 +8,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_BAS_PLAYPRINT1_SEL()";
+    $query= "CALL SP_BAS_PLAYPRINT1_SEL()" ; // <-----   
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 

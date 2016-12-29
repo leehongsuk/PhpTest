@@ -8,7 +8,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_BAS_USER_GROUP_SEL()";
+    $query= "CALL SP_BAS_USER_GROUP_SEL()" ; // <-----   
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 

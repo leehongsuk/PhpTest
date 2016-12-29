@@ -13,7 +13,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_WRK_PLAYPRINT_SEL_COUNT(?)";
+    $query= "CALL SP_WRK_PLAYPRINT_SEL_COUNT(?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("i", $post_film_code);
@@ -26,7 +26,7 @@ require_once("../config/DB_CONNECT.php");
     $pageCount = floor($count / $post_pageSize) + ( ($count % $post_pageSize)>0 ? 1 : 0 ) ;
 
 
-    $query= "CALL  SP_WRK_PLAYPRINT_SEL_PAGE(?,?,?)";
+    $query= "CALL SP_WRK_PLAYPRINT_SEL_PAGE(?,?,?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("sii", $post_film_code, $post_pageNo, $post_pageSize);

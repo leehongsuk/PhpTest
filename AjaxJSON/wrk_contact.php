@@ -11,7 +11,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL  SP_WRK_CONTACT_SEL(?,?)";
+    $query= "CALL SP_WRK_CONTACT_SEL(?,?)" ; // <-----   
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("ss", $post_theater_code, $post_gbn_code);

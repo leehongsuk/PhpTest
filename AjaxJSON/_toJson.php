@@ -10,8 +10,8 @@ require_once("../config/DB_CONNECT.php");
 
 
 
-    //$query= "CALL  SP_BAS_AFFILIATE_SEL()";
-    //$query= "CALL  SP_BAS_GENRE_SEL()";
+    //$query= "CALL SP_BAS_AFFILIATE_SEL()" ; // <-----   
+    //$query= "CALL SP_BAS_GENRE_SEL()" ; // <-----   
     $query= "select * from WRK_THEATER";
 
     $stmt = $mysqli->prepare($query);
