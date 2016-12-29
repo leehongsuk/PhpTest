@@ -6,10 +6,14 @@ require_once ("../config/DB_CONNECT.php");
 
     //print_r ( $_REQUEST );
 
-    foreach ( $_REQUEST as $key => $val ) {
-
-     // //echo $key."=".$val."<br>";
+/*
+    foreach ( $_REQUEST as $key => $val )
+    {
+        echo $key."=".$val."<br>";
     }
+    print_r( $_POST["unitPrices"] );
+ * */
+
 
     //$post_OPERATION        = $_POST["OPERATION"] ;
     $post_code             = $_POST["code"] ;
@@ -40,6 +44,7 @@ require_once ("../config/DB_CONNECT.php");
     $post_sangho           = $_POST["sangho"] ;
     $post_homepage         = $_POST["homepage"] ;
     $post_images_no        = $_POST["images_no"] ;
+    $post_unitPrices       = $_POST["unitPrices"] ;
 
 
     $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@output)" ; // <-----

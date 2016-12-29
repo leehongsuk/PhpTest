@@ -52,6 +52,17 @@
         padding:10px;
         border-top:1px solid #ccc;
     }
+
+    .unitprice_box {
+        display: table-cell;
+
+    }
+    .unitprice_item {
+        display:inline-block;
+        width:90px;
+        line-height: 36px;
+        margin-left:1px;
+    }
     </style>
 
     <script type="text/javascript">
@@ -325,6 +336,23 @@
                     //toast.push(Object.toJSON(this));
                 }
             });
+
+            // 해당극장의 요금을 가지고 온다.
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php", { code: '<?=$_GET['code']?>' })
+		          .done(function( data ) {
+
+		            	var obj  = eval("("+data+")");
+     				    var tag1 = '<div class="unitprice_item"><label>';
+     				    var tag2 = '</label></div>';
+
+						for (var i=0 ; i<obj.options.length ; i++)
+						{
+						    var checked = (obj.options[i].unit_price_seq != null) ? 'checked=checked' : '' ;
+
+						    $("#divUnitPrice").before(tag1 + '<input type="checkbox" name="unitPrices[]" value="'+obj.options[i].seq+'" '+checked+'/>' + obj.options[i].unit_price + tag2);
+						}
+						$('input[type=checkbox]').bindChecked();
+		          });
 
         }, // end (pageStart: function())
 
@@ -784,6 +812,12 @@
                         <div class="tdRel">요금체계</div>
                     </th>
                     <td class="last">
+
+                    	<div class="unitprice_box">
+                        	<div id="divUnitPrice" class="unitprice_item">
+                                  <button type="button" class="AXButtonSmall" id="btnUnitprice" onclick="fnObj.setUnitprice();"><i class="axi"></i>요금단가설정</button>
+                        	</div>
+                    	</div>
 
                     </td>
                 </tr>
