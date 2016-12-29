@@ -5916,7 +5916,7 @@ jQuery.extend({
 		var elem = elems[ 0 ];
 
 		if ( not ) {
-			expr = ":not(" + expr + ?)" ; // <-----   
+			expr = ":not(" + expr + ")";
 		}
 
 		return elems.length === 1 && elem.nodeType === 1 ?

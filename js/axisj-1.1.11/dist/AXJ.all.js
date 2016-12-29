@@ -40086,7 +40086,7 @@ var AXTree = Class.create(AXJ, {
 	 *                 return iconName;
 	 *             },
 	 *             formatter:function(){   // [Function] - 컬럼값의 표현형식 각각 화폐표현식, urlDecode, input.Checkbox, input.radioBox, 사용자 정의 함수
-	 *                 return "<b>"+this.item.no.setDigit(2) + "</b> : " + this.item.nodeName + " (" + this.item.writer + ?)" ; // <-----   
+	 *                 return "<b>"+this.item.no.setDigit(2) + "</b> : " + this.item.nodeName + " (" + this.item.writer + ")";
 	 *             }
 	 *         }
 	 *     ],
