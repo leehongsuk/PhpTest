@@ -150,8 +150,8 @@
             gridTheater.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",
                 onLoad  : function(){
-                    gridTheater.goPageMove(1); // 상대적인 페이지 이동..
-                    gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
+                    //gridTheater.goPageMove(1); // 상대적인 페이지 이동..
+                    //gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
                 }
             });
 
