@@ -349,7 +349,7 @@
 						{
 						    var checked = (obj.options[i].unit_price_seq != null) ? 'checked=checked' : '' ;
 
-						    $("#divUnitPrice").before(tag1 + '<input type="checkbox" name="unitPrices[]" value="'+obj.options[i].seq+'" '+checked+'/>' + obj.options[i].unit_price + tag2);
+						    $("#divUnitPrice").before(tag1 + '<input type="checkbox" name="unitPrices[]" value="'+obj.options[i].seq+'" '+checked+'/> ' + obj.options[i].unit_price + tag2);
 						}
 						$('input[type=checkbox]').bindChecked();
 		          });
