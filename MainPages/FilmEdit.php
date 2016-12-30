@@ -1,4 +1,7 @@
 <?php require_once("../config/CONFIG.php"); ?>
+<?php
+      $MODE = ($_SERVER["QUERY_STRING"] == null) ? "APPEND" : "EDIT";
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -377,15 +380,9 @@
 <body>
 
     <button onclick="test();">test</button>
-	<?php
-	if ($_SERVER["QUERY_STRING"] == null)
-	{
-	?><h1>영화 등록</h1><?
-	}
-	else
-	{
-    ?><h1>영화 편집</h1><?
-	}
+    <?php
+    if ($MODE=="APPEND")  { ?><h1>영화 등록</h1><?php     }
+    if ($MODE=="EDIT")    { ?><h1>영화 편집</h1><?php     }
     ?>
 
 	<table cellpadding="0" cellspacing="0" class="AXFormTable">
@@ -508,8 +505,6 @@
 			</tr>
 		</tbody>
 	</table>
-
-
 
 </body>
 </html>
