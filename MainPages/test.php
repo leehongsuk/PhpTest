@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../page.js"></script>
     <script type="text/javascript" src="pageTab.js"></script>
     <!-- js block -->
-    
-    
+
+
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
 	<script>
@@ -35,10 +35,10 @@
 	 * Based		: jQuery
 	 * Javascript 	: AXJ.js, AXUpload5.js
 	 * CSS			: AXJ.css, AXButton.css, AXUpload5.css
-	 */	
+	 */
 	var pageID = "manualUpload";
 	var myUpload = new AXUpload5();
-	
+
 	var fnObj = {
 		pageStart: function(){
 
@@ -64,14 +64,14 @@
 						//trace(this);
 						window.open(this.uploadedPath.dec() + this.saveName.dec(), "_blank", "width=500,height=500");
 					},
-					
+
 					uploadMaxFileSize:(10*1024*1024), // 업로드될 개별 파일 사이즈 (클라이언트에서 제한하는 사이즈 이지 서버에서 설정되는 값이 아닙니다.)
 					uploadMaxFileCount:5, // 업로드될 파일갯수 제한 0 은 무제한
 					uploadUrl:"fileUpload.php",
 					uploadPars:{userID:'tom', userName:'액시스'},
 					deleteUrl:"fileDelete.php",
 					deletePars:{userID:'tom', userName:'액시스'},
-					
+
 					fileKeys:{ // 서버에서 리턴하는 json key 정의 (id는 예약어 사용할 수 없음)
 						name:"name",
 						type:"type",
@@ -80,14 +80,14 @@
 						uploadedPath:"uploadedPath",
 						thumbPath:"thumbUrl" // 서버에서 키값을 다르게 설정 할 수 있다는 것을 확인 하기 위해 이름을 다르게 처리한 예제 입니다.
 					},
-					
+
 					formatter: function(f){
 						var po = [];
 						po.push("<div id='"+this.id+"_AXUploadLabel_mainImageFile' class='AXUploadMainImage' >mainImage</div>");
-						
-						return po.join('');						
+
+						return po.join('');
 					},
-					
+
 					onUpload: function(){
 						//trace(this);
 						//trace("onUpload");
@@ -118,7 +118,7 @@
 					}
 				});
 				// changeConfig
-				
+
 				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- s
 				var url = "fileListLoad.php";
 				var pars = "dummy="+AXUtil.timekey();
@@ -130,7 +130,7 @@
                     }
 				}});
 				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- e
-				
+
 			},
 			printMethodReturn: function(method, type){
 				var list = myUpload[method](type);
@@ -138,8 +138,8 @@
 				toast.push(Object.toJSON(list));
 			},
 			changeOption: function(){
-				
-				// 업로드 갯수 등 업로드 관련 옵션을 동적으로 변경 할 수 있습니다. 
+
+				// 업로드 갯수 등 업로드 관련 옵션을 동적으로 변경 할 수 있습니다.
 				myUpload.changeConfig({
 					/*
 					uploadUrl:"uploadFile.asp",
@@ -148,7 +148,7 @@
 					deletePars:{userID:'tom', userName:'액시스'},
 					*/
 					uploadMaxFileCount:10
-				});		
+				});
 			}
 		}
 	};
@@ -156,10 +156,10 @@
 	</script>
 
 	<style type="text/css">
-	
+
 	</style>
 </head>
-	
+
 <body>
 
 <div id="AXPage">
@@ -201,4 +201,5 @@
 </div>
 
 </body>
-</html>		
+</html>
+
