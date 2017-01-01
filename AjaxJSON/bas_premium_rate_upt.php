@@ -23,7 +23,7 @@ require_once("../config/DB_CONNECT.php");
     }
     echo $values ;
 
-    $query= "CALL SP_BAS_PREMIUM_RATE_UPDATE(?,?,?)" ; // <-----   
+    $query= "CALL SP_BAS_PREMIUM_RATE_SAVE(?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("sss",$korabd_gbn,$values,$separator);

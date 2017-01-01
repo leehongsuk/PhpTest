@@ -211,27 +211,81 @@
                 height : 250,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
+                passiveMode:true,
+                passiveRemoveHide:false,
                 colGroup : [
-                    {
-                        key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
+                    {key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
                         {
-                          return '<button class="AXButton" onclick="fnObj.deleteItem(\'' + this.item.code + '\');"><i class="axi axi-trash2"></i></button>';
+                            //trace(this.index);
+                          return '<button class="AXButton" onclick="fnObj.grid_Contact_deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
                         }
                     },
+                    {key:"status", label:"상태", width:"40", align:"center", formatter:function()
+                        {
+	                        if(this.item._CUD == "C"){ return "신규"; }
+	                        else if(this.item._CUD == "D"){ return "삭제"; }
+	                        else if(this.item._CUD == "U"){ return "수정"; }
+	                    }
+                    },
+                    {key:"seq", label:"no", width:"30"},
                     {key:"name", label:"이름", width:"100"},
-                    {key:"tel", label:"대표번호", width:"100"},
-                    {key:"hp", label:"무선전화", width:"100"},
-                    {key:"fax", label:"팩스", width:"100"},
-                    {key:"mail", label:"이메일", width:"100"}
+                    {key:"tel", label:"대표번호", width:"110"},
+                    {key:"hp", label:"무선전화", width:"110"},
+                    {key:"fax", label:"팩스", width:"110"},
+                    {key:"mail", label:"이메일", width:"250"}
                 ],
                 body : {
-                    onclick: function(){
+                    ondblclick: function()
+                    {
                         //toast.push(Object.toJSON({index:this.index, item:this.item}));
-                        ///console.log(this.item);
+
+
+                        grid_Contact.setEditor(this.item, this.index);
                     }
                 },
                 page:{
                     paging:false
+                },
+                editor: {
+                    rows: [
+                            [
+                                {key:"status", align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:2, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:6, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:7, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                            ]
+                    ],
+                    response: function()
+                    {
+                        if(this.index == null) // 추가
+                        {
+                            var pushItem = this.res.item;
+
+                            if(this.res.item.title == ""){
+                                alert("제목이 비어 추가 할 수 없습니다.");
+                                return;
+                            }
+
+                            grid_Contact.pushList(pushItem, this.insertIndex);
+                        }
+                        else // 수정
+                        {
+                            fnObj.restoreList(this.index); // 삭제된걸 다시 복구한다.
+
+                           	trace(this.index);
+                           	trace(this.list);
+                           	trace(this.res.item);
+
+							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
+                            grid_Contact.updateList(this.index, this.list[this.index]);
+
+                        }
+
+                    }
                 }
             });
 
@@ -356,29 +410,64 @@
 
         }, // end (pageStart: function())
 
-        deleteItem: function (code)
+        appendGrid: function(index){
+            var item = {};
+            if(index){
+                grid_Contact.appendList(item, index);
+            }else{
+                grid_Contact.appendList(item);
+            }
+        },
+
+        // 연락처에서 삭제버튼을 누를 때..
+        grid_Contact_deleteItem: function (index)
         {
             if (confirm("정말로 삭제하시겠습니까?"))
             {
-                jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_delete.php", { code: code })
-                      .done(function( data ) {
-                          //alert( "자료가 삭제되었습니다. " + data );
-                          /*
-                          myGrid.setList({
-                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",
-                              //                 ajaxPars: {
-                              //                     "param1": "액시스제이",
-                              //                     "param2": "AXU4J"
-                              //                 },
-                              onLoad  : function(){
-                                  //trace(this);
+                var collect = [];
 
-                                  //myGrid.setFocus(this.list.length - 1);
-                              }
-                          });
-                          */
-                      });
+                for (var item, itemIndex = 0, __arr = grid_Contact.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                {
+                    if (!item.___disabled) item.___disabled = {};
+                    if (!item.___checked) item.___checked = {};
+
+                    if  (itemIndex == index)
+                    {
+                        item.___disabled[0] = false;
+                        item.___checked[0] = true;
+
+						collect.push({index: itemIndex, item: item});
+                    }
+                }
+
+                grid_Contact.removeListIndex(collect);
             }
+        },
+
+        // 연락처에서 더블클릭으로 수정할 때..
+        restoreList: function(index){
+            var collect = [];
+
+            for (var item, itemIndex = 0, __arr = grid_Contact.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+            {
+                if (!item.___disabled) item.___disabled = {};
+                if (!item.___checked) item.___checked = {};
+
+                if  (itemIndex == index)
+                {
+                    item.___disabled[0] = false;
+                    item.___checked[0] = true;
+
+					collect.push({index: itemIndex, item: item});
+                }
+            }
+
+            var removeList = [];
+            $.each(collect, function()
+            {
+                removeList.push({seq:this.item.seq});
+            });
+            grid_Contact.restoreList(removeList);
         },
 
         setLoc2: function(loc2)
@@ -441,13 +530,22 @@
                         jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq);
                         jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq);
 
-                        if  (theater_json.contacts.length > 0)
-                        {
-                            grid_Contact.setList(theater_json.contacts[0].contacts);
-                        }
+						if  (typeof theater_json.contacts != "undefined")
+						{
+                            if  (theater_json.contacts.length > 0)
+                            {
+                                grid_Contact.setList(theater_json.contacts[0].contacts);
+                            }
+						}
 
-                        grid_ShowRoom.setList(theater_json.showroom);
-                        grid_Distributor.setList(theater_json.distributor);
+						if  (typeof theater_json.showroom != "undefined")
+						{
+                        	grid_ShowRoom.setList(theater_json.showroom);
+						}
+                        if  (typeof theater_json.distributor != "undefined")
+						{
+                        	grid_Distributor.setList(theater_json.distributor);
+						}
 
                         grid_ChangeHist.setList({
                             ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_chghist_page.php",
@@ -725,6 +823,8 @@
                             <div id="AXgrid_Contact"></div>
                         </div>
 
+                        <input type="button" value="추가하기" class="AXButton" onclick="fnObj.appendGrid();" />
+
                     </td>
                 </tr>
                 <tr>
@@ -829,6 +929,24 @@
     <div class="modalButtonBox" align="center">
         <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_theater();"><i class="axi axi-save "></i> 저장</button>
     </div>
+
+
+
+
+    <div class="AXTabs">
+		<div class="AXTabsTray">
+			<a href="#ax" class="AXTab">Tab1</a>
+			<a href="#ax" class="AXTab on">Tab2</a>
+			<a href="#ax" class="AXTab Classic">Tab3</a>
+			<a href="#ax" class="AXTab Red">Tab4</a>
+			<a href="#ax" class="AXTab Green">Tab5</a>
+			<a href="#ax" class="AXTab Blue">Tab6</a>
+			<a href="#ax" class="AXTab">Tab7</a>
+			<a href="#ax" class="AXTab">Tab11</a>
+			<a href="#ax" class="AXTab">Tab12</a>
+			<div class="ax-clear"></div>
+		</div>
+	</div>
 
 
 </body>

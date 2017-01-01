@@ -4,7 +4,7 @@ require_once ("../config/CONFIG.php");
 $PhpSelf = $_SERVER['PHP_SELF'];
 require_once ("../config/DB_CONNECT.php");
 
-    //print_r ( $_REQUEST );
+//    print_r ( $_REQUEST );
 
 /*
     foreach ( $_REQUEST as $key => $val )
@@ -44,13 +44,16 @@ require_once ("../config/DB_CONNECT.php");
     $post_sangho           = $_POST["sangho"] ;
     $post_homepage         = $_POST["homepage"] ;
     $post_images_no        = $_POST["images_no"] ;
-    $post_unitPrices       = $_POST["unitPrices"] ;
+
+    if  (isset($_POST["unitPrices"]))  $post_unitPrices = implode(",", $_POST["unitPrices"]) ;
+
+    //print_r ( $post_unitPrices );
 
 
-    $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@output)" ; // <-----
+    $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("siiisiissssssssssssssssssssi"
+    $stmt->bind_param("siiisiissssssssssssssssssssis"
                      ,$post_code
                      ,$post_loc1
                      ,$post_loc2
@@ -79,6 +82,7 @@ require_once ("../config/DB_CONNECT.php");
                      ,$post_sangho
                      ,$post_homepage
                      ,$post_images_no
+                     ,$post_unitPrices
                      );
     $stmt->execute();
 
@@ -86,9 +90,12 @@ require_once ("../config/DB_CONNECT.php");
 
     $stmt->close();
 
-    $result = $mysqli->query('SELECT @output');
-    list($output) = $result->fetch_row();
+    $result = $mysqli->query('SELECT @newCode,@output');
+    list($newCode,$output) = $result->fetch_row();
 
+    //print_r ( "[".$newCode."]" );
+
+    // 결과만 반환한다.
     echo json_encode($output,JSON_UNESCAPED_UNICODE);
 
 
