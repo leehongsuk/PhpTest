@@ -1,6 +1,6 @@
 <?php require_once("../config/CONFIG.php"); ?>
 <?php
-      // 리스트에서 넘어올때 리스트의 페이지 정보가 필요
+      // 리스트에서 넘어올때 리스트의 페이지 정보가 필요..
       $MODE = ($_SERVER["QUERY_STRING"] == null) ? "APPEND" : "EDIT";
 ?>
 <!DOCTYPE html>
