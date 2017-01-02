@@ -931,6 +931,5 @@
         <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_theater();"><i class="axi axi-save "></i> 저장</button>
     </div>
 
-
 </body>
 </html>
