@@ -1,5 +1,6 @@
 <?php require_once("../config/CONFIG.php"); ?>
 <?php
+      // 리스트에서 넘어올때 리스트의 페이지 정보가 필요
       $MODE = ($_SERVER["QUERY_STRING"] == null) ? "APPEND" : "EDIT";
 ?>
 <!DOCTYPE html>
@@ -711,7 +712,7 @@
                     </th>
                     <td class="last">
                         <div class="tdRel">
-                            <input type="text" name="code" placeholder="극장코드" value="" class="AXInput W50 av-bizno" readonly="readonly"/>
+                            <input type="text" name="code" placeholder="극장코드" value="" class="AXInput W70 av-bizno" readonly="readonly"/>
                         </div>
                     </td>
                 </tr>
@@ -929,24 +930,6 @@
     <div class="modalButtonBox" align="center">
         <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_theater();"><i class="axi axi-save "></i> 저장</button>
     </div>
-
-
-
-
-    <div class="AXTabs">
-		<div class="AXTabsTray">
-			<a href="#ax" class="AXTab">Tab1</a>
-			<a href="#ax" class="AXTab on">Tab2</a>
-			<a href="#ax" class="AXTab Classic">Tab3</a>
-			<a href="#ax" class="AXTab Red">Tab4</a>
-			<a href="#ax" class="AXTab Green">Tab5</a>
-			<a href="#ax" class="AXTab Blue">Tab6</a>
-			<a href="#ax" class="AXTab">Tab7</a>
-			<a href="#ax" class="AXTab">Tab11</a>
-			<a href="#ax" class="AXTab">Tab12</a>
-			<div class="ax-clear"></div>
-		</div>
-	</div>
 
 
 </body>
