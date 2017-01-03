@@ -1,8 +1,8 @@
 <?php
 
+// clound 9용 설정
 if  ($_SERVER['REMOTE_ADDR']!="::1")
 {
-    /********************** //clound 9용 설정/**/
     // 값 변수
     $db_host   = "localhost";
     $db_user   = "lhs0806";
@@ -15,7 +15,8 @@ if  ($_SERVER['REMOTE_ADDR']!="::1")
     $path_Root     = "" ;
 }
 
-if  ($_SERVER['REMOTE_ADDR']!="::1")
+// 로컬용 설정
+if  ($_SERVER['REMOTE_ADDR']=="::1")
 {
     // 값 변수
     $db_host   = "localhost";
