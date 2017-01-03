@@ -90,7 +90,7 @@
                });  // 우편번호검색을 위한 팝업창
 
 
-             // 담당자 종류를 가지고 온다.
+             // 담당자 종류를 가지고 온다음 탭을 구성한다.
             jQuery.post( "<?=$path_AjaxJSON?>/bas_contact.php")
                   .done(function( data ) {
                         //console.log(data);
@@ -102,7 +102,40 @@
                         if  (obj.options.length > 0)
                         {
                             $("#AXTabs_Contact").setValueTab(obj.options[0].optionValue);
+
+							// theater_json가 정의 되지않을 경우(즉, 신규극장인경우) 가지고온 담당자 종류를 바탕으로
+							// theater_json의 contacts를 구성하고 첫번째 것을 연락처그리드에 적용한다...
+							// 헉헉!! 숨차다..!!
+                            if (typeof theater_json == "undefined")
+                            {
+                                theater_json = new Object();
+
+                                var contact = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                                obj.options.forEach(function(e)
+                                {
+									var contacts = new Array();
+
+                                    contact.push({code       : e.optionValue,
+                                                  contact_nm : e.optionText,
+                                                  contacts   : contacts  // 새로 생기는 것이므로 비어있다...
+                                                 });
+                                });
+                                theater_json.contacts = contact; // contact로 theater_json.contacts를 만든다.
+
+                                grid_Contact.setList(contact[0].contacts); // 첫번째 연락처 그리드에 리스트 적용...
+
+                                var showroom = new Array(); // 새로 생기는 것이므로 비어있다...
+                                var distributor = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                                theater_json.showroom = showroom ;
+                                theater_json.distributor = distributor ;
+
+                                grid_ShowRoom.setList(theater_json.showroom);
+                                grid_Distributor.setList(theater_json.distributor);
+                            }
                         }
+
                   });
 
             // 연락처 탭을 구성한다.
@@ -126,7 +159,10 @@
                     {
                         jQuery.each(theater_json.contacts,function()
                         {
-                            if (this.code == value) grid_Contact.setList(this.contacts);
+                            if (this.code == value)
+                            {
+                                 grid_Contact.setList(this.contacts); // theater_json.contacts[?].contacts 를 각 탭이 변경될때마다 적용한다.
+                            }
                         })
                     }
                 },
@@ -578,8 +614,9 @@
             }
         },
 
-
-        gridShowroom: {
+        // 상영관 그리드 관련 이벤트 함수 그룹..
+        gridShowroom:
+        {
 
             // 상영관 추가 버튼을 누를 때..
             appendGrid: function(index)
@@ -646,8 +683,9 @@
         },
 
 
-
-        gridDistributor: {
+		// 배급사 그리드 관련 이벤트 함수 그룹..
+        gridDistributor:
+        {
 
             // 배급사 추가 버튼을 누를 때..
             appendGrid: function(index)
@@ -775,7 +813,7 @@
                         jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq);
                         jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq);
 
-						if  (typeof theater_json.contacts != "undefined")
+						if  (typeof theater_json.contacts != "undefined") // 연락처가 존재 할 경우
 						{
                             if  (theater_json.contacts.length > 0)
                             {
@@ -783,11 +821,12 @@
                             }
 						}
 
-						if  (typeof theater_json.showroom != "undefined")
+						if  (typeof theater_json.showroom != "undefined") // 상영관이 존재 할 경우
 						{
                         	grid_ShowRoom.setList(theater_json.showroom);
 						}
-                        if  (typeof theater_json.distributor != "undefined")
+
+                        if  (typeof theater_json.distributor != "undefined") // 배급사가 존재 할 경우
 						{
                         	grid_Distributor.setList(theater_json.distributor);
 						}
