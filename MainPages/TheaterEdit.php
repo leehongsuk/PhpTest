@@ -218,10 +218,10 @@
                     {key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
                         {
                             //trace(this.index);
-                          return '<button class="AXButton" onclick="fnObj.grid_Contact_deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
+                          return '<button class="AXButton" onclick="fnObj.gridContact.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
                         }
                     },
-                    {key:"status", label:"상태", width:"40", align:"center", formatter:function()
+                    {key:"status", label:"상태", width:"50", align:"center", formatter:function()
                         {
 	                        if(this.item._CUD == "C"){ return "신규"; }
 	                        else if(this.item._CUD == "D"){ return "삭제"; }
@@ -239,8 +239,6 @@
                     ondblclick: function()
                     {
                         //toast.push(Object.toJSON({index:this.index, item:this.item}));
-
-
                         grid_Contact.setEditor(this.item, this.index);
                     }
                 },
@@ -275,7 +273,7 @@
                         }
                         else // 수정
                         {
-                            fnObj.restoreList(this.index); // 삭제된걸 다시 복구한다.
+                            fnObj.gridContact.restoreList(this.index); // 삭제된걸 다시 복구한다.
 
                            	trace(this.index);
                            	trace(this.list);
@@ -283,9 +281,7 @@
 
 							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
                             grid_Contact.updateList(this.index, this.list[this.index]);
-
                         }
-
                     }
                 }
             });
@@ -339,22 +335,73 @@
                 height : 250,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
+                passiveMode:true,
+                passiveRemoveHide:false,
                 colGroup : [
-
+                    {key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
+                        {
+                            //trace(this.index);
+                          return '<button class="AXButton" onclick="fnObj.gridShowroom.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
+                        }
+                    },
+                    {key:"status", label:"상태", width:"50", align:"center", formatter:function()
+                        {
+	                        if(this.item._CUD == "C"){ return "신규"; }
+	                        else if(this.item._CUD == "D"){ return "삭제"; }
+	                        else if(this.item._CUD == "U"){ return "수정"; }
+	                    }
+                    },
                     {key:"room_nm", label:"상영관명", width:"100"},
                     {key:"room_alias", label:"상영관별칭", width:"100"},
                     {key:"art_room", label:"예술관여부", width:"100"},
                     {key:"seat", label:"좌석수", width:"100"}
-
                 ],
                 body : {
-                    onclick: function(){
+                    ondblclick: function()
+                    {
                         //toast.push(Object.toJSON({index:this.index, item:this.item}));
-                        ///console.log(this.item);
+                        grid_ShowRoom.setEditor(this.item, this.index);
                     }
                 },
                 page:{
                     paging:false
+                },
+                editor: {
+                    rows: [
+                            [
+                                {key:"status", align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:2, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                            ]
+                    ],
+                    response: function()
+                    {
+                        if(this.index == null) // 추가
+                        {
+                            var pushItem = this.res.item;
+
+                            if(this.res.item.title == ""){
+                                alert("제목이 비어 추가 할 수 없습니다.");
+                                return;
+                            }
+
+                            grid_ShowRoom.pushList(pushItem, this.insertIndex);
+                        }
+                        else // 수정
+                        {
+                            fnObj.gridShowroom.restoreList(this.index); // 삭제된걸 다시 복구한다.
+
+                           	trace(this.index);
+                           	trace(this.list);
+                           	trace(this.res.item);
+
+							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
+							grid_ShowRoom.updateList(this.index, this.list[this.index]);
+                        }
+                    }
                 }
             });
 
@@ -365,22 +412,73 @@
                 height : 250,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
+                passiveMode:true,
+                passiveRemoveHide:false,
                 colGroup : [
-
+                    {key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
+                        {
+                            //trace(this.index);
+                          return '<button class="AXButton" onclick="fnObj.gridDistributor.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
+                        }
+                    },
+                    {key:"status", label:"상태", width:"50", align:"center", formatter:function()
+                        {
+	                        if(this.item._CUD == "C"){ return "신규"; }
+	                        else if(this.item._CUD == "D"){ return "삭제"; }
+	                        else if(this.item._CUD == "U"){ return "수정"; }
+	                    }
+                    },
                     {key:"distributor_seq", label:"배급사일련번호", width:"100"},
                     {key:"theater_knm", label:"극장명(한글)", width:"200"},
                     {key:"theater_enm", label:"극장명(영문)", width:"200"},
                     {key:"theater_dcode", label:"배급사 극장코드", width:"100"}
-
                 ],
                 body : {
-                    onclick: function(){
+                    ondblclick: function()
+                    {
                         //toast.push(Object.toJSON({index:this.index, item:this.item}));
-                        ///console.log(this.item);
+                        grid_Distributor.setEditor(this.item, this.index);
                     }
                 },
                 page:{
                     paging:false
+                },
+                editor: {
+                    rows: [
+                            [
+                                {key:"status", align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:2, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                            ]
+                    ],
+                    response: function()
+                    {
+                        if(this.index == null) // 추가
+                        {
+                            var pushItem = this.res.item;
+
+                            if(this.res.item.title == ""){
+                                alert("제목이 비어 추가 할 수 없습니다.");
+                                return;
+                            }
+
+                            grid_Distributor.pushList(pushItem, this.insertIndex);
+                        }
+                        else // 수정
+                        {
+                            fnObj.gridDistributor.restoreList(this.index); // 삭제된걸 다시 복구한다.
+
+                           	trace(this.index);
+                           	trace(this.list);
+                           	trace(this.res.item);
+
+							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
+							grid_Distributor.updateList(this.index, this.list[this.index]);
+                        }
+                    }
                 }
             });
 
@@ -411,19 +509,49 @@
 
         }, // end (pageStart: function())
 
-        appendGrid: function(index){
-            var item = {};
-            if(index){
-                grid_Contact.appendList(item, index);
-            }else{
-                grid_Contact.appendList(item);
-            }
-        },
 
-        // 연락처에서 삭제버튼을 누를 때..
-        grid_Contact_deleteItem: function (index)
+        // 연락처 그리드 관련 이벤트 함수 그룹..
+        gridContact:
         {
-            if (confirm("정말로 삭제하시겠습니까?"))
+
+            // 연락처 추가 버튼을 누를 때..
+            appendGrid: function(index)
+            {
+                var item = {};
+                if(index){
+                    grid_Contact.appendList(item, index);
+                }else{
+                    grid_Contact.appendList(item);
+                }
+            },
+
+            // 연락처에서 삭제버튼을 누를 때..
+            deleteItem: function (index)
+            {
+                if (confirm("정말로 삭제하시겠습니까?"))
+                {
+                    var collect = [];
+
+                    for (var item, itemIndex = 0, __arr = grid_Contact.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                    {
+                        if (!item.___disabled) item.___disabled = {};
+                        if (!item.___checked) item.___checked = {};
+
+                        if  (itemIndex == index)
+                        {
+                            item.___disabled[0] = false;
+                            item.___checked[0] = true;
+
+    						collect.push({index: itemIndex, item: item});
+                        }
+                    }
+
+                    grid_Contact.removeListIndex(collect);
+                }
+            },
+
+            // 연락처에서 더블클릭으로 수정할 때..
+            restoreList: function(index)
             {
                 var collect = [];
 
@@ -437,40 +565,156 @@
                         item.___disabled[0] = false;
                         item.___checked[0] = true;
 
-						collect.push({index: itemIndex, item: item});
+    					collect.push({index: itemIndex, item: item});
                     }
                 }
 
-                grid_Contact.removeListIndex(collect);
-            }
-        },
-
-        // 연락처에서 더블클릭으로 수정할 때..
-        restoreList: function(index){
-            var collect = [];
-
-            for (var item, itemIndex = 0, __arr = grid_Contact.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
-            {
-                if (!item.___disabled) item.___disabled = {};
-                if (!item.___checked) item.___checked = {};
-
-                if  (itemIndex == index)
+                var removeList = [];
+                $.each(collect, function()
                 {
-                    item.___disabled[0] = false;
-                    item.___checked[0] = true;
-
-					collect.push({index: itemIndex, item: item});
-                }
+                    removeList.push({seq:this.item.seq});
+                });
+                grid_Contact.restoreList(removeList);
             }
-
-            var removeList = [];
-            $.each(collect, function()
-            {
-                removeList.push({seq:this.item.seq});
-            });
-            grid_Contact.restoreList(removeList);
         },
 
+
+        gridShowroom: {
+
+            // 상영관 추가 버튼을 누를 때..
+            appendGrid: function(index)
+            {
+                var item = {};
+                if(index){
+                    grid_ShowRoom.appendList(item, index);
+                }else{
+                    grid_ShowRoom.appendList(item);
+                }
+            },
+
+            // 상영관에서 삭제버튼을 누를 때..
+            deleteItem: function (index)
+            {
+                if (confirm("정말로 삭제하시겠습니까?"))
+                {
+                    var collect = [];
+
+                    for (var item, itemIndex = 0, __arr = grid_ShowRoom.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                    {
+                        if (!item.___disabled) item.___disabled = {};
+                        if (!item.___checked) item.___checked = {};
+
+                        if  (itemIndex == index)
+                        {
+                            item.___disabled[0] = false;
+                            item.___checked[0] = true;
+
+    						collect.push({index: itemIndex, item: item});
+                        }
+                    }
+
+                    grid_ShowRoom.removeListIndex(collect);
+                }
+            },
+
+            // 상영관에서 더블클릭으로 수정할 때..
+            restoreList: function(index)
+            {
+                var collect = [];
+
+                for (var item, itemIndex = 0, __arr = grid_ShowRoom.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                {
+                    if (!item.___disabled) item.___disabled = {};
+                    if (!item.___checked) item.___checked = {};
+
+                    if  (itemIndex == index)
+                    {
+                        item.___disabled[0] = false;
+                        item.___checked[0] = true;
+
+    					collect.push({index: itemIndex, item: item});
+                    }
+                }
+
+                var removeList = [];
+                $.each(collect, function()
+                {
+                    removeList.push({seq:this.item.seq});
+                });
+                grid_ShowRoom.restoreList(removeList);
+            }
+        },
+
+
+
+        gridDistributor: {
+
+            // 배급사 추가 버튼을 누를 때..
+            appendGrid: function(index)
+            {
+                var item = {};
+                if(index){
+                    grid_Distributor.appendList(item, index);
+                }else{
+                    grid_Distributor.appendList(item);
+                }
+            },
+
+            // 배급사에서 삭제버튼을 누를 때..
+            deleteItem: function (index)
+            {
+                if (confirm("정말로 삭제하시겠습니까?"))
+                {
+                    var collect = [];
+
+                    for (var item, itemIndex = 0, __arr = grid_Distributor.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                    {
+                        if (!item.___disabled) item.___disabled = {};
+                        if (!item.___checked) item.___checked = {};
+
+                        if  (itemIndex == index)
+                        {
+                            item.___disabled[0] = false;
+                            item.___checked[0] = true;
+
+    						collect.push({index: itemIndex, item: item});
+                        }
+                    }
+
+                    grid_Distributor.removeListIndex(collect);
+                }
+            },
+
+            // 배급사에서 더블클릭으로 수정할 때..
+            restoreList: function(index)
+            {
+                var collect = [];
+
+                for (var item, itemIndex = 0, __arr = grid_Distributor.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                {
+                    if (!item.___disabled) item.___disabled = {};
+                    if (!item.___checked) item.___checked = {};
+
+                    if  (itemIndex == index)
+                    {
+                        item.___disabled[0] = false;
+                        item.___checked[0] = true;
+
+    					collect.push({index: itemIndex, item: item});
+                    }
+                }
+
+                var removeList = [];
+                $.each(collect, function()
+                {
+                    removeList.push({seq:this.item.seq});
+                });
+                grid_Distributor.restoreList(removeList);
+            }
+        },
+
+
+		// 지역2를 다시 구한다.
         setLoc2: function(loc2)
         {
             jQuery("select[name=loc2]").setValueSelect(loc2);
@@ -824,7 +1068,7 @@
                             <div id="AXgrid_Contact"></div>
                         </div>
 
-                        <input type="button" value="추가하기" class="AXButton" onclick="fnObj.appendGrid();" />
+                        <button type="button" class="AXButton" onclick="fnObj.gridContact.appendGrid();"><i class="axi axi-ion-document-text"></i> 추가하기</button>
 
                     </td>
                 </tr>
@@ -887,6 +1131,8 @@
                                 <div id="AXGrid_ShowRoom"></div>
                             </div>
 
+                            <button type="button" class="AXButton" onclick="fnObj.gridShowroom.appendGrid();"><i class="axi axi-ion-document-text"></i> 추가하기</button>
+
                     </td>
                 </tr>
                 <tr>
@@ -898,6 +1144,8 @@
                             <div style="padding: 5px;">
                                 <div id="AXGrid_Distributor"></div>
                             </div>
+
+                            <button type="button" class="AXButton" onclick="fnObj.gridDistributor.appendGrid();"><i class="axi axi-ion-document-text"></i> 추가하기</button>
 
                     </td>
                 </tr>
