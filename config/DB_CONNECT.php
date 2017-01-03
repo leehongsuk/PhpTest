@@ -7,7 +7,7 @@ if ($mysqli->connect_errno) {
 /*
  * 디버깅 용도로 사용할것...
  *
-$query= "CALL logwrite(?)" ; // <-----   
+$query= "CALL logwrite(?)" ; // <-----
 $stmt = $mysqli->prepare($query);
 
 $stmt->bind_param("s", $PhpSelf);
@@ -15,5 +15,8 @@ $stmt->execute();
 $stmt->close();
  * */
 
-// $mysqli->set_charset("utf8"); // 한글문제로 설정(my.cfg)파일을 수정하지못할경우
+if  ($_SERVER['REMOTE_ADDR']!="::1")
+{
+    $mysqli->set_charset("utf8"); // 한글문제로 설정(my.cfg)파일을 수정하지못할경우
+}
 ?>
