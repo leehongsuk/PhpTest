@@ -166,7 +166,7 @@
 
 			// 방화/외화 구분
             jQuery("#AXSelect_KorabdGbn").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -177,7 +177,7 @@
 
             // 관람등급 초기화
             jQuery("#AXSelect_Grade").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_grade.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_grade.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -188,7 +188,7 @@
             /*
             // 상영프린트1 초기화
             jQuery("#AXSelect_Grade").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_playprint1.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_playprint1.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -198,7 +198,7 @@
 
             // 상영프린트2 초기화
             jQuery("#AXSelect_Grade").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_playprint2.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_playprint2.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -240,7 +240,7 @@
             });
 
             grid_PlayPrint.setList({
-                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint.php",
+                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint.php",  // <-----
                 ajaxPars: {
                     "film_code": "M0000001"
                 },
@@ -277,9 +277,9 @@
 
 					uploadMaxFileSize:(10*1024*1024), // 업로드될 개별 파일 사이즈 (클라이언트에서 제한하는 사이즈 이지 서버에서 설정되는 값이 아닙니다.)
 					uploadMaxFileCount:5, // 업로드될 파일갯수 제한 0 은 무제한
-					uploadUrl:"fileUpload.php",
+					uploadUrl:"fileUpload.php",  // <-----
 					uploadPars:{userID:'tom', userName:'액시스'},
-					deleteUrl:"fileDelete.php",
+					deleteUrl:"fileDelete.php",  // <-----
 					deletePars:{userID:'tom', userName:'액시스'},
 
 					fileKeys:{ // 서버에서 리턴하는 json key 정의 (id는 예약어 사용할 수 없음)

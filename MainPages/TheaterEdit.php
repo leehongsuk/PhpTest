@@ -175,14 +175,14 @@
 
             // 지역1 초기화
             jQuery("#AXSelect_Loccation1").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",  // <-----
                 ajaxPars: "",
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
                     //console.log(this.value);
                     jQuery("#AXSelect_Loccation2").bindSelect({
-                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",
+                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
                             ajaxPars: {"parent_seq":this.value },
                             isspace: true,
                             isspaceTitle: "전체",
@@ -202,7 +202,7 @@
 
             // 계열사 초기화
             jQuery("#AXSelect_Affiliate").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -212,7 +212,7 @@
 
             // 직영위탁 초기화
             jQuery("#AXSelect_IsDirect").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_isdirect.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_isdirect.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -222,7 +222,7 @@
 
             // 비계열 초기화
             jQuery("#AXSelect_Unaffiliate").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_unaffiliate.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_unaffiliate.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -232,7 +232,7 @@
 
             // 사용자그룹 초기화
             jQuery("#AXSelect_UserGroup").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_user_group.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_user_group.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -253,7 +253,6 @@
                 colGroup : [
                     {key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
                         {
-                            //trace(this.index);
                           return '<button class="AXButton" onclick="fnObj.gridContact.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
                         }
                     },
@@ -264,17 +263,15 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"seq", label:"no", width:"30"},
-                    {key:"name", label:"이름", width:"100"},
-                    {key:"tel", label:"대표번호", width:"110"},
-                    {key:"hp", label:"무선전화", width:"110"},
-                    {key:"fax", label:"팩스", width:"110"},
-                    {key:"mail", label:"이메일", width:"250"}
+                    {key:"name", label:"이름",     width:"100"},
+                    {key:"tel",  label:"대표번호", width:"110"},
+                    {key:"hp",   label:"무선전화", width:"110"},
+                    {key:"fax",  label:"팩스",     width:"110"},
+                    {key:"mail", label:"이메일",   width:"250"}
                 ],
                 body : {
                     ondblclick: function()
                     {
-                        //toast.push(Object.toJSON({index:this.index, item:this.item}));
                         grid_Contact.setEditor(this.item, this.index);
                     }
                 },
@@ -286,12 +283,11 @@
                             [
                                 {key:"status", align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
                                 {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
-                                {colSeq:2, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:2, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
                                 {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
                                 {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
                                 {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
-                                {colSeq:6, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
-                                {colSeq:7, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                                {colSeq:6, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
                             ]
                     ],
                     response: function()
@@ -330,30 +326,24 @@
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
                 colGroup : [
-                    {key:"seq", label:"변경일련번호", width:"50", align:"right"},
-                    /*
-                    {key:"gubun", label:"추가/갱신", width:"100"},
-                    {key:"theater_code", label:"극장코드(TH0001)", width:"100"},
-                    */
-                    {key:"change_datetime", label:"변경시간", width:"140"},
-                    {key:"location", label:"지역", width:"100"},
-                    {key:"affiliate_seq", label:"계열사코드", width:"100"},
-                    {key:"dir_mng", label:"직영여부", width:"100"},
-                    {key:"unaffiliate", label:"비계열코드", width:"100"},
-                    {key:"user_group", label:"사용자그룹코드", width:"100"},
-                    {key:"operation", label:"운영여부", width:"40"},
-                    {key:"theater_nnm", label:"극장명", width:"150"},
-                    {key:"fund_free", label:"기금면제여부", width:"40"},
-                    {key:"gubun_code", label:"구분코드??", width:"100"},
-                    {key:"saup_no", label:"사업자등록번호", width:"100"},
-                    {key:"owner", label:"대표자명", width:"100"},
-                    {key:"sangho", label:"상호", width:"150"},
-                    {key:"homepage", label:"홈페이지", width:"100"},
-                    {key:"images_no", label:"이미지 첨부파일번호", width:"100"}
-                ],
+                    {key:"seq",             label:"변경일련번호",        width: "50", align:"right"},
+                    {key:"change_datetime", label:"변경시간",            width:"140"},
+                    {key:"location",        label:"지역",                width:"100"},
+                    {key:"affiliate_seq",   label:"계열사코드",          width:"100"},
+                    {key:"dir_mng",         label:"직영여부",            width:"100"},
+                    {key:"unaffiliate",     label:"비계열코드",          width:"100"},
+                    {key:"user_group",      label:"사용자그룹코드",      width:"100"},
+                    {key:"operation",       label:"운영여부",            width: "40"},
+                    {key:"theater_nnm",     label:"극장명",              width:"150"},
+                    {key:"fund_free",       label:"기금면제여부",        width: "40"},
+                    {key:"gubun_code",      label:"구분코드??",          width:"100"},
+                    {key:"saup_no",         label:"사업자등록번호",      width:"100"},
+                    {key:"owner",           label:"대표자명",            width:"100"},
+                    {key:"sangho",          label:"상호",                width:"150"},
+                    {key:"homepage",        label:"홈페이지",            width:"100"},
+                    {key:"images_no",       label:"이미지 첨부파일번호", width:"100"}                ],
                 body : {
                     onclick: function(){
-                        //toast.push(Object.toJSON({index:this.index, item:this.item}));
                         ///console.log(this.item);
                     }
                 },
@@ -387,10 +377,10 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"room_nm", label:"상영관명", width:"100"},
+                    {key:"room_nm",    label:"상영관명",   width:"100"},
                     {key:"room_alias", label:"상영관별칭", width:"100"},
-                    {key:"art_room", label:"예술관여부", width:"100"},
-                    {key:"seat", label:"좌석수", width:"100"}
+                    {key:"art_room",   label:"예술관여부", width:"100"},
+                    {key:"seat",       label:"좌석수",     width:"100"}
                 ],
                 body : {
                     ondblclick: function()
@@ -464,10 +454,10 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"distributor_seq", label:"배급사일련번호", width:"100"},
-                    {key:"theater_knm", label:"극장명(한글)", width:"200"},
-                    {key:"theater_enm", label:"극장명(영문)", width:"200"},
-                    {key:"theater_dcode", label:"배급사 극장코드", width:"100"}
+                    {key:"distributor_seq", label:"배급사일련번호",  width:"100"},
+                    {key:"theater_knm",     label:"극장명(한글)",    width:"200"},
+                    {key:"theater_enm",     label:"극장명(영문)",    width:"200"},
+                    {key:"theater_dcode",   label:"배급사 극장코드", width:"100"}
                 ],
                 body : {
                     ondblclick: function()
@@ -527,7 +517,7 @@
             });
 
             // 해당극장의 요금을 가지고 온다.
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php", { code: '<?=$_GET['code']?>' })
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php",  // <----- { code: '<?=$_GET['code']?>' })
 		          .done(function( data ) {
 
 		            	var obj  = eval("("+data+")");
@@ -761,7 +751,7 @@
         // 하나의 극장정보를 읽어 온다.
         readTheaterOne: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php", { code: '<?=$_GET['code']?>' })
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php",  // <----- { code: '<?=$_GET['code']?>' })
                   .done(function( data )
                   {
 						//console.log(data);
@@ -797,7 +787,7 @@
 
                         jQuery("select[name=loc1]").setValueSelect(theater_json.loc1);
                         jQuery("select[name=loc2]").bindSelect({
-                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",
+                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
                             ajaxPars: {"parent_seq":theater_json.loc1 },
                             isspace: true,
                             isspaceTitle: "전체",
@@ -832,7 +822,7 @@
 						}
 
                         grid_ChangeHist.setList({
-                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_chghist_page.php",
+                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_chghist_page.php",  // <-----
                             ajaxPars: {
                                 "theater_code": theater_json.code
                             },
@@ -851,7 +841,7 @@
 			{
 				myModal.open({
 					method:"get",
-					url:"AXMdl_AddrFinder.php",
+					url:"AXMdl_AddrFinder.php",  // <-----
 					pars:"",
 					closeByEscKey: true,
 					top:100,
@@ -881,7 +871,7 @@
 
                 jQuery.ajax({
                              type : "POST",
-                             url : "<?=$path_AjaxJSON?>/wrk_theater_save.php",
+                             url : "<?=$path_AjaxJSON?>/wrk_theater_save.php",  // <-----
                              cache : false,
                              data : formData,
                              success : fnObj.onSuccessTheater,
@@ -944,7 +934,7 @@
 
             var pars = "title="+title+"&content="+errorMsg ;
             myModal.open({
-                url: "AX_Modal.php",
+                url: "AX_Modal.php",  // <-----
                 pars: pars.queryToObject(),
                 width: width,
                 //top: 100,

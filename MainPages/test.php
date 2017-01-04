@@ -67,9 +67,9 @@
 
 					uploadMaxFileSize:(10*1024*1024), // 업로드될 개별 파일 사이즈 (클라이언트에서 제한하는 사이즈 이지 서버에서 설정되는 값이 아닙니다.)
 					uploadMaxFileCount:5, // 업로드될 파일갯수 제한 0 은 무제한
-					uploadUrl:"fileUpload.php",
+					uploadUrl:"fileUpload.php",  // <-----
 					uploadPars:{userID:'tom', userName:'액시스'},
-					deleteUrl:"fileDelete.php",
+					deleteUrl:"fileDelete.php",  // <-----
 					deletePars:{userID:'tom', userName:'액시스'},
 
 					fileKeys:{ // 서버에서 리턴하는 json key 정의 (id는 예약어 사용할 수 없음)

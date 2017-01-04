@@ -84,7 +84,7 @@
 
              // 방화/외화 구분 셀렉터
             jQuery("#AXSelect_KorabdGbn").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",  // <-----
                 onChange: function(){
                     //console.log(this.value);
                 }
@@ -151,7 +151,7 @@
         // '조회'버튼을 누를때
         search_premium_rate: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})
+            jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php",  // <----- {})
                   .done(function( data ) {
 
 						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
@@ -193,7 +193,7 @@
 
                         var result = '' ;
                         grid_PremiumRate.setList({
-                              ajaxUrl : "<?=$path_AjaxJSON?>/bas_premium_rate_sel.php",
+                              ajaxUrl : "<?=$path_AjaxJSON?>/bas_premium_rate_sel.php",  // <-----
                               ajaxPars: {
                                   "korabd_gbn": jQuery("#AXSelect_KorabdGbn").val()
                               },
@@ -282,7 +282,7 @@
 
                 jQuery.ajax({
                              type : "POST",
-                             url : "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",
+                             url : "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",  // <-----
                              cache : false,
                              data : formData,
                              success : fnObj.onSuccessPreminumRate,
@@ -338,7 +338,7 @@
 
             var pars = "title="+title+"&content="+errorMsg ;
             myModal.open({
-                url: "AX_Modal.php",
+                url: "AX_Modal.php",  // <-----
                 pars: pars.queryToObject(),
                 width: width,
                 //top: 100,

@@ -105,7 +105,7 @@
         searchAddr: function(){
 
             myGrid.setList({
-                           ajaxUrl : "<?=$path_AjaxJSON?>/bas_postzip_page.php",
+                           ajaxUrl : "<?=$path_AjaxJSON?>/bas_postzip_page.php",  // <-----
                            ajaxPars: {
                                "dongNm": jQuery('input[name=srchwrd]').val()
                            },

@@ -48,14 +48,14 @@
 
             // 지역1 초기화
             jQuery("#AXSelect_Location1").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",  // <-----
                 ajaxPars: "",
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
                     //console.log(this.value);
                     jQuery("#AXSelect_Location2").bindSelect({
-                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",
+                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
                             ajaxPars: {"parent_seq":this.value },
                             isspace: true,
                             isspaceTitle: "전체",
@@ -75,7 +75,7 @@
 
             // 계열사 초기화
             jQuery("#AXSelect_Affiliate").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -148,7 +148,7 @@
             });
 
             gridTheater.setList({
-                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",
+                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",  // <-----
                 onLoad  : function(){
                     //gridTheater.goPageMove(1); // 상대적인 페이지 이동..
                     //gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
@@ -168,7 +168,7 @@
             var fundFree  = (jQuery("#AXCheck_FundFree").prop('checked')) ? "Y" : "N" ;
 
             gridTheater.setList({
-                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",
+                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",  // <-----
                 ajaxPars: {
                     "location1": location1,
                     "location2": location2,
@@ -189,11 +189,11 @@
         {
             if (confirm("정말로 폐관하시겠습니까?"))
             {
-                jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_delete.php", { code: code })
+                jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_delete.php",  // <----- { code: code })
                       .done(function( data ) {
                           alert( "극장이 폐관되었습니다. " + data );
                           gridTheater.setList({
-                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",
+                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",  // <-----
                               onLoad  : function(){
                                   //console.trace(this);
                                   //gridTheater.setFocus(this.list.length - 1);

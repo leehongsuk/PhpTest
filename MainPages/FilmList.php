@@ -51,7 +51,7 @@
 
             // 계열사 초기화
             jQuery("#AXSelect_Affiliate").bindSelect({
-                ajaxUrl: "<?=$path_AjaxJSON?>/bas_distributor.php",
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_distributor.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -102,7 +102,7 @@
 
                         myGrid2.setList(
                         {
-                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint_page.php",
+                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint_page.php",  // <-----
                             ajaxPars: {
                             	"film_code": this.item.code,
                             },
@@ -126,7 +126,7 @@
 
 
             myGrid1.setList({
-                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",
+                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",  // <-----
                 onLoad  : function(){
                     //trace(this);
 
@@ -193,11 +193,11 @@
         {
             if (confirm("정말로 삭제하시겠습니까?"))
             {
-                jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_delete.php", { code: code })
+                jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_delete.php",  // <----- { code: code })
                       .done(function( data ) {
                           //alert( "자료가 삭제되었습니다. " + data );
                           myGrid1.setList({
-                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",
+                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",  // <-----
                               //                 ajaxPars: {
                               //                     "param1": "액시스제이",
                               //                     "param2": "AXU4J"
