@@ -57,7 +57,7 @@ require_once("../config/DB_CONNECT.php");
          $a_contact[$x]["contacts"] = $a_temp ;
     }
 
-    $query= "CALL SP_WRK_SHOWROOM_SEL(?)" ; // <-----
+    $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_code);
