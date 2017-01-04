@@ -151,7 +151,7 @@
         // '조회'버튼을 누를때
         search_premium_rate: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php",  // <----- {})
+            jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})  // <-----
                   .done(function( data ) {
 
 						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json

@@ -30,19 +30,20 @@ require_once("../config/DB_CONNECT.php");
     {
          $contactGbn = $a_contact[$x]["code"] ; // 연락처구분 코드.,
 
-         $query= "CALL SP_WRK_CONTACT_SEL(?,?)" ; // <-----
+         $query= "CALL SP_WRK_THEATER_CONTACT_SEL(?,?)" ; // <-----
          $stmt = $mysqli->prepare($query);
 
          $stmt->bind_param("ss", $post_code, $contactGbn);
          $stmt->execute();
 
-         $stmt->bind_result($seq,$name,$tel,$hp,$fax,$mail);
+         $stmt->bind_result($seq,$theater_code,$name,$tel,$hp,$fax,$mail);
 
          $a_temp = array() ;
 
          while ($stmt->fetch())
          {
              array_push($a_temp, array("seq" => $seq
+                                       ,"theater_code" => $theater_code
                                        ,"name" => $name
                                        ,"tel" => $tel
                                        ,"hp" => $hp

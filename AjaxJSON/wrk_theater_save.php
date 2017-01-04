@@ -5,17 +5,16 @@ $PhpSelf = $_SERVER['PHP_SELF'];
 require_once ("../config/DB_CONNECT.php");
 
 //    print_r ( $_REQUEST );
-
 /*
     foreach ( $_REQUEST as $key => $val )
     {
         echo $key."=".$val."<br>";
     }
-    print_r( $_POST["unitPrices"] );
+print_r( $_POST["contacts"] );
+print_r( $_POST["showroom"] );
+print_r( $_POST["distributor"] );
  * */
 
-
-    //$post_OPERATION        = $_POST["OPERATION"] ;
     $post_code             = $_POST["code"] ;
     $post_loc1             = $_POST["loc1"] ;
     $post_loc2             = $_POST["loc2"] ;
@@ -45,9 +44,11 @@ require_once ("../config/DB_CONNECT.php");
     $post_homepage         = $_POST["homepage"] ;
     $post_images_no        = $_POST["images_no"] ;
 
-    if  (isset($_POST["unitPrices"]))  $post_unitPrices = implode(",", $_POST["unitPrices"]) ;
+    $post_contacts         = $_POST["contacts"] ; // 연락처 JSON
+    $post_showroom         = $_POST["showroom"] ; // 상영관 JSON
+    $post_distributor      = $_POST["distributor"] ; // 배급사 JSON
 
-    //print_r ( $post_unitPrices );
+    if  (isset($_POST["unitPrices"]))  $post_unitPrices = implode(",", $_POST["unitPrices"]) ; // 요금단가..
 
 
     $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
@@ -94,6 +95,71 @@ require_once ("../config/DB_CONNECT.php");
     list($newCode,$output) = $result->fetch_row();
 
     //print_r ( "[".$newCode."]" );
+
+
+    // 연락처(S,P,T)를 받아온다.
+    $contacts = json_decode($post_contacts);
+
+    //print_r ( $contacts );
+
+    foreach ($contacts as $key1 => $value2)
+    {
+        $gbn_code = $contacts[$key1]->code ; // S,P,T
+
+        foreach ($contacts[$key1]->contacts as $key2 => $value2)
+        {
+            //print_r ( $contacts[$key1]->contacts[$key2] );
+
+            $_CUD         = $contacts[$key1]->contacts[$key2]->_CUD ;
+            $seq          = $contacts[$key1]->contacts[$key2]->seq ;
+            $theater_code = $contacts[$key1]->contacts[$key2]->theater_code ;
+            $name         = $contacts[$key1]->contacts[$key2]->name ;
+            $tel          = $contacts[$key1]->contacts[$key2]->tel ;
+            $hp           = $contacts[$key1]->contacts[$key2]->hp ;
+            $fax          = $contacts[$key1]->contacts[$key2]->fax ;
+            $mail         = $contacts[$key1]->contacts[$key2]->mail ;
+
+
+            print_r ( $_CUD ." : ".$gbn_code."|".$seq ."|".$theater_code  ."|".$name  ."|".$tel   ."|".$hp    ."|".$fax   ."|".$mail ."--");
+            print_r ( "\n" );
+        }
+    }
+
+    // 상영관을 받아온다.
+    $contacts = json_decode($post_showroom);
+
+    foreach ($contacts as $key => $value)
+    {
+        $_CUD          = $contacts[$key]->_CUD ;
+        $seq           = $contacts[$key]->seq ;
+        $theater_code  = $contacts[$key]->theater_code ;
+        $room_nm       = $contacts[$key]->room_nm ;
+        $room_alias    = $contacts[$key]->room_alias ;
+        $art_room      = $contacts[$key]->art_room ;
+        $seat          = $contacts[$key]->seat ;
+
+        //print_r ( $contacts[$key] );
+        print_r ( $_CUD ." : ".$seq."|".$theater_code."|".$room_nm."|".$room_alias."|".$art_room."|".$seat."|" );
+        print_r ( "\n" );
+    }
+
+    // 배급사를 받아온다.
+    $contacts = json_decode($post_distributor);
+
+    foreach ($contacts as $key => $value)
+    {
+        $_CUD             = $contacts[$key]->_CUD ;
+        $seq              = $contacts[$key]->seq ;
+        $theater_code     = $contacts[$key]->theater_code ;
+        $distributor_seq  = $contacts[$key]->distributor_seq ;
+        $theater_knm      = $contacts[$key]->theater_knm ;
+        $theater_enm      = $contacts[$key]->theater_enm ;
+        $theater_dcode    = $contacts[$key]->theater_dcode ;
+
+        print_r ( $contacts[$key] );
+        print_r ( $_CUD ." : ".$seq."|".$theater_code."|".$distributor_seq."|".$theater_knm."|".$theater_enm."|".$theater_dcode."|" );
+        print_r ( "\n" );
+    }
 
     // 결과만 반환한다.
     echo json_encode($output,JSON_UNESCAPED_UNICODE);

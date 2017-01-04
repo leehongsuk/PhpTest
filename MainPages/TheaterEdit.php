@@ -517,7 +517,7 @@
             });
 
             // 해당극장의 요금을 가지고 온다.
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php",  // <----- { code: '<?=$_GET['code']?>' })
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php",  { code: '<?=$_GET['code']?>' })  // <-----
 		          .done(function( data ) {
 
 		            	var obj  = eval("("+data+")");
@@ -751,7 +751,7 @@
         // 하나의 극장정보를 읽어 온다.
         readTheaterOne: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php",  // <----- { code: '<?=$_GET['code']?>' })
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php",  { code: '<?=$_GET['code']?>' })  // <-----
                   .done(function( data )
                   {
 						//console.log(data);
@@ -864,6 +864,11 @@
 
 		    if (errorMsg == '')
             {
+		        jQuery("input:hidden[name=contacts]").val( JSON.stringify( theater_json.contacts ) ) ;
+		        jQuery("input:hidden[name=showroom]").val( JSON.stringify( theater_json.showroom ) ) ;
+		        jQuery("input:hidden[name=distributor]").val( JSON.stringify( theater_json.distributor ) ) ;
+
+
                 // 저장할 값들을 취합한다.
                 var formData = jQuery("form[name=frmThearter]").serialize();
 
@@ -972,6 +977,11 @@
     ?>
 
     <form name="frmThearter" onsubmit="return false;">
+
+    	<input type="hidden" name="contacts">
+    	<input type="hidden" name="showroom">
+    	<input type="hidden" name="distributor">
+
 
         <table cellpadding="0" cellspacing="0" class="AXFormTable">
             <colgroup>

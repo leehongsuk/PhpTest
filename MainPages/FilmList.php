@@ -193,7 +193,7 @@
         {
             if (confirm("정말로 삭제하시겠습니까?"))
             {
-                jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_delete.php",  // <----- { code: code })
+                jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_delete.php",  { code: code }) // <-----
                       .done(function( data ) {
                           //alert( "자료가 삭제되었습니다. " + data );
                           myGrid1.setList({

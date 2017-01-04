@@ -189,7 +189,7 @@
         {
             if (confirm("정말로 폐관하시겠습니까?"))
             {
-                jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_delete.php",  // <----- { code: code })
+                jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_delete.php",  { code: code }) // <-----
                       .done(function( data ) {
                           alert( "극장이 폐관되었습니다. " + data );
                           gridTheater.setList({
