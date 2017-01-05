@@ -8224,8 +8224,8 @@ var AXGrid = Class.create(AXJ, {
             po.push("</div>");
         }
         po.push("<div id=\"" + cfg.targetID + "_AX_editorButtons\" class=\"editorButtons\">");
-        po.push("	<input type=\"button\" id=\"" + cfg.targetID + "_AX_editorButtons_AX_save\" value=\"Save\" class=\"AXButtonSmall Classic\" />");
-        po.push("	<input type=\"button\" id=\"" + cfg.targetID + "_AX_editorButtons_AX_cancel\" value=\"Cancel\" class=\"AXButtonSmall\" />");
+        po.push("	<input type=\"button\" id=\"" + cfg.targetID + "_AX_editorButtons_AX_save\" value=\"저장\" class=\"AXButtonSmall Classic\" />");
+        po.push("	<input type=\"button\" id=\"" + cfg.targetID + "_AX_editorButtons_AX_cancel\" value=\"취소\" class=\"AXButtonSmall\" />");
         po.push("</div>");
         this.editor.html(po.join(''));
 
