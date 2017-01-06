@@ -121,22 +121,25 @@ print_r( $_POST["distributor"] );
             //print_r ( $_CUD ." : ".$gbn_code." | ".$seq ." | ".$theater_code  ." | ".$name  ." | ".$tel   ." | ".$hp    ." | ".$fax   ." | ".$mail ."--");
             //print_r ( "\n" );
 
-            $query= "CALL SP_WRK_THEATER_CONTACT_SAVE(?,?,?,?,?,?,?,?,?)" ; // <-----
-            $stmt = $mysqli->prepare($query);
+            if  ($_CUD != "")
+            {
+                $query= "CALL SP_WRK_THEATER_CONTACT_SAVE(?,?,?,?,?,?,?,?,?)" ; // <-----
+                $stmt = $mysqli->prepare($query);
 
-            $stmt->bind_param("sisssssss"
-                             ,$_CUD
-                             ,$seq
-                             ,$theater_code
-                             ,$gbn_code
-                             ,$name
-                             ,$tel
-                             ,$hp
-                             ,$fax
-                             ,$mail
-                             );
-            $stmt->execute();
-            $stmt->close();
+                $stmt->bind_param("sisssssss"
+                                 ,$_CUD
+                                 ,$seq
+                                 ,$theater_code
+                                 ,$gbn_code
+                                 ,$name
+                                 ,$tel
+                                 ,$hp
+                                 ,$fax
+                                 ,$mail
+                                 );
+                $stmt->execute();
+                $stmt->close();
+            }
         }
     }
 
@@ -157,20 +160,23 @@ print_r( $_POST["distributor"] );
         //print_r ( $_CUD ." : ".$seq." | ".$theater_code." | ".$room_nm." | ".$room_alias." | ".$art_room." | ".$seat." | " );
         //print_r ( "\n" );
 
-        $query= "CALL SP_WRK_THEATER_SHOWROOM_SAVE(?,?,?,?,?,?,?)" ; // <-----
-        $stmt = $mysqli->prepare($query);
+        if  ($_CUD != "")
+        {
+            $query= "CALL SP_WRK_THEATER_SHOWROOM_SAVE(?,?,?,?,?,?,?)" ; // <-----
+            $stmt = $mysqli->prepare($query);
 
-        $stmt->bind_param("sissssi"
-          ,$_CUD
-          ,$seq
-          ,$theater_code
-          ,$room_nm
-          ,$room_alias
-          ,$art_room
-          ,$seat
-          );
-        $stmt->execute();
-        $stmt->close();
+            $stmt->bind_param("sissssi"
+              ,$_CUD
+              ,$seq
+              ,$theater_code
+              ,$room_nm
+              ,$room_alias
+              ,$art_room
+              ,$seat
+              );
+            $stmt->execute();
+            $stmt->close();
+        }
     }
 
     // 배급사를 받아온다.
@@ -190,20 +196,23 @@ print_r( $_POST["distributor"] );
         //print_r ( $_CUD ." : ".$seq." | ".$theater_code." | ".$distributor_seq." | ".$theater_knm." | ".$theater_enm." | ".$theater_dcode." | " );
         //print_r ( "\n" );
 
-        $query= "CALL SP_WRK_THEATER_DISTRIBUTOR_SAVE(?,?,?,?,?,?,?)" ; // <-----
-        $stmt = $mysqli->prepare($query);
+        if  ($_CUD != "")
+        {
+            $query= "CALL SP_WRK_THEATER_DISTRIBUTOR_SAVE(?,?,?,?,?,?,?)" ; // <-----
+            $stmt = $mysqli->prepare($query);
 
-        $stmt->bind_param("sisisss"
-          ,$_CUD
-          ,$seq
-          ,$theater_code
-          ,$distributor_seq
-          ,$theater_knm
-          ,$theater_enm
-          ,$theater_dcode
-          );
-        $stmt->execute();
-        $stmt->close();
+            $stmt->bind_param("sisisss"
+              ,$_CUD
+              ,$seq
+              ,$theater_code
+              ,$distributor_seq
+              ,$theater_knm
+              ,$theater_enm
+              ,$theater_dcode
+              );
+            $stmt->execute();
+            $stmt->close();
+        }
     }
 
     // 결과만 반환한다.

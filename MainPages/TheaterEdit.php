@@ -296,8 +296,8 @@
                         {
                             var pushItem = this.res.item;
 
-                            if(this.res.item.title == ""){
-                                alert("제목이 비어 추가 할 수 없습니다.");
+                            if(this.res.item.name == ""){
+                                dialog.push('<b>알림</b>\n 이름이 비어 추가 할 수 없습니다.');
                                 return;
                             }
 
@@ -379,7 +379,7 @@
                     },
                     {key:"room_nm",    label:"상영관명",   width:"100"},
                     {key:"room_alias", label:"상영관별칭", width:"100"},
-                    {key:"art_room",   label:"예술관여부", width:"100"},
+                    {key:"art_room",   label:"예술관",     width:"70"},
                     {key:"seat",       label:"좌석수",     width:"100"}
                 ],
                 body : {
@@ -399,8 +399,8 @@
                                 {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
                                 {colSeq:2, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
                                 {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
-                                {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
-                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                                {colSeq:4, align:"center", valign:"middle", form:{type:"checkbox", value:"itemValue", options:[ {value:'Y', text:''} ] }},
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}, AXBind:{type:"number", config:{min:1, max:500}}} // 1석에서 500석까지..
                             ]
                     ],
                     response: function()
@@ -409,8 +409,14 @@
                         {
                             var pushItem = this.res.item;
 
-                            if(this.res.item.title == ""){
-                                alert("제목이 비어 추가 할 수 없습니다.");
+                            var errorMsg = '' ;
+
+                            if (this.res.item.room_nm == "") { errorMsg += '상영관명이 비어 추가 할 수 없습니다.\n'; }
+                            if (this.res.item.seat == "")    { errorMsg += '좌석수가 비어 추가 할 수 없습니다.\n'; }
+
+                            if  (errorMsg != '')
+                            {
+                                dialog.push('<b>알림</b>\n'+errorMsg);
                                 return;
                             }
 
@@ -444,7 +450,7 @@
                     {key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
                         {
                             //trace(this.index);
-                          return '<button class="AXButton" onclick="fnObj.gridDistributor.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
+                          	return '<button class="AXButton" onclick="fnObj.gridDistributor.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
                         }
                     },
                     {key:"status", label:"상태", width:"50", align:"center", formatter:function()
@@ -454,10 +460,11 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"distributor_seq", label:"배급사일련번호",  width:"100"},
-                    {key:"theater_knm",     label:"극장명(한글)",    width:"200"},
-                    {key:"theater_enm",     label:"극장명(영문)",    width:"200"},
-                    {key:"theater_dcode",   label:"배급사 극장코드", width:"100"}
+                    {key:"distributor_seq",label:" ",               width:"0", formatter: function () { return '' ; }},
+                    {key:"distributor_nm", label:"배급사",          width:"200"},
+                    {key:"theater_knm",    label:"극장명(한글)",    width:"200"},
+                    {key:"theater_enm",    label:"극장명(영문)",    width:"200"},
+                    {key:"theater_dcode",  label:"배급사 극장코드", width:"100"}
                 ],
                 body : {
                     ondblclick: function()
@@ -474,10 +481,36 @@
                             [
                                 {key:"status", align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
                                 {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
-                                {colSeq:2, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
-                                {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:2, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}
+                                         ,AXBind:{
+                                                  type:"selector",
+                                                  config:{
+                                                          appendable:true,
+                                                          ajaxUrl:"<?=$path_AjaxJSON?>/bas_distributor.php",  // <-----
+                                                          ajaxPars:"",
+                                                          onChange:function(){
+                                                              if(this.selectedOption){
+
+                                                              grid_Distributor.setEditorForm({
+                                                                  key:"distributor_seq",
+                                                                  position:[0,2], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionValue
+                                                              });
+                                                              grid_Distributor.setEditorForm({
+                                                                  key:"distributor_nm",
+                                                                  position:[0,3], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionText
+                                                              });
+                                                              }
+                                                          }
+                                                         }
+                                         		 }
+
+                                },
                                 {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
-                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:6, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
                             ]
                     ],
                     response: function()
@@ -486,8 +519,16 @@
                         {
                             var pushItem = this.res.item;
 
-                            if(this.res.item.title == ""){
-                                alert("제목이 비어 추가 할 수 없습니다.");
+                            var errorMsg = '' ;
+
+                            if (this.res.item.distributor_nm == "")  { errorMsg += '배급사가 비어 추가 할 수 없습니다.\n'; }
+                            if (this.res.item.theater_knm == "")     { errorMsg += '극장명(한글)이 비어 추가 할 수 없습니다.\n'; }
+                            if (this.res.item.theater_enm == "")     { errorMsg += '극장명(영문)이 비어 추가 할 수 없습니다.\n'; }
+                            if (this.res.item.theater_dcode == "")   { errorMsg += '배급사 극장코드가 비어 추가 할 수 없습니다.\n'; }
+
+                            if  (errorMsg != '')
+                            {
+                                dialog.push('<b>알림</b>\n'+errorMsg);
                                 return;
                             }
 
@@ -497,9 +538,9 @@
                         {
                             fnObj.gridDistributor.restoreList(this.index); // 삭제된걸 다시 복구한다.
 
-                           	trace(this.index);
-                           	trace(this.list);
-                           	trace(this.res.item);
+                           	//trace(this.index);
+                           	//trace(this.list);
+                           	//trace(this.res.item);
 
 							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
 							grid_Distributor.updateList(this.index, this.list[this.index]);
@@ -1219,7 +1260,6 @@
     <div class="modalButtonBox" align="center">
         <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_theater();"><i class="axi axi-save "></i> 저장</button>
     </div>
-
 
 </body>
 </html>

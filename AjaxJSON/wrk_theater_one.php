@@ -85,13 +85,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$theater_code,$distributor_seq,$theater_knm,$theater_enm,$theater_dcode);
+    $stmt->bind_result($seq,$theater_code,$distributor_seq,$distributor_nm,$theater_knm,$theater_enm,$theater_dcode);
 
     while ($stmt->fetch())
     {
         array_push($a_distributor, array("seq" => $seq
                                          ,"theater_code" => $theater_code
                                          ,"distributor_seq" => $distributor_seq
+                                         ,"distributor_nm" => $distributor_nm
                                          ,"theater_knm" => $theater_knm
                                          ,"theater_enm" => $theater_enm
                                          ,"theater_dcode" => $theater_dcode

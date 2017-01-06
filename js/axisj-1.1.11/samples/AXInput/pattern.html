@@ -284,7 +284,7 @@
                 pattern: "number",
                 allow_minus: true,
                 max_length: 10,
-                max_round: 5
+                max_round: 2
             });
             $("#ax-bind-pattern-numberint-target").bindPattern({
                 pattern: "numberint",
@@ -304,8 +304,10 @@
             });
             */
 
-            $("#ax-bind-pattern-etc-target").bindPattern({pattern: "custom", max_length: 14, patternString:"999999-9999999"}); // 법인
-            $("#ax-bind-pattern-etc-target").val("5874595329347");
+            //$("#ax-bind-pattern-etc-target").bindPattern({pattern: "custom", max_length: 14, patternString:"999999-9999999"}); // 법인
+            $("#ax-bind-pattern-etc-target").bindPattern({pattern: "custom", max_length: 13, patternString:"999-9999-9999"}); // 법인
+            $("#ax-bind-pattern-etc-target").val("1234567890123"); //5874595329347
+                                                  
 
 
             $("#ax-bind-pattern-bizno-target").bindPattern({
