@@ -31,4 +31,10 @@ if  ($_SERVER['REMOTE_ADDR']=="::1")
     $path_AjaxJSON = "../AjaxJSON" ;
     $path_Root     = "/PhpTest" ;
 }
+
+$PhpSelf = $_SERVER['PHP_SELF'];
+if  ($PhpSelf != "/PhpTest/index.php")
+{
+    if  (!$_SESSION['user_seq'])  Header("Location:/PhpTest"); // 로그인 세션이 확보되어 있지 않다면..
+}
 ?>

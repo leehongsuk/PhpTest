@@ -67,7 +67,7 @@
 						    //console.log("option:"+obj.options[i].optionValue);
 						    //console.log("option:"+obj.options[i].optionText);
 
-						    $('<label><input type="checkbox" name="Operation5" value="T1" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
+						    $('<label><input type="radio" name="Operation5" value="T1" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
 
 						    /*
 						    $('<div/>', {
@@ -85,7 +85,7 @@
 						    }).appendTo("#tdDistributor");
 						    */
 						}
-						$('input[type=checkbox]').bindChecked();
+						$('input[type=radio]').bindChecked();
 		          });
 
 
@@ -253,6 +253,92 @@
             fnObj.upload.init();
         }, // end (pageStart: function())
 
+        // 하나의 극장정보를 읽어 온다.
+        readTheaterOne: function()
+        {
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_one.php",  { code: '<?=$_GET['code']?>' })  // <-----
+                  .done(function( data )
+                  {
+						//console.log(data);
+
+                      	theater_json = eval('('+data+')');
+
+                        jQuery("input[name=code]").val(theater_json.code);
+                        jQuery("input[name=distributor_cd]").val(theater_json.distributor_cd);
+                        jQuery("input[name=film_nm]").val(theater_json.film_nm);
+                        jQuery("input[name=first_play_dt]").val(theater_json.first_play_dt);
+                        jQuery("input[name=open_dt]").val(theater_json.open_dt);
+                        jQuery("input[name=close_dt]").val(theater_json.close_dt);
+                        jQuery("input[name=reopem_dt]").val(theater_json.reopem_dt);
+                        jQuery("input[name=reclose_dt]").val(theater_json.reclose_dt);
+                        /**
+
+                        jQuery("input[name=zip]").val(theater_json.zip);
+                        jQuery("input[name=addr1]").val(theater_json.addr1);
+                        jQuery("input[name=addr2]").val(theater_json.addr2);
+                        jQuery("textarea[name=memo]").text(theater_json.memo);
+                        jQuery("input[name=open_dt]").val(theater_json.open_dt);
+                        jQuery("input[name=gubun_code]").val(theater_json.gubun_code);
+                        jQuery("input[name=saup_no]").val(theater_json.saup_no);
+                        jQuery("input[name=owner]").val(theater_json.owner);
+                        jQuery("input[name=sangho]").val(theater_json.sangho);
+                        jQuery("input[name=homepage]").val(theater_json.homepage);
+
+                        jQuery("input[name=fund_free").prop('checked',(theater_json.fund_free=="Y"));
+
+                        jQuery("input[name=score_tel").prop('checked',(theater_json.score_tel=="Y"));
+                        jQuery("input[name=score_fax").prop('checked',(theater_json.score_fax=="Y"));
+                        jQuery("input[name=score_mail").prop('checked',(theater_json.score_mail=="Y"));
+                        jQuery("input[name=score_sms").prop('checked',(theater_json.score_sms=="Y"));
+
+                        jQuery("input[name=premium_tel").prop('checked',(theater_json.premium_tel=="Y"));
+                        jQuery("input[name=premium_fax").prop('checked',(theater_json.premium_fax=="Y"));
+                        jQuery("input[name=premium_mail").prop('checked',(theater_json.premium_mail=="Y"));
+                        jQuery("input[name=premium_sms").prop('checked',(theater_json.premium_sms=="Y"));
+
+                        $('input[type=checkbox]').bindChecked();
+
+                        jQuery("select[name=loc1]").setValueSelect(theater_json.loc1);
+                        jQuery("select[name=loc2]").bindSelect({
+                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
+                            ajaxPars: {"parent_seq":theater_json.loc1 },
+                            isspace: true,
+                            isspaceTitle: "전체",
+                            onChange: function(){
+                                //console.log(this.value);
+
+                            }
+                        });
+                        fnObj.setLoc2.delay(1,theater_json.loc2);
+
+                        jQuery("select[name=affiliate_seq]").setValueSelect(theater_json.affiliate_seq);
+                        jQuery("select[name=isdirect]").setValueSelect(theater_json.isdirect);
+                        jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq);
+                        jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq);
+
+						if  (typeof theater_json.contacts != "undefined") // 연락처가 존재 할 경우
+						{
+                            if  (theater_json.contacts.length > 0)
+                            {
+                                grid_Contact.setList(theater_json.contacts[0].contacts);
+                            }
+						}
+
+						if  (typeof theater_json.showroom != "undefined") // 상영관이 존재 할 경우
+						{
+                        	grid_ShowRoom.setList(theater_json.showroom);
+						}
+
+                        if  (typeof theater_json.distributor != "undefined") // 배급사가 존재 할 경우
+						{
+                        	grid_Distributor.setList(theater_json.distributor);
+						}
+                        */
+
+            });
+        },
+
+
         upload: {
 			init: function(){
 				myUpload.setConfig({
@@ -363,7 +449,9 @@
 		}
     };
 
-    jQuery(document).ready(fnObj.pageStart.delay(0.1));
+    jQuery(document).ready(fnObj.pageStart.delay(0.1)
+                          <?php if ($MODE=="EDIT") { ?>,fnObj.readTheaterOne.delay(1)<?php } ?>
+                          );
 
 
     function test()
@@ -397,7 +485,7 @@
 				</th>
 				<td class="last">
 					<div class="tdRel">
-						<input type="text" name="bizno" placeholder="bizno" value="" class="AXInput W200 av-bizno" />
+						<input type="text" name="code" placeholder="영화코드" value="" class="AXInput W90 av-bizno" readonly="readonly"/>
 					</div>
 				</td>
 			</tr>
@@ -407,7 +495,7 @@
 				</th>
 				<td class="last">
 					<div class="tdRel">
-						<input type="text" name="bizno" placeholder="bizno" value="" class="AXInput W200 av-bizno" />
+						<input type="text" name="distributor_cd" placeholder="배급사영화코드" value="" class="AXInput W200 av-bizno" />
 					</div>
 				</td>
 			</tr>
@@ -424,8 +512,10 @@
 				</th>
 				<td class="last">
 					<div class="tdRel">
-						<input type="text" name="bizno" placeholder="bizno" value="" class="AXInput W200 av-bizno" />
-						<select name="Loccation1" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
+						<input type="text" name="film_nm" placeholder="대표영화명" value="" class="AXInput W200 av-bizno" />
+
+						<!-- 방화/외화 -->
+						<select name="film_nm" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
 					</div>
 				</td>
 			</tr>
@@ -453,31 +543,31 @@
 						<tr>
 							<td class="white_board"><label>1. 최초상영일</label></td>
 							<td class="white_board">
-								: <input type="text" name="" id="AXInputDate1" class="AXInput W100" />
+								: <input type="text" name="first_play_dt" id="AXInputDate1" class="AXInput W100" />
 							</td>
 						</tr>
 						<tr>
 							<td class="white_board"><label>2. 개봉일</label></td>
 							<td class="white_board">
-								: <input type="text" name="" id="AXInputDate2" class="AXInput W100" />
+								: <input type="text" name="open_dt" id="AXInputDate2" class="AXInput W100" />
 							</td>
 						</tr>
 						<tr>
 							<td class="white_board"><label>3. 종영일</label></td>
 							<td class="white_board">
-								: <input type="text" name="" id="AXInputDate3" class="AXInput W100" />
+								: <input type="text" name="close_dt" id="AXInputDate3" class="AXInput W100" />
 							</td>
 						</tr>
 						<tr>
 							<td class="white_board"><label>4. 재개봉일</label></td>
 							<td class="white_board">
-								: <input type="text" name="" id="AXInputDate4" class="AXInput W100" />
+								: <input type="text" name="reopem_dt" id="AXInputDate4" class="AXInput W100" />
 							</td>
 						</tr>
 						<tr>
 							<td class="white_board"><label>5. 재종영일</label></td>
 							<td class="white_board">
-								: <input type="text" name="" id="AXInputDate5" class="AXInput W100" />
+								: <input type="text" name="reclose_dt" id="AXInputDate5" class="AXInput W100" />
 							</td>
 						</tr>
 						</table>

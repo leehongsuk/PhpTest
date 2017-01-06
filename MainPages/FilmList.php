@@ -36,8 +36,6 @@
     <script type="text/javascript">
 
     var myGrid1 = new AXGrid() ; // instance
-    var myGrid2 = new AXGrid() ; // instance
-
 
     var fnObj =
     {
@@ -98,20 +96,7 @@
                     height: 3,
                     onclick: function()
                     {
-                        console.log(this.item.code);
-
-                        myGrid2.setList(
-                        {
-                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint_page.php",  // <-----
-                            ajaxPars: {
-                            	"film_code": this.item.code,
-                            },
-                            onLoad  : function(){
-                                //trace(this);
-
-                                myGrid1.setFocus(0);
-                            }
-                        });
+                        //console.log(this.item.code);
                     }
                 },
                 //              page:{
@@ -133,58 +118,6 @@
                     myGrid1.setFocus(0);
                 }
             });
-
-
-
-
-            myGrid2.setConfig(
-            {
-                targetID : "AXGridTarget2",
-                theme : "AXGrid",
-                autoChangeGridView: { // autoChangeGridView by browser width
-                    mobile:[0,600], grid:[600]
-                },
-                fitToWidth: false, // 너비에 자동 맞춤
-                colGroup : [
-                    {
-                        key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
-                        {
-                          return '<button class="AXButton" onclick="fnObj.deleteItem1(\'' + this.item.code + '\');"><i class="axi axi-trash2"></i></button>';
-                        }
-                    },
-                    {
-                        key: "btns", label: "수정", width: "60", align: "center", formatter: function ()
-                        {
-                            return '<button class="AXButton" onclick="fnObj.editItem1(\'' + this.item.code + '\');"><i class="axi axi-pencil"></i></button>';
-                        }
-                    },
-
-                    {key:"playprint1", label:"프린트1", width:"100"},
-                    {key:"playprint2", label:"프린트2", width:"100"},
-                    {key:"memo", label:"메모", width:"200"}
-                ],
-                body :
-                {
-                    onclick: function()
-                    {
-                        alert();
-                        //toast.push(Object.toJSON({index:this.index, item:this.item}));
-                        /*
-
-                        */
-                    }
-                },
-                //              page:{
-                //                  paging:false
-                //              }
-                page:{
-                    paging:true,
-                    pageNo:1,
-                    pageSize:10
-                }
-            });
-
-
 
 
         },
@@ -242,8 +175,6 @@
     </div>
 
     <div id="AXGridTarget1"></div>
-    <br>
-    <div id="AXGridTarget2"></div>
 
 </body>
 </html>
