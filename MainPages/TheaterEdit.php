@@ -91,7 +91,7 @@
 
 
              // 담당자 종류를 가지고 온다음 탭을 구성한다.
-            jQuery.post( "<?=$path_AjaxJSON?>/bas_contact.php")
+            jQuery.post( "<?=$path_AjaxJSON?>/bas_contact.php")  // <-----
                   .done(function( data ) {
                         //console.log(data);
                         var obj = eval("("+data+")");
@@ -945,7 +945,7 @@
 		onFnClose : function()
         {
 		    //location.href = "./TheaterList.php"; // 히스토리에 저장이 된다.
-		    location.replace("./TheaterList.php") ; // 히스토리에 저장이 되지않는다.
+		    location.replace("./TheaterList.php") ; // 히스토리에 저장이 되지않는다.   // <-----
         },
 
 		// 극장 저장이 성공적일때..
@@ -978,7 +978,7 @@
                 closeButton: true
             });
             */
-            myModal.setConfig({onclose: onFnClose});
+            myModal.setConfig({onclose: onFnClose, displayLoading: false});
 
             var pars = "title="+title+"&content="+errorMsg ;
             myModal.open({

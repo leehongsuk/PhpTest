@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // clound 9용 설정
 if  ($_SERVER['REMOTE_ADDR']!="::1")
