@@ -35,7 +35,7 @@
 
     <script type="text/javascript">
 
-    var myGrid1 = new AXGrid() ; // instance
+    var gridFilm = new AXGrid() ; // instance
 
     var fnObj =
     {
@@ -57,7 +57,7 @@
                 }
             });
 
-            myGrid1.setConfig(
+            gridFilm.setConfig(
             {
                 targetID : "AXGridTarget1",
                 theme : "AXGrid",
@@ -110,12 +110,12 @@
             });
 
 
-            myGrid1.setList({
+            gridFilm.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",  // <-----
                 onLoad  : function(){
                     //trace(this);
 
-                    myGrid1.setFocus(0);
+                    gridFilm.setFocus(0);
                 }
             });
 
@@ -129,7 +129,7 @@
                 jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_delete.php",  { code: code }) // <-----
                       .done(function( data ) {
                           //alert( "자료가 삭제되었습니다. " + data );
-                          myGrid1.setList({
+                          gridFilm.setList({
                               ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",  // <-----
                               //                 ajaxPars: {
                               //                     "param1": "액시스제이",
@@ -138,7 +138,7 @@
                               onLoad  : function(){
                                   //trace(this);
 
-                                  //myGrid1.setFocus(this.list.length - 1);
+                                  //gridFilm.setFocus(this.list.length - 1);
                               }
                           });
                       });
