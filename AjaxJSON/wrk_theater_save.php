@@ -1,7 +1,5 @@
 <?php
 require_once ("../config/CONFIG.php");
-
-$PhpSelf = $_SERVER['PHP_SELF'];
 require_once ("../config/DB_CONNECT.php");
 
 //    print_r ( $_REQUEST );

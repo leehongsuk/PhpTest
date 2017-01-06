@@ -1,7 +1,5 @@
 <?php
 require_once("../config/CONFIG.php");
-
-$PhpSelf = $_SERVER['PHP_SELF'];
 require_once("../config/DB_CONNECT.php");
 
     $post_pageNo     = $_POST["pageNo"] ;
@@ -12,7 +10,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL SP_BAS_ZIP_SEL_COUNT()" ; // <-----   
+    $query= "CALL SP_BAS_ZIP_SEL_COUNT()" ; // <-----
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
@@ -23,7 +21,7 @@ require_once("../config/DB_CONNECT.php");
     $pageCount = floor($count / $post_pageSize) + ( ($count % $post_pageSize)>0 ? 1 : 0 ) ;
 
 
-    $query= "CALL SP_BAS_ZIP_SEL_PAGE(?,?)" ; // <-----   
+    $query= "CALL SP_BAS_ZIP_SEL_PAGE(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("ii", $post_pageNo, $post_pageSize);

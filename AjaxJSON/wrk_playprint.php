@@ -1,7 +1,5 @@
 <?php
 require_once("../config/CONFIG.php");
-
-$PhpSelf = $_SERVER['PHP_SELF'];
 require_once("../config/DB_CONNECT.php");
 
     $post_film_code  = $_POST["film_code"] ;
@@ -10,7 +8,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL SP_WRK_PLAYPRINT_SEL(?)" ; // <-----   
+    $query= "CALL SP_WRK_PLAYPRINT_SEL(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_film_code);
