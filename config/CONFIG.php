@@ -32,9 +32,18 @@ if  ($_SERVER['REMOTE_ADDR']=="::1")
     $path_Root     = "/PhpTest" ;
 }
 
+
 $PhpSelf = $_SERVER['PHP_SELF'];
-if  ($PhpSelf != "/PhpTest/index.php")
+/***********************************************************************************
+if  ($PhpSelf == "/PhpTest/index.php") // 초기 화면..
 {
-    if  (!$_SESSION['user_seq'])  Header("Location:/PhpTest"); // 로그인 세션이 확보되어 있지 않다면..
+    // 초기화면에서 세션이 있으면 MainPages/ 로 이동한다.
+    if  ($_SESSION['user_seq'])  Header("Location:MainPages/"); // 이미 로그인 세션이 확보되어 있다면 MainPage쪽으로 간다.....
 }
+else
+{
+    // 초기화면이 아닌 일반 화면에서 세션이 없다면 초기화면으로 간다.
+    if  (!$_SESSION['user_seq'])  Header("Location:/PhpTest/index.php"); // 로그인 세션이 확보되어 있지 않다면..
+}
+***********************************************************************************/
 ?>

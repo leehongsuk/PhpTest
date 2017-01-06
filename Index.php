@@ -1,7 +1,5 @@
 <?php
 require_once("./config/CONFIG.php");
-
-if  ($_SESSION['user_seq'])  Header("Location:MainPages/"); // 이미 로그인 세션이 확보되어 있다면 MainPage쪽으로 간다.....
 ?>
 <!DOCTYPE html>
 <html lang="ko">
