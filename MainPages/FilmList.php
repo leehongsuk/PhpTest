@@ -100,9 +100,6 @@
                         //console.log(this.item.code);
                     }
                 },
-                //              page:{
-                //                  paging:false
-                //              }
                 page:{
                     paging:true,
                     pageNo:1,
