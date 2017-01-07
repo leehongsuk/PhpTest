@@ -169,7 +169,7 @@
                 isspace: true,
                 isspaceTitle: "없음",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
@@ -180,7 +180,7 @@
                 isspace: true,
                 isspaceTitle: "없음",
                 onChange: function(){
-                    console.log(this.value);
+                    //console.log(this.value);
                 }
             });
 
@@ -261,6 +261,9 @@
                         jQuery("input[name=close_dt]").val(film_json.close_dt);
                         jQuery("input[name=reopem_dt]").val(film_json.reopem_dt);
                         jQuery("input[name=reclose_dt]").val(film_json.reclose_dt);
+
+                        jQuery("select[name=korabd]").setValueSelect(film_json.korabd);
+                        jQuery("select[name=grade]").setValueSelect(film_json.grade);
 
                         if  (typeof film_json.playprints != "undefined") // 상영 프린터가 존재 할 경우
 						{
@@ -534,7 +537,7 @@
     						<input type="text" name="film_nm" placeholder="대표영화명" value="" class="AXInput W200 av-bizno" />
 
     						<!-- 방화/외화 -->
-    						<select name="film_nm" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
+    						<select name="korabd" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
     					</div>
     				</td>
     			</tr>
@@ -550,7 +553,7 @@
     					<div class="tdRel">영화 등급</div>
     				</th>
     				<td class="last">
-    					<select name="Loccation1" class="AXSelectSmall" id="AXSelect_Grade" style="width:120px;" tabindex="1"></select>
+    					<select name="grade" class="AXSelectSmall" id="AXSelect_Grade" style="width:120px;" tabindex="1"></select>
     				</td>
     			</tr>
     			<tr>
