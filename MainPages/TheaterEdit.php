@@ -92,8 +92,8 @@
 
              // 담당자 종류를 가지고 온다음 탭을 구성한다.
             jQuery.post( "<?=$path_AjaxJSON?>/bas_contact.php")  // <-----
-                  .done(function( data ) {
-                        //console.log(data);
+                  .done(function( data )
+                  {
                         var obj = eval("("+data+")");
 
                         $("#AXTabs_Contact").closeTab();
@@ -558,9 +558,9 @@
             });
 
             // 해당극장의 요금을 가지고 온다.
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php",  { code: '<?=$_GET['code']?>' })  // <-----
-		          .done(function( data ) {
-
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php", { code: '<?=$_GET['code']?>' })  // <-----
+		          .done(function( data )
+				  {
 		            	var obj  = eval("("+data+")");
      				    var tag1 = '<div class="unitprice_item"><label>';
      				    var tag2 = '</label></div>';
@@ -792,11 +792,9 @@
         // 하나의 극장정보를 읽어 온다.
         readTheaterOne: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php",  { code: '<?=$_GET['code']?>' })  // <-----
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php", { code: '<?=$_GET['code']?>' })  // <-----
                   .done(function( data )
                   {
-						//console.log(data);
-
                       	theater_json = eval('('+data+')');
 
                         jQuery("input[name=code]").val(theater_json.code);

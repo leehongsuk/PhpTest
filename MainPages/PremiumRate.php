@@ -152,11 +152,10 @@
         search_premium_rate: function()
         {
             jQuery.post( "<?=$path_AjaxJSON?>/bas_location_child_all.php", {})  // <-----
-                  .done(function( data ) {
-
+                  .done(function( data )
+                  {
 						jsonLocChldAll = eval("("+data+")");  // 지역리스트의 json
                         //trace(jsonLocChldAll); ////////////
-
 
                         var colgrp = [];
 

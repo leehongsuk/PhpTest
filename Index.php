@@ -69,9 +69,9 @@ require_once("./config/CONFIG.php");
 			if  (errMsg == "")
 			{
 			    // 로그인을 한다.
-	            jQuery.post( "./AjaxJSON/user_login.php",  { user_id : user_id , user_pw : user_pw })  // <-----
-			          .done(function( data ) {
-
+	            jQuery.post( "./AjaxJSON/user_login.php", { user_id : user_id , user_pw : user_pw })  // <-----
+			          .done(function( data )
+					  {
 			            	var obj  = eval("("+data+")");
 
 			            	if  (obj.count_id == 0) errMsg += "등록되어 있지 않는 아이디입니다.<br>"

@@ -37,6 +37,33 @@
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
+    <style type="text/css">
+    .modalProgramTitle{
+        height:38px;
+        line-height:40px;
+        color:#282828;
+        font-size:14px;
+        font-weight:bold;
+        padding-left:15px;
+        border-bottom:1px solid #a6a6a6;
+    }
+    .modalButtonBox{
+        padding:10px;
+        border-top:1px solid #ccc;
+    }
+
+    .unitprice_box {
+        display: table-cell;
+
+    }
+    .unitprice_item {
+        display:inline-block;
+        width:90px;
+        line-height: 36px;
+        margin-left:1px;
+    }
+    </style>
+
     <script type="text/javascript">
 
     var film_json ;
@@ -54,60 +81,30 @@
             $('input[type=radio]').bindChecked();
 
             // 배급사를 가지고 온다.
-            jQuery.post( "<?=$path_AjaxJSON?>/bas_distributor.php")
-		          .done(function( data ) {
-		            	//console.log(data);
+            jQuery.post( "<?=$path_AjaxJSON?>/bas_distributor.php")  // <-----
+		          .done(function( data )
+				  {
 		            	var obj = eval("("+data+")");
-
-		            	$("#AXTabs_Contact").closeTab();
-		            	$("#AXTabs_Contact").addTabs(obj.options);
-
-		            	//console.log("options:"+obj.options);
 
 						for (var i=0 ;i<obj.options.length;i++)
 						{
-						    //console.log("option:"+obj.options[i].optionValue);
-						    //console.log("option:"+obj.options[i].optionText);
-
-						    $('<label><input type="radio" name="distributor" value="T1" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
-
-						    /*
-						    $('<div/>', {
-						    	"id"   : "foo",
-						    	"class": "box",
-						    	"title": "박스",
-						        css:{
-						    		"background": "blue",
-						    		"width"     : "200px",
-						    		"height"    : "200px",
-						        },
-						        click:function(){
-						            $(this).css("background","red");
-						        }
-						    }).appendTo("#tdDistributor");
-						    */
+						    $('<label><input type="radio" name="distributor_seq" value="'+obj.options[i].optionValue+'" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
 						}
 						$('input[type=radio]').bindChecked();
 		          });
 
 
             // 장르를 가지고 온다.
-            jQuery.post( "<?=$path_AjaxJSON?>/bas_genre.php")
-		          .done(function( data ) {
-		            	//console.log(data);
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_genre.php", { code: '<?=$_GET['code']?>' })  // <-----
+		          .done(function( data )
+				  {
 		            	var obj = eval("("+data+")");
-
-		            	$("#AXTabs_Contact").closeTab();
-		            	$("#AXTabs_Contact").addTabs(obj.options);
-
-		            	//console.log("options:"+obj.options);
 
 						for (var i=0 ;i<obj.options.length;i++)
 						{
-						    //console.log("option:"+obj.options[i].optionValue);
-						    //console.log("option:"+obj.options[i].optionText);
+						    var checked = (obj.options[i].genre_seq != null) ? 'checked=checked' : '' ;
 
-						    $('<label><input type="checkbox" name="genre'+obj.options[i].optionValue+'" value="T1" id="AXCheck_Genre'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdGenre");
+						    $('<label><input type="checkbox" name="genre'+obj.options[i].seq+'" value="Y" id="AXCheck_Genre'+obj.options[i].seq+'" '+checked+'/> '+obj.options[i].genre_nm+'</label>').appendTo("#tdGenre");
 						}
 						$('input[type=checkbox]').bindChecked();
 		          });
@@ -247,17 +244,17 @@
             //fnObj.upload.init();
         }, // end (pageStart: function())
 
-        // 하나의 극장정보를 읽어 온다.
+        // 하나의 영화정보를 읽어 온다.
         readFilmOne: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_one.php",  { code: '<?=$_GET['code']?>' })  // <-----
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_one.php", { code: '<?=$_GET['code']?>' })  // <-----
                   .done(function( data )
                   {
-						//console.log(data);
                       	film_json = eval('('+data+')');
 
                         jQuery("input[name=code]").val(film_json.code);
                         jQuery("input[name=distributor_cd]").val(film_json.distributor_cd);
+                        jQuery("input:radio[name='distributor_seq']:radio[value="+film_json.distributor_seq+"]").attr("checked",true);
                         jQuery("input[name=film_nm]").val(film_json.film_nm);
                         jQuery("input[name=first_play_dt]").val(film_json.first_play_dt);
                         jQuery("input[name=open_dt]").val(film_json.open_dt);
@@ -269,6 +266,8 @@
 						{
                             grid_PlayPrint.setList(film_json.playprints);
 						}
+
+                        $('input[type=radio]').bindChecked();
                   });
         },
 
