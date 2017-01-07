@@ -45,6 +45,7 @@ require_once("./config/CONFIG.php");
     {
         pageStart: function()
         {
+            jQuery('input[name=user_id]').focus();
         },
 
 		// 로그인 버튼
@@ -90,15 +91,26 @@ require_once("./config/CONFIG.php");
 
 			            	if  (errMsg != "")
 			                {
-			                	fnObj.modalOpen(500,-1,'확인',errMsg,null)
+			                	//fnObj.modalOpen(500,-1,'확인',errMsg,null)
+			            	    dialog.push({title:'확인', body:errMsg, type:'Caution', onConfirm:fnObj.btnOnConfirm, data:''});
 			                }
 
 			          });
 			}
 			else
             {
-            	fnObj.modalOpen(500,-1,'확인',errMsg,null)
+            	//fnObj.modalOpen(500,-1,'확인',errMsg,null)
+            	dialog.push({title:'확인', body:errMsg, type:'Caution', onConfirm:fnObj.btnOnConfirm, data:''});
             }
+        },
+
+		// 확인버튼을 누르면..
+        btnOnConfirm: function(data)
+        {
+            jQuery('input[name=user_id]').val(data);
+			jQuery('input[name=user_pw]').val(data);
+
+			jQuery('input[name=user_id]').focus();
         },
 
         // 모달창을 띄운다.
@@ -116,7 +128,17 @@ require_once("./config/CONFIG.php");
                 closeButton: true,
                 closeByEscKey: true
             });
-        }
+        },
+
+        keydownID : function(my,event)
+        {
+            if ( ($(my).val()!='') && (event.keyCode==13) ) jQuery('input[name=user_pw]').focus();
+		},
+
+        keyupPW : function(my,event)
+        {
+            if ( ($(my).val()!='') && (event.keyCode==13) ) jQuery('#btnLogin').focus();
+		}
 
     };
 
@@ -172,11 +194,10 @@ require_once("./config/CONFIG.php");
 
     <div class="modalButtonBox" align="center"  style="">
 
-     	아이디 : <input type="text" class="AXInput W90" placeholder="아이디" name="user_id"/>&nbsp;&nbsp;&nbsp;
+     	아이디 : <input type="text" class="AXInput W90" placeholder="아이디" name="user_id" onkeydown="fnObj.keydownID(this,event);"/>&nbsp;&nbsp;&nbsp;
+     	암호 : <input type="password" class="AXInput W90" placeholder="암호" name="user_pw" onkeyup="fnObj.keyupPW(this,event);"/>&nbsp;&nbsp;&nbsp;
 
-     	암호 : <input type="password" class="AXInput W90" placeholder="암호" name="user_pw">&nbsp;&nbsp;&nbsp;
-
-     	<button type="button" class="AXButton W500" id="btnSave" onclick="fnObj.login();"><i class="axi axi-save "></i> 로그인</button>
+     	<button type="button" class="AXButton W500" id="btnLogin" onclick="fnObj.login();"><i class="axi axi-save "></i> 로그인</button>
     </div>
 
 

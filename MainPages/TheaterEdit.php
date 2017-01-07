@@ -907,13 +907,8 @@
 		        jQuery("input:hidden[name=showrooms]").val( JSON.stringify( theater_json.showrooms ) ) ;
 		        jQuery("input:hidden[name=distributors]").val( JSON.stringify( theater_json.distributors ) ) ;
 
-		        //trace( theater_json.distributor );
-
-
                 // 저장할 값들을 취합한다.
                 var formData = jQuery("form[name=frmThearter]").serialize();
-
-                //trace(formData);
 
                 jQuery.ajax({
                              type : "POST",

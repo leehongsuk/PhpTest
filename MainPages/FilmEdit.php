@@ -71,6 +71,8 @@
     var myUpload       = new AXUpload5();
     var grid_PlayPrint = new AXGrid() ; // 연락처 그리드
 
+    var myModal = new AXModal(); // 우편번호검색을 위한 팝업창과 범용팝업
+
 
     var fnObj =
     {
@@ -115,7 +117,8 @@
                 align:"right",
                 valign:"top",
                 onChange:function(){
-                    toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(this));
+                    dialog.push({body:'<b>Caution</b> Application Call dialog push', type:'Caution', onConfirm:fnObj.btnOnConfirm, data:'onConfirmData'});
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -125,7 +128,15 @@
                 align:"right",
                 valign:"top",
                 onChange:function(){
-                    toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(this));
+                    dialog.push({
+                        title: "제목",
+                        body:'<b>주의</b> 메롱Application Call dialog push', top:200, type:'Caution', buttons:[
+                            {buttonValue:'button1', buttonClass:'Red W100', onClick:fnObj.btnClick, data:'data1'},
+                            {buttonValue:'button2', buttonClass:'Blue', onClick:fnObj.btnClick, data:'data2'},
+                            {buttonValue:'button3', buttonClass:'Green', onClick:fnObj.btnClick, data:'data3'}
+                        ]
+                     });
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -214,35 +225,205 @@
                 height : 250,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
+                passiveMode:true,
+                passiveRemoveHide:false,
                 colGroup : [
                     {
                         key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
                         {
-                          return '<button class="AXButton" onclick="fnObj.deleteItem(\'' + this.item.code + '\');"><i class="axi axi-trash2"></i></button>';
+                          	return '<button class="AXButton" onclick="fnObj.gridPlayPrint.deleteItem(\'' + this.index + '\');"><i class="axi axi-trash2"></i></button>';
                         }
                     },
-                    {key:"seq", label:"일련번호", width:"100"},
-                    {key:"film_code", label:"영화코드(M000001)", width:"100"},
-                    {key:"playprint1_seq", label:"", width:"10"},
-                    {key:"playprint1", label:"상영프린트1", width:"100"},
-                    {key:"playprint2_seq", label:"", width:"10"},
-                    {key:"playprint2", label:"상영프린트2", width:"100"},
-                    {key:"memo", label:"메모", width:"100"}
+                    {key:"status", label:"상태", width:"50", align:"center", formatter:function()
+                        {
+	                        if(this.item._CUD == "C"){ return "신규"; }
+	                        else if(this.item._CUD == "D"){ return "삭제"; }
+	                        else if(this.item._CUD == "U"){ return "수정"; }
+	                    }
+                    },
+                    {key:"playprint1_seq", label:" ",           width:"0", formatter: function () { return '' ; }},
+                    {key:"playprint1_nm",  label:"상영프린트1", width:"100"},
+                    {key:"playprint2_seq", label:" ",           width:"0", formatter: function () { return '' ; }},
+                    {key:"playprint2_nm",  label:"상영프린트2", width:"100"},
+                    {key:"memo",           label:"메모",        width:"300"}
                 ],
                 body : {
-                    onclick: function(){
+                    ondblclick: function()
+                    {
                         //toast.push(Object.toJSON({index:this.index, item:this.item}));
-                        ///console.log(this.item);
+                        grid_PlayPrint.setEditor(this.item, this.index);
                     }
                 },
                 page:{
                 	paging:false
+                },
+                editor: {
+                    rows: [
+                            [
+                                {key:"status", align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:1, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:2, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}
+                                         ,AXBind:{
+                                                  type:"selector",
+                                                  config:{
+                                                          appendable:true,
+                                                          ajaxUrl:"<?=$path_AjaxJSON?>/bas_playprint1.php",  // <-----
+                                                          ajaxPars:"",
+                                                          onChange:function(){
+                                                              if(this.selectedOption){
+
+                                                              grid_PlayPrint.setEditorForm({
+                                                                  key:"playprint1_seq",
+                                                                  position:[0,2], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionValue
+                                                              });
+                                                              grid_PlayPrint.setEditorForm({
+                                                                  key:"playprint1_nm",
+                                                                  position:[0,3], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionText
+                                                              });
+                                                              }
+                                                          }
+                                                         }
+                                         		 }
+
+                                },
+                                {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}
+                                         ,AXBind:{
+                                                  type:"selector",
+                                                  config:{
+                                                          appendable:true,
+                                                          ajaxUrl:"<?=$path_AjaxJSON?>/bas_playprint2.php",  // <-----
+                                                          ajaxPars:"",
+                                                          onChange:function(){
+                                                              if(this.selectedOption){
+
+                                                              grid_PlayPrint.setEditorForm({
+                                                                  key:"playprint2_seq",
+                                                                  position:[0,4], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionValue
+                                                              });
+                                                              grid_PlayPrint.setEditorForm({
+                                                                  key:"playprint2_nm",
+                                                                  position:[0,5], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionText
+                                                              });
+                                                              }
+                                                          }
+                                                         }
+                                         		 }
+
+                                },
+                                {colSeq:6, align:"left", valign:"top", form:{type:"text", value:"itemValue"}}
+                            ]
+                    ],
+                    response: function()
+                    {
+                        if(this.index == null) // 추가
+                        {
+                            var pushItem = this.res.item;
+
+                            var errorMsg = '' ;
+
+                            if (this.res.item.playprint1_nm == "")  { errorMsg += '상영프린트1이 비어 추가 할 수 없습니다.\n'; }
+                            if (this.res.item.playprint2_nm == "")  { errorMsg += '상영프린트2이 비어 추가 할 수 없습니다.\n'; }
+
+                            if  (errorMsg != '')
+                            {
+                                dialog.push('<b>알림</b>\n'+errorMsg);
+                                return;
+                            }
+
+                            grid_PlayPrint.pushList(pushItem, this.insertIndex);
+                        }
+                        else // 수정
+                        {
+                            fnObj.gridPlayPrint.restoreList(this.index); // 삭제된걸 다시 복구한다.
+
+                           	//trace(this.index);
+                           	//trace(this.list);
+                           	//trace(this.res.item);
+
+							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
+							grid_PlayPrint.updateList(this.index, this.list[this.index]);
+                        }
+                    }
                 }
 
             });
 
             //fnObj.upload.init();
         }, // end (pageStart: function())
+
+        //상영프린트 그리드 관련 이벤트 함수 그룹..
+        gridPlayPrint:
+        {
+
+            // 상영프린트 추가 버튼을 누를 때..
+            appendGrid: function(index)
+            {
+                var item = {};
+                if(index){
+                    grid_PlayPrint.appendList(item, index);
+                }else{
+                    grid_PlayPrint.appendList(item);
+                }
+            },
+
+            // 상영프린트에서 삭제버튼을 누를 때..
+            deleteItem: function (index)
+            {
+                if (confirm("정말로 삭제하시겠습니까?"))
+                {
+                    var collect = [];
+
+                    for (var item, itemIndex = 0, __arr = grid_PlayPrint.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                    {
+                        if (!item.___disabled) item.___disabled = {};
+                        if (!item.___checked) item.___checked = {};
+
+                        if  (itemIndex == index)
+                        {
+                            item.___disabled[0] = false;
+                            item.___checked[0] = true;
+
+    						collect.push({index: itemIndex, item: item});
+                        }
+                    }
+
+                    grid_PlayPrint.removeListIndex(collect);
+                }
+            },
+
+            // 상영프린트에서 더블클릭으로 수정할 때..
+            restoreList: function(index)
+            {
+                var collect = [];
+
+                for (var item, itemIndex = 0, __arr = grid_PlayPrint.list; (itemIndex < __arr.length && (item = __arr[itemIndex])); itemIndex++)
+                {
+                    if (!item.___disabled) item.___disabled = {};
+                    if (!item.___checked) item.___checked = {};
+
+                    if  (itemIndex == index)
+                    {
+                        item.___disabled[0] = false;
+                        item.___checked[0] = true;
+
+    					collect.push({index: itemIndex, item: item});
+                    }
+                }
+
+                var removeList = [];
+                $.each(collect, function()
+                {
+                    removeList.push({seq:this.item.seq});
+                });
+                grid_PlayPrint.restoreList(removeList);
+            }
+        },
 
         // 하나의 영화정보를 읽어 온다.
         readFilmOne: function()
@@ -394,13 +575,8 @@
             {
 		        jQuery("input:hidden[name=playprints]").val( JSON.stringify( film_json.playprints ) ) ;
 
-		        //trace( film_json.distributor );
-
-
                 // 저장할 값들을 취합한다.
                 var formData = jQuery("form[name=frmFilm]").serialize();
-
-                //trace(formData);
 
                 jQuery.ajax({
                              type : "POST",
@@ -612,7 +788,12 @@
     					<div class="tdRel">프린터</div>
     				</th>
     				<td class="last">
-    					<div id="AXgrid_PlayPrint"></div>
+
+    					<div style="padding: 5px;">
+                            <div id="AXgrid_PlayPrint"></div>
+                        </div>
+
+    					<button type="button" class="AXButton" onclick="fnObj.gridPlayPrint.appendGrid();"><i class="axi axi-ion-document-text"></i> 추가하기</button>
     				</td>
     			</tr>
     		</tbody>

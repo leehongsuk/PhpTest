@@ -17,9 +17,9 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_result($seq
                       ,$film_code
                       ,$playprint1_seq
-                      ,$playprint1
+                      ,$playprint1_nm
                       ,$playprint2_seq
-                      ,$playprint2
+                      ,$playprint2_nm
                       ,$memo
                       );
 
@@ -30,9 +30,9 @@ require_once("../config/DB_CONNECT.php");
         array_push($a_playprint, array("seq" => $seq
                                        ,"film_code" => $film_code
                                        ,"playprint1_seq" => $playprint1_seq
-                                       ,"playprint1" => $playprint1
+                                       ,"playprint1_nm" => $playprint1_nm
                                        ,"playprint2_seq" => $playprint2_seq
-                                       ,"playprint2" => $playprint2
+                                       ,"playprint2_nm" => $playprint2_nm
                                        ,"memo" => $memo
                                        )
                   ) ;
