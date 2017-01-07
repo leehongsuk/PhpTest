@@ -8,7 +8,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_DELETE(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("i", $post_code);
+    $stmt->bind_param("s", $post_code);
     $stmt->execute();
     $stmt->close();
 
