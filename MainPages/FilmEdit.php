@@ -39,6 +39,8 @@
 
     <script type="text/javascript">
 
+    var film_json ;
+
     var myUpload       = new AXUpload5();
     var grid_PlayPrint = new AXGrid() ; // 연락처 그리드
 
@@ -60,14 +62,14 @@
 		            	$("#AXTabs_Contact").closeTab();
 		            	$("#AXTabs_Contact").addTabs(obj.options);
 
-		            	console.log("options:"+obj.options);
+		            	//console.log("options:"+obj.options);
 
 						for (var i=0 ;i<obj.options.length;i++)
 						{
 						    //console.log("option:"+obj.options[i].optionValue);
 						    //console.log("option:"+obj.options[i].optionText);
 
-						    $('<label><input type="radio" name="Operation5" value="T1" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
+						    $('<label><input type="radio" name="distributor" value="T1" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
 
 						    /*
 						    $('<div/>', {
@@ -98,14 +100,14 @@
 		            	$("#AXTabs_Contact").closeTab();
 		            	$("#AXTabs_Contact").addTabs(obj.options);
 
-		            	console.log("options:"+obj.options);
+		            	//console.log("options:"+obj.options);
 
 						for (var i=0 ;i<obj.options.length;i++)
 						{
 						    //console.log("option:"+obj.options[i].optionValue);
 						    //console.log("option:"+obj.options[i].optionText);
 
-						    $('<label><input type="checkbox" name="Operation5" value="T1" id="AXCheck_Genre'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdGenre");
+						    $('<label><input type="checkbox" name="genre'+obj.options[i].optionValue+'" value="T1" id="AXCheck_Genre'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdGenre");
 						}
 						$('input[type=checkbox]').bindChecked();
 		          });
@@ -168,7 +170,7 @@
             jQuery("#AXSelect_KorabdGbn").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",  // <-----
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     console.log(this.value);
                 }
@@ -179,7 +181,7 @@
             jQuery("#AXSelect_Grade").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_grade.php",  // <-----
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     console.log(this.value);
                 }
@@ -224,8 +226,11 @@
                     },
                     {key:"seq", label:"일련번호", width:"100"},
                     {key:"film_code", label:"영화코드(M000001)", width:"100"},
+                    {key:"playprint1_seq", label:"", width:"10"},
                     {key:"playprint1", label:"상영프린트1", width:"100"},
-                    {key:"playprint2", label:"상영프린트2", width:"100"}
+                    {key:"playprint2_seq", label:"", width:"10"},
+                    {key:"playprint2", label:"상영프린트2", width:"100"},
+                    {key:"memo", label:"메모", width:"100"}
                 ],
                 body : {
                     onclick: function(){
@@ -239,112 +244,35 @@
 
             });
 
-            grid_PlayPrint.setList({
-                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint.php",  // <-----
-                ajaxPars: {
-                    "film_code": "M0000001"
-                },
-                onLoad  : function(){
-                    //trace(this);
-                }
-            });
-
-
-            fnObj.upload.init();
+            //fnObj.upload.init();
         }, // end (pageStart: function())
 
         // 하나의 극장정보를 읽어 온다.
-        readTheaterOne: function()
+        readFilmOne: function()
         {
             jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_one.php",  { code: '<?=$_GET['code']?>' })  // <-----
                   .done(function( data )
                   {
 						//console.log(data);
+                      	film_json = eval('('+data+')');
 
-                      	theater_json = eval('('+data+')');
+                        jQuery("input[name=code]").val(film_json.code);
+                        jQuery("input[name=distributor_cd]").val(film_json.distributor_cd);
+                        jQuery("input[name=film_nm]").val(film_json.film_nm);
+                        jQuery("input[name=first_play_dt]").val(film_json.first_play_dt);
+                        jQuery("input[name=open_dt]").val(film_json.open_dt);
+                        jQuery("input[name=close_dt]").val(film_json.close_dt);
+                        jQuery("input[name=reopem_dt]").val(film_json.reopem_dt);
+                        jQuery("input[name=reclose_dt]").val(film_json.reclose_dt);
 
-                        jQuery("input[name=code]").val(theater_json.code);
-                        jQuery("input[name=distributor_cd]").val(theater_json.distributor_cd);
-                        jQuery("input[name=film_nm]").val(theater_json.film_nm);
-                        jQuery("input[name=first_play_dt]").val(theater_json.first_play_dt);
-                        jQuery("input[name=open_dt]").val(theater_json.open_dt);
-                        jQuery("input[name=close_dt]").val(theater_json.close_dt);
-                        jQuery("input[name=reopem_dt]").val(theater_json.reopem_dt);
-                        jQuery("input[name=reclose_dt]").val(theater_json.reclose_dt);
-
-                        if  (typeof theater_json.playprints != "undefined") // 프린터가 존재 할 경우
+                        if  (typeof film_json.playprints != "undefined") // 상영 프린터가 존재 할 경우
 						{
-                            grid_PlayPrint.setList(theater_json.contacts);
+                            grid_PlayPrint.setList(film_json.playprints);
 						}
-
-                        /**
-
-                        jQuery("input[name=zip]").val(theater_json.zip);
-                        jQuery("input[name=addr1]").val(theater_json.addr1);
-                        jQuery("input[name=addr2]").val(theater_json.addr2);
-                        jQuery("textarea[name=memo]").text(theater_json.memo);
-                        jQuery("input[name=open_dt]").val(theater_json.open_dt);
-                        jQuery("input[name=gubun_code]").val(theater_json.gubun_code);
-                        jQuery("input[name=saup_no]").val(theater_json.saup_no);
-                        jQuery("input[name=owner]").val(theater_json.owner);
-                        jQuery("input[name=sangho]").val(theater_json.sangho);
-                        jQuery("input[name=homepage]").val(theater_json.homepage);
-
-                        jQuery("input[name=fund_free").prop('checked',(theater_json.fund_free=="Y"));
-
-                        jQuery("input[name=score_tel").prop('checked',(theater_json.score_tel=="Y"));
-                        jQuery("input[name=score_fax").prop('checked',(theater_json.score_fax=="Y"));
-                        jQuery("input[name=score_mail").prop('checked',(theater_json.score_mail=="Y"));
-                        jQuery("input[name=score_sms").prop('checked',(theater_json.score_sms=="Y"));
-
-                        jQuery("input[name=premium_tel").prop('checked',(theater_json.premium_tel=="Y"));
-                        jQuery("input[name=premium_fax").prop('checked',(theater_json.premium_fax=="Y"));
-                        jQuery("input[name=premium_mail").prop('checked',(theater_json.premium_mail=="Y"));
-                        jQuery("input[name=premium_sms").prop('checked',(theater_json.premium_sms=="Y"));
-
-                        $('input[type=checkbox]').bindChecked();
-
-                        jQuery("select[name=loc1]").setValueSelect(theater_json.loc1);
-                        jQuery("select[name=loc2]").bindSelect({
-                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
-                            ajaxPars: {"parent_seq":theater_json.loc1 },
-                            isspace: true,
-                            isspaceTitle: "전체",
-                            onChange: function(){
-                                //console.log(this.value);
-
-                            }
-                        });
-                        fnObj.setLoc2.delay(1,theater_json.loc2);
-
-                        jQuery("select[name=affiliate_seq]").setValueSelect(theater_json.affiliate_seq);
-                        jQuery("select[name=isdirect]").setValueSelect(theater_json.isdirect);
-                        jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq);
-                        jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq);
-
-						if  (typeof theater_json.contacts != "undefined") // 연락처가 존재 할 경우
-						{
-                            if  (theater_json.contacts.length > 0)
-                            {
-                                grid_Contact.setList(theater_json.contacts[0].contacts);
-                            }
-						}
-
-						if  (typeof theater_json.showroom != "undefined") // 상영관이 존재 할 경우
-						{
-                        	grid_ShowRoom.setList(theater_json.showroom);
-						}
-
-                        if  (typeof theater_json.distributor != "undefined") // 배급사가 존재 할 경우
-						{
-                        	grid_Distributor.setList(theater_json.distributor);
-						}
-                        */
-
-            });
+                  });
         },
 
-
+		/*
         upload: {
 			init: function(){
 				myUpload.setConfig({
@@ -443,20 +371,102 @@
 
 				// 업로드 갯수 등 업로드 관련 옵션을 동적으로 변경 할 수 있습니다.
 				myUpload.changeConfig({
-					/*
-					uploadUrl:"uploadFile.asp",
-					uploadPars:{userID:'tom', userName:'액시스'},
-					deleteUrl:"deleteFile.asp",
-					deletePars:{userID:'tom', userName:'액시스'},
-					*/
+
+					//uploadUrl:"uploadFile.asp",
+					//uploadPars:{userID:'tom', userName:'액시스'},
+					//deleteUrl:"deleteFile.asp",
+					//deletePars:{userID:'tom', userName:'액시스'},
+
 					uploadMaxFileCount:10
 				});
 			}
-		}
+		},
+		*/
+
+		// 하나의 영화을 저장한다.
+		save_film : function()
+		{
+		    var errorMsg = '' ;
+
+		    if (errorMsg == '')
+            {
+		        jQuery("input:hidden[name=playprints]").val( JSON.stringify( film_json.playprints ) ) ;
+
+		        //trace( film_json.distributor );
+
+
+                // 저장할 값들을 취합한다.
+                var formData = jQuery("form[name=frmFilm]").serialize();
+
+                //trace(formData);
+
+                jQuery.ajax({
+                             type : "POST",
+                             url : "<?=$path_AjaxJSON?>/wrk_film_save.php",  // <-----
+                             cache : false,
+                             data : formData,
+                             success : fnObj.onSuccessFilm,
+                             error : fnObj.onErrorFilm
+                });
+            }
+            else
+            {
+                fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
+            }
+		},
+
+		onFnClose : function()
+        {
+		    location.replace("./FilmList.php") ; // 히스토리에 저장이 되지않는다.   // <-----
+        },
+
+		// 영화 저장이 성공적일때..
+        onSuccessFilm : function(data)
+        {
+            var obj = eval("("+data+")");
+            //trace(obj);
+
+            if  (obj=='-1') fnObj.modalOpen(500,-1,'확인','저장이 실패되었습니다.',null)
+            else            fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
+        },
+
+        // 영화 저장이 실패하면..
+        onErrorFilm : function(request,status,error)
+        {
+            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        },
+
+        // 모달창을 띄운다.
+        modalOpen: function (width,top,title,errorMsg,onFnClose)
+        {
+            /*
+            myModal.openDiv({
+                modalID: "modalDiv02",
+                targetID: "modalContent2",
+                width: width,
+                top: top,
+                verticalAlign: true,
+                closeByEscKey: true,
+                closeButton: true
+            });
+            */
+            myModal.setConfig({onclose: onFnClose, displayLoading: false});
+
+            var pars = "title="+title+"&content="+errorMsg ;
+            myModal.open({
+                url: "AX_Modal.php",  // <-----
+                pars: pars.queryToObject(),
+                width: width,
+                //top: 100,
+                verticalAlign: true, // 씨발 안먹네..!!
+                closeButton: true,
+                closeByEscKey: true
+            });
+        }
     };
 
     jQuery(document).ready(fnObj.pageStart.delay(0.1)
-                          <?php if ($MODE=="EDIT") { ?>,fnObj.readTheaterOne.delay(1)<?php } ?>
+                          <?php if ($MODE=="EDIT") { ?>,fnObj.readFilmOne.delay(1)<?php } ?>
                           );
 
 
@@ -479,128 +489,139 @@
     if ($MODE=="EDIT")    { ?><h1>영화 편집</h1><?php     }
     ?>
 
-	<table cellpadding="0" cellspacing="0" class="AXFormTable">
-		<colgroup>
-			<col width="120" />
-			<col />
-		</colgroup>
-		<tbody>
-			<tr>
-				<th>
-					<div class="tdRel">영화코드</div>
-				</th>
-				<td class="last">
-					<div class="tdRel">
-						<input type="text" name="code" placeholder="영화코드" value="" class="AXInput W90 av-bizno" readonly="readonly"/>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">배급사 영화코드</div>
-				</th>
-				<td class="last">
-					<div class="tdRel">
-						<input type="text" name="distributor_cd" placeholder="배급사영화코드" value="" class="AXInput W200 av-bizno" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">배급사</div>
-				</th>
-				<td class="last" id="tdDistributor">
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">대표영화명</div>
-				</th>
-				<td class="last">
-					<div class="tdRel">
-						<input type="text" name="film_nm" placeholder="대표영화명" value="" class="AXInput W200 av-bizno" />
+    <form name="frmFilm" onsubmit="return false;">
 
-						<!-- 방화/외화 -->
-						<select name="film_nm" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">장르</div>
-				</th>
-				<td class="last" id="tdGenre">
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">영화 등급</div>
-				</th>
-				<td class="last">
-					<select name="Loccation1" class="AXSelectSmall" id="AXSelect_Grade" style="width:120px;" tabindex="1"></select>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">개봉일 - 종영일</div>
-				</th>
-				<td class="last">
-					<table>
-						<tr>
-							<td class="white_board"><label>1. 최초상영일</label></td>
-							<td class="white_board">
-								: <input type="text" name="first_play_dt" id="AXInputDate1" class="AXInput W100" />
-							</td>
-						</tr>
-						<tr>
-							<td class="white_board"><label>2. 개봉일</label></td>
-							<td class="white_board">
-								: <input type="text" name="open_dt" id="AXInputDate2" class="AXInput W100" />
-							</td>
-						</tr>
-						<tr>
-							<td class="white_board"><label>3. 종영일</label></td>
-							<td class="white_board">
-								: <input type="text" name="close_dt" id="AXInputDate3" class="AXInput W100" />
-							</td>
-						</tr>
-						<tr>
-							<td class="white_board"><label>4. 재개봉일</label></td>
-							<td class="white_board">
-								: <input type="text" name="reopem_dt" id="AXInputDate4" class="AXInput W100" />
-							</td>
-						</tr>
-						<tr>
-							<td class="white_board"><label>5. 재종영일</label></td>
-							<td class="white_board">
-								: <input type="text" name="reclose_dt" id="AXInputDate5" class="AXInput W100" />
-							</td>
-						</tr>
-						</table>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">포스터</div>
-				</th>
-				<td class="last">
+    	<input type="hidden" name="playprints">
 
-		            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:200px;"></div>
+    	<table cellpadding="0" cellspacing="0" class="AXFormTable">
+    		<colgroup>
+    			<col width="120" />
+    			<col />
+    		</colgroup>
+    		<tbody>
+    			<tr>
+    				<th>
+    					<div class="tdRel">영화코드</div>
+    				</th>
+    				<td class="last">
+    					<div class="tdRel">
+    						<input type="text" name="code" placeholder="영화코드" value="" class="AXInput W90 av-bizno" readonly="readonly"/>
+    					</div>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">배급사 영화코드</div>
+    				</th>
+    				<td class="last">
+    					<div class="tdRel">
+    						<input type="text" name="distributor_cd" placeholder="배급사영화코드" value="" class="AXInput W200 av-bizno" />
+    					</div>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">배급사</div>
+    				</th>
+    				<td class="last" id="tdDistributor">
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">대표영화명</div>
+    				</th>
+    				<td class="last">
+    					<div class="tdRel">
+    						<input type="text" name="film_nm" placeholder="대표영화명" value="" class="AXInput W200 av-bizno" />
 
-					<div class="AXUpload5" id="AXUpload5" style="padding-top: 5px;;"></div>
+    						<!-- 방화/외화 -->
+    						<select name="film_nm" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
+    					</div>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">장르</div>
+    				</th>
+    				<td class="last" id="tdGenre">
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">영화 등급</div>
+    				</th>
+    				<td class="last">
+    					<select name="Loccation1" class="AXSelectSmall" id="AXSelect_Grade" style="width:120px;" tabindex="1"></select>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">개봉일 - 종영일</div>
+    				</th>
+    				<td class="last">
+    					<table>
+    						<tr>
+    							<td class="white_board"><label>1. 최초상영일</label></td>
+    							<td class="white_board">
+    								: <input type="text" name="first_play_dt" id="AXInputDate1" class="AXInput W100" />
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="white_board"><label>2. 개봉일</label></td>
+    							<td class="white_board">
+    								: <input type="text" name="open_dt" id="AXInputDate2" class="AXInput W100" />
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="white_board"><label>3. 종영일</label></td>
+    							<td class="white_board">
+    								: <input type="text" name="close_dt" id="AXInputDate3" class="AXInput W100" />
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="white_board"><label>4. 재개봉일</label></td>
+    							<td class="white_board">
+    								: <input type="text" name="reopem_dt" id="AXInputDate4" class="AXInput W100" />
+    							</td>
+    						</tr>
+    						<tr>
+    							<td class="white_board"><label>5. 재종영일</label></td>
+    							<td class="white_board">
+    								: <input type="text" name="reclose_dt" id="AXInputDate5" class="AXInput W100" />
+    							</td>
+    						</tr>
+    						</table>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">포스터</div>
+    				</th>
+    				<td class="last">
 
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div class="tdRel">프린터</div>
-				</th>
-				<td class="last">
-					<div id="AXgrid_PlayPrint"></div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+    		            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:200px;"></div>
+
+    					<div class="AXUpload5" id="AXUpload5" style="padding-top: 5px;;"></div>
+
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>
+    					<div class="tdRel">프린터</div>
+    				</th>
+    				<td class="last">
+    					<div id="AXgrid_PlayPrint"></div>
+    				</td>
+    			</tr>
+    		</tbody>
+    	</table>
+
+	</form>
+
+    <div class="modalButtonBox" align="center">
+        <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.save_film();"><i class="axi axi-save "></i> 저장</button>
+    </div>
+
 
 </body>
 </html>

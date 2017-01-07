@@ -170,8 +170,8 @@ require_once("../config/DB_CONNECT.php");
                         ,"images_no" => $images_no
                         ///////////////////////////////
                         ,"contacts" => $a_contact
-                        ,"showroom" => $a_showroom
-                        ,"distributor" => $a_distributor
+                        ,"showrooms" => $a_showroom
+                        ,"distributors" => $a_distributor
                         );
     }
     $stmt->close();

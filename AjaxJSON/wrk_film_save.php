@@ -10,10 +10,11 @@ require_once ("../config/DB_CONNECT.php");
     }
 print_r( $_POST["contacts"] );
 print_r( $_POST["showroom"] );
-print_r( $_POST["distributor"] );
+print_r( $_POST["playprint"] );
  * */
 
     $post_code             = $_POST["code"] ;
+    /*
     $post_loc1             = $_POST["loc1"] ;
     $post_loc2             = $_POST["loc2"] ;
     $post_affiliate_seq    = $_POST["affiliate_seq"] ;
@@ -41,15 +42,14 @@ print_r( $_POST["distributor"] );
     $post_sangho           = $_POST["sangho"] ;
     $post_homepage         = $_POST["homepage"] ;
     $post_images_no        = $_POST["images_no"] ;
+    */
 
-    $post_contacts         = $_POST["contacts"] ; // 연락처 JSON
-    $post_showrooms        = $_POST["showrooms"] ; // 상영관 JSON
-    $post_distributors     = $_POST["distributors"] ; // 배급사 JSON
+    $post_playprints      = $_POST["playprints"] ; // 상영프린트 JSON
 
     if  (isset($_POST["unitPrices"]))  $post_unitPrices = implode(",", $_POST["unitPrices"]) ; // 요금단가..
 
 
-    $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
+    $query= "CALL SP_WRK_FILM_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("siiisiissssssssssssssssssssis"
@@ -97,113 +97,33 @@ print_r( $_POST["distributor"] );
     $theater_code = ($newCode!="") ? $newCode : $post_code ;
 
 
-    // 연락처(S,P,T)를 받아온다.
-    $contacts = json_decode($post_contacts);
-
-    foreach ($contacts as $key1 => $value2)
-    {
-        $gbn_code = $contacts[$key1]->code ; // S,P,T
-
-        foreach ($contacts[$key1]->contacts as $key2 => $value2)
-        {
-            $_CUD         = $contacts[$key1]->contacts[$key2]->_CUD ;
-            $seq          = $contacts[$key1]->contacts[$key2]->seq ;
-            //$theater_code = $contacts[$key1]->contacts[$key2]->theater_code ;
-            $name         = $contacts[$key1]->contacts[$key2]->name ;
-            $tel          = $contacts[$key1]->contacts[$key2]->tel ;
-            $hp           = $contacts[$key1]->contacts[$key2]->hp ;
-            $fax          = $contacts[$key1]->contacts[$key2]->fax ;
-            $mail         = $contacts[$key1]->contacts[$key2]->mail ;
-
-            //print_r ( $contacts[$key1]->contacts[$key2] );
-            //print_r ( $_CUD ." : ".$gbn_code." | ".$seq ." | ".$theater_code  ." | ".$name  ." | ".$tel   ." | ".$hp    ." | ".$fax   ." | ".$mail ."--");
-            //print_r ( "\n" );
-
-            if  ($_CUD != "")
-            {
-                $query= "CALL SP_WRK_THEATER_CONTACT_SAVE(?,?,?,?,?,?,?,?,?)" ; // <-----
-                $stmt = $mysqli->prepare($query);
-
-                $stmt->bind_param("sisssssss"
-                                 ,$_CUD
-                                 ,$seq
-                                 ,$theater_code
-                                 ,$gbn_code
-                                 ,$name
-                                 ,$tel
-                                 ,$hp
-                                 ,$fax
-                                 ,$mail
-                                 );
-                $stmt->execute();
-                $stmt->close();
-            }
-        }
-    }
-
-    // 상영관을 받아온다.
-    $contacts = json_decode($post_showrooms);
-
-    foreach ($contacts as $key => $value)
-    {
-        $_CUD          = $contacts[$key]->_CUD ;
-        $seq           = $contacts[$key]->seq ;
-        //$theater_code  = $contacts[$key]->theater_code ;
-        $room_nm       = $contacts[$key]->room_nm ;
-        $room_alias    = $contacts[$key]->room_alias ;
-        $art_room      = $contacts[$key]->art_room ;
-        $seat          = $contacts[$key]->seat ;
-
-        //print_r ( $contacts[$key] );
-        //print_r ( $_CUD ." : ".$seq." | ".$theater_code." | ".$room_nm." | ".$room_alias." | ".$art_room." | ".$seat." | " );
-        //print_r ( "\n" );
-
-        if  ($_CUD != "")
-        {
-            $query= "CALL SP_WRK_THEATER_SHOWROOM_SAVE(?,?,?,?,?,?,?)" ; // <-----
-            $stmt = $mysqli->prepare($query);
-
-            $stmt->bind_param("sissssi"
-              ,$_CUD
-              ,$seq
-              ,$theater_code
-              ,$room_nm
-              ,$room_alias
-              ,$art_room
-              ,$seat
-              );
-            $stmt->execute();
-            $stmt->close();
-        }
-    }
-
-    // 배급사를 받아온다.
-    $contacts = json_decode($post_distributors);
+    // 상영프린트를 받아온다.
+    $contacts = json_decode($post_playprints);
 
     foreach ($contacts as $key => $value)
     {
         $_CUD             = $contacts[$key]->_CUD ;
         $seq              = $contacts[$key]->seq ;
         //$theater_code     = $contacts[$key]->theater_code ;
-        $distributor_seq  = $contacts[$key]->distributor_seq ;
+        $playprint_seq  = $contacts[$key]->playprint_seq ;
         $theater_knm      = $contacts[$key]->theater_knm ;
         $theater_enm      = $contacts[$key]->theater_enm ;
         $theater_dcode    = $contacts[$key]->theater_dcode ;
 
         //print_r ( $contacts[$key] );
-        //print_r ( $_CUD ." : ".$seq." | ".$theater_code." | ".$distributor_seq." | ".$theater_knm." | ".$theater_enm." | ".$theater_dcode." | " );
+        //print_r ( $_CUD ." : ".$seq." | ".$theater_code." | ".$playprint_seq." | ".$theater_knm." | ".$theater_enm." | ".$theater_dcode." | " );
         //print_r ( "\n" );
 
         if  ($_CUD != "")
         {
-            $query= "CALL SP_WRK_THEATER_DISTRIBUTOR_SAVE(?,?,?,?,?,?,?)" ; // <-----
+            $query= "CALL SP_WRK_THEATER_PLAYPRINT_SAVE(?,?,?,?,?,?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
 
             $stmt->bind_param("sisisss"
               ,$_CUD
               ,$seq
               ,$theater_code
-              ,$distributor_seq
+              ,$playprint_seq
               ,$theater_knm
               ,$theater_enm
               ,$theater_dcode

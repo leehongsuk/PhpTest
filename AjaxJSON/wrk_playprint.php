@@ -2,26 +2,34 @@
 require_once("../config/CONFIG.php");
 require_once("../config/DB_CONNECT.php");
 
-    $post_film_code  = $_POST["film_code"] ;
+    $post_code  = $_POST["code"] ;
 
     $a_json  = array() ;
     $a_list  = array() ;
 
 
-    $query= "CALL SP_WRK_PLAYPRINT_SEL(?)" ; // <-----
+    $query= "CALL SP_WRK_FILM_PLAYPRINT_SEL(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("s", $post_film_code);
+    $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$film_code,$playprint1,$playprint2,$memo);
-
+    $stmt->bind_result($seq
+                      ,$film_code
+                      ,$playprint1_seq
+                      ,$playprint1
+                      ,$playprint2_seq
+                      ,$playprint2
+                      ,$memo
+                      );
 
     while ($stmt->fetch())
     {
         array_push($a_list, array("seq" => $seq
                                   ,"film_code" => $film_code
+                                  ,"playprint1_seq" => $playprint1_seq
                                   ,"playprint1" => $playprint1
+                                  ,"playprint2_seq" => $playprint2_seq
                                   ,"playprint2" => $playprint2
                                   ,"memo" => $memo
                                   )

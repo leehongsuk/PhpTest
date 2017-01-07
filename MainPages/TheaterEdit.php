@@ -178,7 +178,7 @@
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",  // <-----
                 ajaxPars: "",
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                     jQuery("#AXSelect_Loccation2").bindSelect({
@@ -196,7 +196,7 @@
             // 지역2 초기화
             jQuery("#AXSelect_Loccation2").bindSelect({
                 options:[
-                    {optionValue:'', optionText:"전체"}
+                    {optionValue:'', optionText:"없음"}
                 ]
             });
 
@@ -204,7 +204,7 @@
             jQuery("#AXSelect_Affiliate").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",  // <-----
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                 }
@@ -214,7 +214,7 @@
             jQuery("#AXSelect_IsDirect").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_isdirect.php",  // <-----
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                 }
@@ -224,7 +224,7 @@
             jQuery("#AXSelect_Unaffiliate").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_unaffiliate.php",  // <-----
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                 }
@@ -234,7 +234,7 @@
             jQuery("#AXSelect_UserGroup").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_user_group.php",  // <-----
                 isspace: true,
-                isspaceTitle: "전체",
+                isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                 }
@@ -831,7 +831,7 @@
                             ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
                             ajaxPars: {"parent_seq":theater_json.loc1 },
                             isspace: true,
-                            isspaceTitle: "전체",
+                            isspaceTitle: "없음",
                             onChange: function(){
                                 //console.log(this.value);
 
@@ -906,8 +906,8 @@
 		    if (errorMsg == '')
             {
 		        jQuery("input:hidden[name=contacts]").val( JSON.stringify( theater_json.contacts ) ) ;
-		        jQuery("input:hidden[name=showroom]").val( JSON.stringify( theater_json.showroom ) ) ;
-		        jQuery("input:hidden[name=distributor]").val( JSON.stringify( theater_json.distributor ) ) ;
+		        jQuery("input:hidden[name=showrooms]").val( JSON.stringify( theater_json.showrooms ) ) ;
+		        jQuery("input:hidden[name=distributors]").val( JSON.stringify( theater_json.distributors ) ) ;
 
 		        //trace( theater_json.distributor );
 
@@ -1022,8 +1022,8 @@
     <form name="frmThearter" onsubmit="return false;">
 
     	<input type="hidden" name="contacts">
-    	<input type="hidden" name="showroom">
-    	<input type="hidden" name="distributor">
+    	<input type="hidden" name="showrooms">
+    	<input type="hidden" name="distributors">
 
 
         <table cellpadding="0" cellspacing="0" class="AXFormTable">
