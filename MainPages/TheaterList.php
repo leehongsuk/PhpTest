@@ -184,7 +184,7 @@
 
         },
 
-		//극장폐관처리..
+		// 극장폐관처리..
         deleteItem: function (code)
         {
             if (confirm("정말로 폐관하시겠습니까?"))
