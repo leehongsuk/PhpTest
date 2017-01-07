@@ -271,6 +271,12 @@
                         jQuery("input[name=close_dt]").val(theater_json.close_dt);
                         jQuery("input[name=reopem_dt]").val(theater_json.reopem_dt);
                         jQuery("input[name=reclose_dt]").val(theater_json.reclose_dt);
+
+                        if  (typeof theater_json.playprints != "undefined") // 프린터가 존재 할 경우
+						{
+                            grid_PlayPrint.setList(theater_json.contacts);
+						}
+
                         /**
 
                         jQuery("input[name=zip]").val(theater_json.zip);
