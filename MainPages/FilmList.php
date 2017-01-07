@@ -47,8 +47,8 @@
 
 
 
-            // 계열사 초기화
-            jQuery("#AXSelect_Affiliate").bindSelect({
+            // 배급사 초기화
+            jQuery("#AXSelect_Distributor").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_distributor.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
@@ -59,7 +59,7 @@
 
             gridFilm.setConfig(
             {
-                targetID : "AXGridTarget1",
+                targetID : "AXGridFilm",
                 theme : "AXGrid",
                 autoChangeGridView: { // autoChangeGridView by browser width
                     mobile:[0,600], grid:[600]
@@ -69,26 +69,27 @@
                     {
                         key: "btns", label: "삭제", width: "60", align: "center", formatter: function ()
                         {
-                          return '<button class="AXButton" onclick="fnObj.deleteItem1(\'' + this.item.code + '\');"><i class="axi axi-trash2"></i></button>';
+                          return '<button class="AXButton" onclick="fnObj.deleteItem(\'' + this.item.code + '\');"><i class="axi axi-trash2"></i></button>';
                         }
                     },
                     {
                         key: "btns", label: "수정", width: "60", align: "center", formatter: function ()
                         {
-                            return '<button class="AXButton" onclick="fnObj.editItem1(\'' + this.item.code + '\');"><i class="axi axi-pencil"></i></button>';
+                            return '<button class="AXButton" onclick="fnObj.editItem(\'' + this.item.code + '\');"><i class="axi axi-pencil"></i></button>';
                         }
                     },
-
                     {key:"code", label:"영화코드", width:"100"},
-                    {key:"distributor", label:"배급사 영화코드", width:"100"},
+                    {key:"distributor_nm", label:"배급사", width:"100"},
+                    {key:"distributor_cd", label:"배급사 영화코드", width:"100"},
                     {key:"film_nm", label:"대표영화명", width:"100"},
-                    {key:"grade", label:"상영등급", width:"100"},
+                    {key:"grade_nm", label:"상영등급", width:"100"},
                     {key:"first_play_dt", label:"최초상영일", width:"100"},
                     {key:"open_dt", label:"개봉일", width:"100"},
                     {key:"close_dt", label:"종영일", width:"100"},
                     {key:"reopem_dt", label:"재개봉일", width:"100"},
                     {key:"reclose_dt", label:"재종영일", width:"100"},
                     {key:"poster_yn", label:"포스터사용 유무", width:"100"},
+                    {key:"korabd_gbn_nm", label:"방화외화", width:"100"},
                     {key:"images_no", label:"이미지 첨부파일번호", width:"100"}
                 ],
                 body :
@@ -122,7 +123,27 @@
 
         },
 
-        deleteItem1: function (code)
+        // 검색버튼을 누를시..
+        searchFilm: function()
+        {
+            var affiliate = jQuery("#AXSelect_Distributor").val();
+            var filmNm = jQuery("#AXText_FilmeNm").val();
+
+            gridTheater.setList({
+                ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",  // <-----
+                ajaxPars: {
+                    "distributor_seq" : distributor_seq,
+                    "film_Nm"         : film_Nm
+                },
+                onLoad  : function(){
+                    gridTheater.setFocus(0);
+                }
+            });
+
+        },
+
+		// 영화 삭제처리
+        deleteItem: function (code)
         {
             if (confirm("정말로 삭제하시겠습니까?"))
             {
@@ -145,12 +166,14 @@
             }
         },
 
-        editItem1: function (code)
+        // 영화 수정 또는 생성 버튼을 누를 시..
+        editItem: function (code)
         {
-            //console.log('editItem1');
+            //console.log('editItem');
             //console.log(index);
             //toast.push('deleteItem1: ' + index);
-            location.href = "./FilmEdit.php?code="+code ;
+            if (typeof code == "undefined") location.href = "./FilmEdit.php"
+            else                            location.href = "./FilmEdit.php?code="+code ;
         }
 
     };
@@ -164,17 +187,18 @@
 <body>
 
     <h1>영화정보</h1>
+
     <div style="height: 50px;">
 
-        <label>배급사 :</label><select name="Affiliate" class="AXSelectSmall" id="AXSelect_Affiliate" style="width:100px;" tabindex="3"></select>
+        <label>배급사 :</label><select name="Distributor" class="AXSelectSmall" id="AXSelect_Distributor" style="width:100px;" tabindex="3"></select>
+        <label>영화명 :</label><input type="text" name="FilmName" value="" id="AXText_FilmeNm" class="AXInput" />
 
-        <label>영화명 :</label><input type="text" name="input" value="" class="AXInput" />
+        <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchFilm();"><i class="axi axi-search2"></i> 조회</button>
+        <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.editItem();"><i class="axi axi-ion-document-text"></i> 등록</button>
 
-        <button type="button" class="AXButton" id="button" tabindex="2" onclick="alert();"><i class="axi axi-search2"></i> 조회</button>
-        <button type="button" class="AXButton" id="button" tabindex="2" onclick="alert();"><i class="axi axi-ion-document-text"></i> 등록</button>
     </div>
 
-    <div id="AXGridTarget1"></div>
+    <div id="AXGridFilm"></div>
 
 </body>
 </html>
