@@ -2,7 +2,7 @@
 require_once ("../config/CONFIG.php");
 require_once ("../config/DB_CONNECT.php");
 
-//    print_r ( $_REQUEST );
+    print_r ( $_REQUEST );
 /*
     foreach ( $_REQUEST as $key => $val )
     {
@@ -14,76 +14,46 @@ print_r( $_POST["playprint"] );
  * */
 
     $post_code             = $_POST["code"] ;
-    /*
-    $post_loc1             = $_POST["loc1"] ;
-    $post_loc2             = $_POST["loc2"] ;
-    $post_affiliate_seq    = $_POST["affiliate_seq"] ;
-    $post_isdirect         = $_POST["isdirect"] ;
-    $post_unaffiliate_seq  = $_POST["unaffiliate_seq"] ;
-    $post_user_group_seq   = $_POST["user_group_seq"] ;
+    $post_distributor_seq  = $_POST["distributor_seq"] ;
+    $post_distributor_cd   = $_POST["distributor_cd"] ;
+    $post_film_nm          = $_POST["film_nm"] ;
+    $post_grade_seq        = $_POST["grade_seq"] ;
+    $post_first_play_dt    = $_POST["first_play_dt"] ;
     $post_open_dt          = $_POST["open_dt"] ;
-    $post_theater_nm       = $_POST["theater_nm"] ;
-    $post_zip              = $_POST["zip"] ;
-    $post_addr1            = $_POST["addr1"] ;
-    $post_addr2            = $_POST["addr2"] ;
-    $post_score_tel        = ($_POST["score_tel"]=="Y")?"Y":"N" ;
-    $post_score_fax        = ($_POST["score_fax"]=="Y")?"Y":"N" ;
-    $post_score_mail       = ($_POST["score_mail"]=="Y")?"Y":"N" ;
-    $post_score_sms        = ($_POST["score_sms"]=="Y")?"Y":"N" ;
-    $post_premium_tel      = ($_POST["premium_tel"]=="Y")?"Y":"N" ;
-    $post_premium_fax      = ($_POST["premium_fax"]=="Y")?"Y":"N" ;
-    $post_premium_mail     = ($_POST["premium_mail"]=="Y")?"Y":"N" ;
-    $post_premium_sms      = ($_POST["premium_sms"]=="Y")?"Y":"N" ;
-    $post_memo             = $_POST["memo"] ;
-    $post_fund_free        = ($_POST["fund_free"]=="Y")?"Y":"N" ;
-    $post_gubun_code       = $_POST["gubun_code"] ;
-    $post_saup_no          = $_POST["saup_no"] ;
-    $post_owner            = $_POST["owner"] ;
-    $post_sangho           = $_POST["sangho"] ;
-    $post_homepage         = $_POST["homepage"] ;
+    $post_close_dt         = $_POST["close_dt"] ;
+    $post_reopem_dt        = $_POST["reopem_dt"] ;
+    $post_reclose_dt       = $_POST["reclose_dt"] ;
+    $post_poster_yn        = ($_POST["poster_yn"]=="Y")?"Y":"N" ;
     $post_images_no        = $_POST["images_no"] ;
-    */
+    $post_korabd_cd        = $_POST["korabd_cd"] ;
+
+    if  (isset($_POST["genres"]))  $post_genres = implode(",", $_POST["genres"]) ; // 장르 ..
 
     $post_playprints      = $_POST["playprints"] ; // 상영프린트 JSON
 
-    if  (isset($_POST["unitPrices"]))  $post_unitPrices = implode(",", $_POST["unitPrices"]) ; // 요금단가..
 
 
-    $query= "CALL SP_WRK_FILM_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
+    $query= "CALL SP_WRK_FILM_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("siiisiissssssssssssssssssssis"
+    $stmt->bind_param("sississssssiss"
                      ,$post_code
-                     ,$post_loc1
-                     ,$post_loc2
-                     ,$post_affiliate_seq
-                     ,$post_isdirect
-                     ,$post_unaffiliate_seq
-                     ,$post_user_group_seq
+                     ,$post_distributor_seq
+                     ,$post_distributor_cd
+                     ,$post_film_nm
+                     ,$post_grade_seq
+                     ,$post_first_play_dt
                      ,$post_open_dt
-                     ,$post_theater_nm
-                     ,$post_zip
-                     ,$post_addr1
-                     ,$post_addr2
-                     ,$post_score_tel
-                     ,$post_score_fax
-                     ,$post_score_mail
-                     ,$post_score_sms
-                     ,$post_premium_tel
-                     ,$post_premium_fax
-                     ,$post_premium_mail
-                     ,$post_premium_sms
-                     ,$post_memo
-                     ,$post_fund_free
-                     ,$post_gubun_code
-                     ,$post_saup_no
-                     ,$post_owner
-                     ,$post_sangho
-                     ,$post_homepage
+                     ,$post_close_dt
+                     ,$post_reopem_dt
+                     ,$post_reclose_dt
+                     ,$post_poster_yn
                      ,$post_images_no
-                     ,$post_unitPrices
+                     ,$post_korabd_cd
+                     ,$post_genres
                      );
     $stmt->execute();
+/*
 
     //echo $stmt->mysql_errno . ": " . $stmt->mysql_error;
 
@@ -135,7 +105,7 @@ print_r( $_POST["playprint"] );
 
     // 결과만 반환한다.
     echo json_encode($output,JSON_UNESCAPED_UNICODE);
-
+*/
 
 require_once ("../config/DB_DISCONNECT.php");
 ?>

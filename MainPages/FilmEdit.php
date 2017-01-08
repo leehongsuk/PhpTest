@@ -106,7 +106,7 @@
 						{
 						    var checked = (obj.options[i].genre_seq != null) ? 'checked=checked' : '' ;
 
-						    $('<label><input type="checkbox" name="genre'+obj.options[i].seq+'" value="Y" id="AXCheck_Genre'+obj.options[i].seq+'" '+checked+'/> '+obj.options[i].genre_nm+'</label>').appendTo("#tdGenre");
+						    $('<label><input type="checkbox" name="genres[]" value="'+obj.options[i].seq+'" id="AXCheck_Genre'+obj.options[i].seq+'" '+checked+'/> '+obj.options[i].genre_nm+'</label>').appendTo("#tdGenre");
 						}
 						$('input[type=checkbox]').bindChecked();
 		          });
@@ -118,7 +118,7 @@
                 valign:"top",
                 onChange:function(){
                     //toast.push(Object.toJSON(this));
-                    dialog.push({body:'<b>Caution</b> Application Call dialog push', type:'Caution', onConfirm:fnObj.btnOnConfirm, data:'onConfirmData'});
+                    //dialog.push({body:'<b>Caution</b> Application Call dialog push', type:'Caution', onConfirm:fnObj.btnOnConfirm, data:'onConfirmData'});
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -129,6 +129,7 @@
                 valign:"top",
                 onChange:function(){
                     //toast.push(Object.toJSON(this));
+                    /*
                     dialog.push({
                         title: "제목",
                         body:'<b>주의</b> 메롱Application Call dialog push', top:200, type:'Caution', buttons:[
@@ -137,6 +138,7 @@
                             {buttonValue:'button3', buttonClass:'Green', onClick:fnObj.btnClick, data:'data3'}
                         ]
                      });
+                    */
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -146,7 +148,7 @@
                 align:"right",
                 valign:"top",
                 onChange:function(){
-                    toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(this));
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -156,7 +158,7 @@
                 align:"right",
                 valign:"top",
                 onChange:function(){
-                    toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(this));
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -166,7 +168,7 @@
                 align:"right",
                 valign:"top",
                 onChange:function(){
-                    toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(this));
                 }
                 //minDate:"2013-05-10",
                 //maxDate:"2013-05-20",
@@ -443,8 +445,10 @@
                         jQuery("input[name=reopem_dt]").val(film_json.reopem_dt);
                         jQuery("input[name=reclose_dt]").val(film_json.reclose_dt);
 
-                        jQuery("select[name=korabd]").setValueSelect(film_json.korabd);
-                        jQuery("select[name=grade]").setValueSelect(film_json.grade);
+                        jQuery("input[name=poster_yn").prop('checked',(film_json.poster_yn=="Y"));
+
+                        jQuery("select[name=korabd_cd]").setValueSelect(film_json.korabd_cd);
+                        jQuery("select[name=grade_seq]").setValueSelect(film_json.grade_seq);
 
                         if  (typeof film_json.playprints != "undefined") // 상영 프린터가 존재 할 경우
 						{
@@ -452,6 +456,7 @@
 						}
 
                         $('input[type=radio]').bindChecked();
+                        $('input[type=checkbox]').bindChecked();
                   });
         },
 
@@ -713,7 +718,7 @@
     						<input type="text" name="film_nm" placeholder="대표영화명" value="" class="AXInput W200 av-bizno" />
 
     						<!-- 방화/외화 -->
-    						<select name="korabd" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
+    						<select name="korabd_cd" class="AXSelectSmall" id="AXSelect_KorabdGbn" style="width:120px;" tabindex="1"></select>
     					</div>
     				</td>
     			</tr>
@@ -729,7 +734,7 @@
     					<div class="tdRel">영화 등급</div>
     				</th>
     				<td class="last">
-    					<select name="grade" class="AXSelectSmall" id="AXSelect_Grade" style="width:120px;" tabindex="1"></select>
+    					<select name="grade_seq" class="AXSelectSmall" id="AXSelect_Grade" style="width:120px;" tabindex="1"></select>
     				</td>
     			</tr>
     			<tr>
@@ -780,6 +785,8 @@
     		            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:200px;"></div>
 
     					<div class="AXUpload5" id="AXUpload5" style="padding-top: 5px;;"></div>
+
+    					<label><input type="checkbox" name="poster_yn" value="Y" id="AXCheck_Operation0" /> 포스트사용 유무</label>
 
     				</td>
     			</tr>

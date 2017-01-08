@@ -50,7 +50,7 @@ require_once("../config/DB_CONNECT.php");
                       ,$distributor_seq
                       ,$distributor_cd
                       ,$film_nm
-                      ,$grade
+                      ,$grade_seq
                       ,$first_play_dt
                       ,$open_dt
                       ,$close_dt
@@ -58,7 +58,7 @@ require_once("../config/DB_CONNECT.php");
                       ,$reclose_dt
                       ,$poster_yn
                       ,$images_no
-                      ,$korabd
+                      ,$korabd_cd
                       ,$del_flag
                       );
 
@@ -68,7 +68,7 @@ require_once("../config/DB_CONNECT.php");
                         ,"distributor_seq" => $distributor_seq
                         ,"distributor_cd" => $distributor_cd
                         ,"film_nm" => $film_nm
-                        ,"grade" => $grade
+                        ,"grade_seq" => $grade_seq
                         ,"first_play_dt" => $first_play_dt
                         ,"open_dt" => $open_dt
                         ,"close_dt" => $close_dt
@@ -76,7 +76,7 @@ require_once("../config/DB_CONNECT.php");
                         ,"reclose_dt" => $reclose_dt
                         ,"poster_yn" => $poster_yn
                         ,"images_no" => $images_no
-                        ,"korabd" => $korabd
+                        ,"korabd_cd" => $korabd_cd
                         ,"del_flag" => $del_flag
 
                         ,"playprints" => $a_playprint
