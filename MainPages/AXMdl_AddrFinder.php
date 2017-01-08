@@ -63,7 +63,8 @@
                     },
                     rows:[
                         {display:true, addClass:"", style:"", list:[
-                            {label:"", labelWidth:"", type:"inputText", width:"150", key:"srchwrd", addClass:"secondItem", valueBoxStyle:"padding-left:10px;", placeholder:"검색어를 입력하세요", value:""},
+                            {label:"", labelWidth:"", type:"inputText", width:"100", key:"srchDong", addClass:"secondItem", valueBoxStyle:"padding-left:10px;", placeholder:"동명을 입력하세요", value:""},
+                            {label:"", labelWidth:"", type:"inputText", width:"100", key:"srchRoad", addClass:"secondItem", valueBoxStyle:"padding-left:10px;", placeholder:"도로명을 입력하세요", value:""},
                             {label:"", labelWidth:"", type:"button", width:"60", key:"button", valueBoxStyle:"padding-left:0px;padding-right:5px;", value:"검색",
                                 onclick: function(){
                                     //AXUtil.alert(this);
@@ -107,7 +108,8 @@
             myGrid.setList({
                            ajaxUrl : "<?=$path_AjaxJSON?>/bas_postzip_page.php",  // <-----
                            ajaxPars: {
-                               "dongNm": jQuery('input[name=srchwrd]').val()
+                               "dongNm": jQuery('input[name=srchDong]').val()
+                              ,"roadNm": jQuery('input[name=srchRoad]').val()
                            },
                            onLoad  : function(){}
             });

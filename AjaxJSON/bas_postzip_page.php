@@ -3,6 +3,7 @@ require_once("../config/CONFIG.php");
 require_once("../config/DB_CONNECT.php");
 
     $post_dongNm   = $_POST["dongNm"] ;
+    $post_roadNm   = $_POST["roadNm"] ;
     $post_pageNo   = $_POST["pageNo"] ;
     $post_pageSize = $_POST["pageSize"] ;
 
@@ -11,10 +12,10 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL SP_BAS_POSTZIP_SEL_COUNT(?)" ; // <-----
+    $query= "CALL SP_BAS_POSTZIP_SEL_COUNT(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("s", $post_dongNm  );
+    $stmt->bind_param("ss", $post_dongNm , $post_roadNm  );
     $stmt->execute();
 
     $stmt->bind_result($count);
@@ -24,15 +25,17 @@ require_once("../config/DB_CONNECT.php");
     $pageCount = floor($count / $post_pageSize) + ( ($count % $post_pageSize)>0 ? 1 : 0 ) ;
 
 
-    $query= "CALL SP_BAS_POSTZIP_SEL_PAGE(?,?,?)" ; // <-----
+    $query= "CALL SP_BAS_POSTZIP_SEL_PAGE(?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sii", $post_dongNm
-                           , $post_pageNo
-                           , $post_pageSize
+    $stmt->bind_param("ssii", $post_dongNm
+                            , $post_roadNm
+                            , $post_pageNo
+                            , $post_pageSize
                       );
     $stmt->execute();
 
+    /**
     $stmt->bind_result( $code
                        ,$si_do_k
                        ,$si_do_e
@@ -58,6 +61,13 @@ require_once("../config/DB_CONNECT.php");
                        ,$ub_myun_dong_seq
                        ,$jibun2
                       ) ;
+     * */
+    $stmt->bind_result( $code
+                       ,$si_do_k
+                       ,$kun_ku_k
+                       ,$dong_nm
+                       ,$road_nm_k
+                       ) ;
 
     while ($stmt->fetch())
     {
