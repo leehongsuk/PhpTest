@@ -356,6 +356,17 @@
 
             });
 
+            if (typeof film_json == "undefined")
+            {
+	            film_json = new Object();
+
+	            var playprints = new Array(); // 새로 생기는 것이므로 비어있다...
+
+	            film_json.playprints = playprints ;
+
+	            grid_PlayPrint.setList(film_json.playprints);
+            }
+
             //fnObj.upload.init();
         }, // end (pageStart: function())
 
@@ -450,10 +461,13 @@
                         jQuery("select[name=korabd_cd]").setValueSelect(film_json.korabd_cd);
                         jQuery("select[name=grade_seq]").setValueSelect(film_json.grade_seq);
 
-                        if  (typeof film_json.playprints != "undefined") // 상영 프린터가 존재 할 경우
+                        if  (typeof film_json.playprints == "undefined") // 상영 프린터가 존재 할 경우
 						{
-                            grid_PlayPrint.setList(film_json.playprints);
+                            var playprints = new Array(); // 새로 생기는 것이므로 비어있다...
+
+            	            film_json.playprints = playprints ;
 						}
+                        grid_PlayPrint.setList(film_json.playprints);
 
                         $('input[type=radio]').bindChecked();
                         $('input[type=checkbox]').bindChecked();

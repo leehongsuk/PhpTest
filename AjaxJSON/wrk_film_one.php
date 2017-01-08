@@ -23,8 +23,6 @@ require_once("../config/DB_CONNECT.php");
                       ,$memo
                       );
 
-
-
     while ($stmt->fetch())
     {
         array_push($a_playprint, array("seq" => $seq

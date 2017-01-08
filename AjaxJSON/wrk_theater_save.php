@@ -92,8 +92,6 @@ print_r( $_POST["distributor"] );
     $result = $mysqli->query('SELECT @newCode,@output');
     list($newCode,$output) = $result->fetch_row();
 
-    //print_r ( "[".$newCode."]" );
-
     $theater_code = ($newCode!="") ? $newCode : $post_code ;
 
 

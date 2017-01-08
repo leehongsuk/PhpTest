@@ -125,14 +125,14 @@
 
                                 grid_Contact.setList(contact[0].contacts); // 첫번째 연락처 그리드에 리스트 적용...
 
-                                var showroom = new Array(); // 새로 생기는 것이므로 비어있다...
-                                var distributor = new Array(); // 새로 생기는 것이므로 비어있다...
+                                var showrooms = new Array(); // 새로 생기는 것이므로 비어있다...
+                                var distributors = new Array(); // 새로 생기는 것이므로 비어있다...
 
-                                theater_json.showroom = showroom ;
-                                theater_json.distributor = distributor ;
+                                theater_json.showrooms = showrooms ;
+                                theater_json.distributors = distributors ;
 
-                                grid_ShowRoom.setList(theater_json.showroom);
-                                grid_Distributor.setList(theater_json.distributor);
+                                grid_ShowRoom.setList(theater_json.showrooms);
+                                grid_Distributor.setList(theater_json.distributors);
                             }
                         }
 
@@ -850,15 +850,23 @@
                             }
 						}
 
-						if  (typeof theater_json.showroom != "undefined") // 상영관이 존재 할 경우
+						if  (typeof theater_json.showrooms == "undefined") // 상영관이 존재 하지 않을 경우
 						{
-                        	grid_ShowRoom.setList(theater_json.showroom);
-						}
+                            var showrooms = new Array(); // 새로 생기는 것이므로 비어있다...
 
-                        if  (typeof theater_json.distributor != "undefined") // 배급사가 존재 할 경우
-						{
-                        	grid_Distributor.setList(theater_json.distributor);
+                            theater_json.showrooms = showrooms ;
 						}
+                        grid_ShowRoom.setList(theater_json.showrooms);
+
+
+                        if  (typeof theater_json.distributors == "undefined") // 배급사가 존재 하지 않을 경우
+                        {
+                            var distributors = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                            theater_json.distributors = distributors ;
+						}
+                        grid_Distributor.setList(theater_json.distributors);
+
 
                         grid_ChangeHist.setList({
                             ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_chghist_page.php",  // <-----
