@@ -63,8 +63,8 @@
                     },
                     rows:[
                         {display:true, addClass:"", style:"", list:[
-                            {label:"", labelWidth:"", type:"inputText", width:"100", key:"srchDong", addClass:"secondItem", valueBoxStyle:"padding-left:10px;", placeholder:"동명을 입력하세요", value:""},
-                            {label:"", labelWidth:"", type:"inputText", width:"100", key:"srchRoad", addClass:"secondItem", valueBoxStyle:"padding-left:10px;", placeholder:"도로명을 입력하세요", value:""},
+                            {label:"", labelWidth:"", type:"inputText", width:"100", key:"srchDong", addClass:"secondItem", valueBoxStyle:"padding-left:10px;padding-right:1px;", placeholder:"동명을 입력하세요", value:""},
+                            {label:"", labelWidth:"", type:"inputText", width:"100", key:"srchRoad", addClass:"secondItem", valueBoxStyle:"padding-left:3px;", placeholder:"도로명을 입력하세요", value:""},
                             {label:"", labelWidth:"", type:"button", width:"60", key:"button", valueBoxStyle:"padding-left:0px;padding-right:5px;", value:"검색",
                                 onclick: function(){
                                     //AXUtil.alert(this);
