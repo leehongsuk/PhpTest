@@ -33,6 +33,8 @@
 
     <script type="text/javascript">
 
+    var rowCount =0 ;
+
     var gridMySqlLOG = new AXGrid() ; // instance
 
     var fnObj =
@@ -53,7 +55,7 @@
                             {key:"argument",    label:"실행쿼리", width:"1500"}
                         ],
                         body : {
-                            onclick: function(){
+                            ondblclick: function(){
                                 location.reload();
                             }
                         },
@@ -69,8 +71,34 @@
                         onLoad  : function(){
                             //gridTheater.goPageMove(1); // 상대적인 페이지 이동..
                             //gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
+                            setTimeout(fnObj.replash, 1000);
                         }
                     });
+        },
+
+
+    	replash :  function()
+    	{
+			jQuery.ajax({
+                         type : "POST",
+                         url : "<?=$path_AjaxJSON?>/log_mysql_count.php",  // <-----
+                         cache : false,
+                         //data : formData,
+                         success : fnObj.onSuccess
+            });
+
+			setTimeout(fnObj.replash, 1000);
+        },
+
+        onSuccess : function(data)
+        {
+            var obj = eval("("+data+")");
+
+            if  ((rowCount>0) && (rowCount != obj['count'])) location.reload();
+
+            //trace(rowCount);
+            //trace(obj['count']);
+            rowCount = obj['count'];
         }
     };
 

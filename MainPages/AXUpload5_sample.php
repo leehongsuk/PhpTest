@@ -1,3 +1,4 @@
+<?php require_once("../config/CONFIG.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,12 +23,9 @@
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/dist/AXJ.min.js"></script>
 	<script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXUpload5.js"></script>
-    <script type="text/javascript" src="../page.js"></script>
+
     <script type="text/javascript" src="pageTab.js"></script>
     <!-- js block -->
-
-
-    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
 	<script>
 	/**
@@ -48,10 +46,11 @@
 			init: function(){
 				myUpload.setConfig({
 					targetID:"AXUpload5",
-					targetButtonClass:"Green",
+					//targetButtonClass:"Green",
 					uploadFileName:"fileData",
 
                     fileSelectAutoUpload:false,
+                    buttonTxt: "전송할 파일(들) 찾기...",
 
 					file_types:"*.*",  //audio/*|video/*|image/*|MIME_type (accept)
 					dropBoxID:"uploadQueueBox",
@@ -66,10 +65,10 @@
 					},
 
 					uploadMaxFileSize:(10*1024*1024), // 업로드될 개별 파일 사이즈 (클라이언트에서 제한하는 사이즈 이지 서버에서 설정되는 값이 아닙니다.)
-					uploadMaxFileCount:5, // 업로드될 파일갯수 제한 0 은 무제한
-					uploadUrl:"fileUpload.php",  // <-----
+					uploadMaxFileCount:1, // 업로드될 파일갯수 제한 0 은 무제한
+					uploadUrl:"<?=$path_AjaxJSON?>/AXU5_fileUpload.php",  // <-----
 					uploadPars:{userID:'tom', userName:'액시스'},
-					deleteUrl:"fileDelete.php",  // <-----
+					deleteUrl:"<?=$path_AjaxJSON?>/AXU5_fileDelete.php",  // <-----
 					deletePars:{userID:'tom', userName:'액시스'},
 
 					fileKeys:{ // 서버에서 리턴하는 json key 정의 (id는 예약어 사용할 수 없음)
@@ -120,7 +119,7 @@
 				// changeConfig
 
 				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- s
-				var url = "fileListLoad.php";
+				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php";  // <-----
 				var pars = "dummy="+AXUtil.timekey();
 				new AXReq(url, {pars:pars, onsucc:function(res){
                     if(!res.error){
@@ -134,7 +133,8 @@
 			},
 			printMethodReturn: function(method, type){
 				var list = myUpload[method](type);
-				trace(list);
+				//trace(list);
+				trace(myUpload.getUploadedList());
 				toast.push(Object.toJSON(list));
 			},
 			changeOption: function(){
@@ -174,7 +174,7 @@
 
             <div class="H10"></div>
 
-            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:200px;"></div>
+            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;"></div>
 
             <div class="H10"></div>
 
@@ -202,4 +202,3 @@
 
 </body>
 </html>
-

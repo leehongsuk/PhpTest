@@ -680,7 +680,7 @@
 
 <body>
 
-    <button onclick="test();">test</button>
+    <!-- button onclick="test();">test</button -->
     <?php
     if ($MODE=="APPEND")  { ?><h1>영화 등록</h1><?php     }
     if ($MODE=="EDIT")    { ?><h1>영화 편집</h1><?php     }

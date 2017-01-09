@@ -1014,7 +1014,7 @@
 
 <body>
 
-    <button onclick="test();">test</button>
+    <!-- button onclick="test();">test</button -->
     <?php
     if ($MODE=="APPEND")  { ?><h1>극장 등록</h1><?php     }
     if ($MODE=="EDIT")    { ?><h1>극장 편집</h1><?php     }

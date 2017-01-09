@@ -75,10 +75,10 @@ print_r( $_POST["playprint"] );
             $playprint2_seq = $playprints[$key]->playprint2_seq ;
             $memo           = $playprints[$key]->memo ;
 
-            print_r ( $playprints[$key] );
+            //print_r ( $playprints[$key] );
             //print_r ( $_CUD ." : ".$seq." | ".$film_code." | ".$playprint_seq." | ".$film_knm." | ".$film_enm." | ".$film_dcode." | " );
             //print_r ( "\n" );
-print_r( $_CUD );
+
             if  ($_CUD != "")
             {
                 $query= "CALL SP_WRK_FILM_PLAYPRINT_SAVE(?,?,?,?,?,?)" ; // <-----
