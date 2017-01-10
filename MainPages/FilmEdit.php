@@ -243,9 +243,9 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"playprint1_seq", label:" ",           width:"0", formatter: function () { return '' ; }},
+                    {key:"playprint1_seq", label:" ",           width:"1", formatter: function () { return '' ; }},
                     {key:"playprint1_nm",  label:"상영프린트1", width:"100"},
-                    {key:"playprint2_seq", label:" ",           width:"0", formatter: function () { return '' ; }},
+                    {key:"playprint2_seq", label:" ",           width:"1", formatter: function () { return '' ; }},
                     {key:"playprint2_nm",  label:"상영프린트2", width:"100"},
                     {key:"memo",           label:"메모",        width:"300"}
                 ],
@@ -367,7 +367,7 @@
 	            grid_PlayPrint.setList(film_json.playprints);
             }
 
-            //fnObj.upload.init();
+           fnObj.upload.init();
         }, // end (pageStart: function())
 
         //상영프린트 그리드 관련 이벤트 함수 그룹..
@@ -474,18 +474,18 @@
                   });
         },
 
-		/*
         upload: {
 			init: function(){
 				myUpload.setConfig({
 					targetID:"AXUpload5",
 					//targetButtonClass:"Green",
 					uploadFileName:"fileData",
-					buttonTxt: "파일업로드",
 
                     fileSelectAutoUpload:false,
+                    buttonTxt: "전송 할 파일 찾기...",
 
-					file_types:"*.*",  //audio/*|video/*|image/*|MIME_type (accept)
+					//file_types:"*.*",  //audio/*|video/*|image/*|MIME_type (accept)
+					file_types:"image/*",
 					dropBoxID:"uploadQueueBox",
 					queueBoxID:"uploadQueueBox", // upload queue targetID
 					// html 5를 지원하지 않는 브라우저를 위한 swf upload 설정 원치 않는 경우엔 선언 하지 않아도 됩니다. ------- s
@@ -498,10 +498,11 @@
 					},
 
 					uploadMaxFileSize:(10*1024*1024), // 업로드될 개별 파일 사이즈 (클라이언트에서 제한하는 사이즈 이지 서버에서 설정되는 값이 아닙니다.)
-					uploadMaxFileCount:5, // 업로드될 파일갯수 제한 0 은 무제한
-					uploadUrl:"fileUpload.php",  // <-----
+					uploadMaxFileCount:1, // 업로드될 파일갯수 제한 0 은 무제한
+					uploadUrl:"<?=$path_AjaxJSON?>/AXU5_fileUpload.php",  // <-----
 					uploadPars:{userID:'tom', userName:'액시스'},
-					deleteUrl:"fileDelete.php",  // <-----
+
+					deleteUrl:"<?=$path_AjaxJSON?>/AXU5_fileDelete.php",  // <-----
 					deletePars:{userID:'tom', userName:'액시스'},
 
 					fileKeys:{ // 서버에서 리턴하는 json key 정의 (id는 예약어 사용할 수 없음)
@@ -520,25 +521,13 @@
 						return po.join('');
 					},
 
-					onUpload: function(){
-						//trace(this);
-						//trace("onUpload");
-					},
-					onComplete: function(){
-						//trace(this);
-						//trace("onComplete");
-						$("#uploadCancelBtn").get(0).disabled = true; // 전송중지 버튼 제어
-					},
-					onStart: function(){
-						//trace(this);
-						//trace("onStart");
-						$("#uploadCancelBtn").get(0).disabled = false; // 전송중지 버튼 제어
-					},
-					onDelete: function(){
-						//trace(this);
-						//trace("onDelete");
-					},
-					onError: function(errorType, extData){
+					onUpload: function() {},
+					onComplete: function() {},
+					onStart: function() {},
+					onDelete: function() {},
+
+					onError: function(errorType, extData)
+					{
 						if(errorType == "html5Support"){
 							//dialog.push('The File APIs are not fully supported in this browser.');
 						}else if(errorType == "fileSize"){
@@ -552,7 +541,7 @@
 				// changeConfig
 
 				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- s
-				var url = "fileListLoad.php";
+				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php";  // <-----
 				var pars = "dummy="+AXUtil.timekey();
 				new AXReq(url, {pars:pars, onsucc:function(res){
                     if(!res.error){
@@ -566,24 +555,24 @@
 			},
 			printMethodReturn: function(method, type){
 				var list = myUpload[method](type);
-				trace(list);
+				//trace(list);
+				trace(myUpload.getUploadedList());
 				toast.push(Object.toJSON(list));
 			},
 			changeOption: function(){
 
 				// 업로드 갯수 등 업로드 관련 옵션을 동적으로 변경 할 수 있습니다.
 				myUpload.changeConfig({
-
-					//uploadUrl:"uploadFile.asp",
-					//uploadPars:{userID:'tom', userName:'액시스'},
-					//deleteUrl:"deleteFile.asp",
-					//deletePars:{userID:'tom', userName:'액시스'},
-
+					/*
+					uploadUrl:"uploadFile.asp",
+					uploadPars:{userID:'tom', userName:'액시스'},
+					deleteUrl:"deleteFile.asp",
+					deletePars:{userID:'tom', userName:'액시스'},
+					*/
 					uploadMaxFileCount:10
 				});
 			}
 		},
-		*/
 
 		// 하나의 영화을 저장한다.
 		save_film : function()
@@ -796,11 +785,17 @@
     				</th>
     				<td class="last">
 
-    		            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:200px;"></div>
-
-    					<div class="AXUpload5" id="AXUpload5" style="padding-top: 5px;;"></div>
-
     					<label><input type="checkbox" name="poster_yn" value="Y" id="AXCheck_Operation0" /> 포스트사용 유무</label>
+
+    					<div style="height: 10px;"></div>
+    					<input type="button" value="업로드" class="AXButton" onclick="myUpload.uploadQueue(true);" />
+    					<input type="button" value="삭제" class="AXButton" onclick="myUpload.deleteSelect('all');" />
+    					<div style="height: 5px;"></div>
+
+    		            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:140px;"></div>
+						<div style="height: 5px;"></div>
+                        <div class="AXUpload5" id="AXUpload5"></div>
+
 
     				</td>
     			</tr>

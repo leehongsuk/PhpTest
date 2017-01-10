@@ -8,7 +8,7 @@ require_once("../config/DB_CONNECT.php");
     $upload_dir = $server_path . "files";
     //echo $upload_dir;
 
-    $file_name = strtolower(basename($_FILES['fileData']['name'])); // 원래 파일명
+    $file_name = strtolower($_FILES['fileData']['name']); // 원래 파일명
     $file_ext = strtolower(substr(strrchr($file_name, "."), 1)); // 파일 확장자
     $file_size = $_FILES['fileData']['size']; // 파일 사이즈
 
@@ -25,13 +25,28 @@ require_once("../config/DB_CONNECT.php");
 
     if (move_uploaded_file($_FILES['fileData']['tmp_name'], $uploadfile))
     {
-        $a_json = array("name" => $file_name
-                        ,"type" => $file_ext
-                        ,"saveName" => $new_file_name
-                        ,"fileSize" => $file_size
+        $imagesize = getimagesize( $uploadfile );
+
+        $a_json = array ("name"         => $file_name
+                        ,"type"         => $file_ext
+                        ,"saveName"     => $new_file_name
+                        ,"fileSize"     => $file_size
                         ,"uploadedPath" => "../AjaxJSON/files/"
-                        ,"thumbUrl" => "../AjaxJSON/files/$new_file_name"
+                        ,"thumbUrl"     => "../AjaxJSON/files/$new_file_name"
+                        ,"imagesize" => $imagesize
                         );
+
+        $query= "CALL SP_WRK_UPLOADED_IMAGES_SAVE(?,?,?,?,?)" ; // <-----
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("ssiii", $file_name
+                                 , $new_file_name
+                                 , $imagesize["0"]
+                                 , $imagesize["1"]
+                                 , $file_size
+                                 );
+
+        $stmt->execute();
+        $stmt->close();
     }
     else
     {

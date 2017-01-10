@@ -24,6 +24,12 @@ require_once("../config/DB_CONNECT.php");
 
         //echo "{result:'ok', msg:''}";
         $a_json = array("result" => "ok","msg" => "");
+
+        $query= "CALL SP_WRK_UPLOADED_IMAGES_DELETE(?)" ; // <-----
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s", $file );
+        $stmt->execute();
+        $stmt->close();
     }
     else
     {

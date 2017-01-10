@@ -34,7 +34,6 @@
 	 * Javascript 	: AXJ.js, AXUpload5.js
 	 * CSS			: AXJ.css, AXButton.css, AXUpload5.css
 	 */
-	var pageID = "manualUpload";
 	var myUpload = new AXUpload5();
 
 	var fnObj = {
@@ -50,9 +49,10 @@
 					uploadFileName:"fileData",
 
                     fileSelectAutoUpload:false,
-                    buttonTxt: "전송할 파일(들) 찾기...",
+                    buttonTxt: "전송 할 파일 찾기...",
 
-					file_types:"*.*",  //audio/*|video/*|image/*|MIME_type (accept)
+					//file_types:"*.*",  //audio/*|video/*|image/*|MIME_type (accept)
+					file_types:"image/*",
 					dropBoxID:"uploadQueueBox",
 					queueBoxID:"uploadQueueBox", // upload queue targetID
 					// html 5를 지원하지 않는 브라우저를 위한 swf upload 설정 원치 않는 경우엔 선언 하지 않아도 됩니다. ------- s
@@ -170,15 +170,18 @@
         <div class="AXdemoPageContent">
 			<div class="title"><h1>AXUpload5 (Manual Upload)</h1></div>
 
+
+
+            <div class="H10"></div>
+
+            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:140px;"></div>
+
             <div class="AXUpload5" id="AXUpload5"></div>
 
             <div class="H10"></div>
 
-            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;"></div>
-
-            <div class="H10"></div>
-
             <div>
+
                 <input type="button" value="업로드" class="AXButton" onclick="myUpload.uploadQueue(true);" />
 
                 <input type="button" value="전송중지" class="AXButton" id="uploadCancelBtn" disabled="disabled" onclick="myUpload.cancelUpload();" />
