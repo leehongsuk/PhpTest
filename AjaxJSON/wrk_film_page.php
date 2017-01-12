@@ -15,9 +15,10 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_SEL_COUNT(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("is", $post_affiliate
-                          , $post_filmNm
-                          );
+    $stmt->bind_param("is"
+                     , $post_affiliate
+                     , $post_filmNm
+                     );
     $stmt->execute();
     $stmt->bind_result($count);
     $stmt->fetch();
@@ -29,11 +30,12 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_SEL_PAGE(?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("isii", $post_distributor_seq
-                            , $post_film_Nm
-                            , $post_pageNo
-                            , $post_pageSize
-                            );
+    $stmt->bind_param("isii"
+                     , $post_distributor_seq
+                     , $post_film_Nm
+                     , $post_pageNo
+                     , $post_pageSize
+                     );
     $stmt->execute();
 
     $stmt->bind_result($code

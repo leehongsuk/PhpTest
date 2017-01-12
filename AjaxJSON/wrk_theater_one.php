@@ -40,13 +40,13 @@ require_once("../config/DB_CONNECT.php");
 
          while ($stmt->fetch())
          {
-             array_push($a_temp, array("seq" => $seq
+             array_push($a_temp, array("seq"           => $seq
                                        ,"theater_code" => $theater_code
-                                       ,"name" => $name
-                                       ,"tel" => $tel
-                                       ,"hp" => $hp
-                                       ,"fax" => $fax
-                                       ,"mail" => $mail
+                                       ,"name"         => $name
+                                       ,"tel"          => $tel
+                                       ,"hp"           => $hp
+                                       ,"fax"          => $fax
+                                       ,"mail"         => $mail
                                      )
                        ) ;
          }
@@ -65,12 +65,12 @@ require_once("../config/DB_CONNECT.php");
 
     while ($stmt->fetch())
     {
-        array_push($a_showroom, array("seq" => $seq
+        array_push($a_showroom, array("seq"           => $seq
                                       ,"theater_code" => $theater_code
-                                      ,"room_nm" => $room_nm
-                                      ,"room_alias" => $room_alias
-                                      ,"art_room" => $art_room
-                                      ,"seat" => $seat
+                                      ,"room_nm"      => $room_nm
+                                      ,"room_alias"   => $room_alias
+                                      ,"art_room"     => ($art_room=='Y') ? 'Y' : 'N'
+                                      ,"seat"         => $seat
                                       )
                   );
     }
@@ -87,13 +87,13 @@ require_once("../config/DB_CONNECT.php");
 
     while ($stmt->fetch())
     {
-        array_push($a_distributor, array("seq" => $seq
-                                         ,"theater_code" => $theater_code
+        array_push($a_distributor, array("seq"              => $seq
+                                         ,"theater_code"    => $theater_code
                                          ,"distributor_seq" => $distributor_seq
-                                         ,"distributor_nm" => $distributor_nm
-                                         ,"theater_knm" => $theater_knm
-                                         ,"theater_enm" => $theater_enm
-                                         ,"theater_dcode" => $theater_dcode
+                                         ,"distributor_nm"  => $distributor_nm
+                                         ,"theater_knm"     => $theater_knm
+                                         ,"theater_enm"     => $theater_enm
+                                         ,"theater_dcode"   => $theater_dcode
                                          )
                   ) ;
     }
@@ -107,73 +107,73 @@ require_once("../config/DB_CONNECT.php");
     $stmt->execute();
 
     $stmt->bind_result($code
-                       ,$loc1
-                       ,$loc2
-                       ,$affiliate_seq
-                       ,$isdirect
-                       ,$unaffiliate_seq
-                       ,$user_group_seq
-                       ,$open_dt
-                       ,$operation
-                       ,$theater_nm
-                       ,$zip
-                       ,$addr1
-                       ,$addr2
-                       ,$score_tel
-                       ,$score_fax
-                       ,$score_mail
-                       ,$score_sms
-                       ,$premium_tel
-                       ,$premium_fax
-                       ,$premium_mail
-                       ,$premium_sms
-                       ,$memo
-                       ,$fund_free
-                       ,$gubun_code
-                       ,$saup_no
-                       ,$owner
-                       ,$sangho
-                       ,$homepage
-                       ,$images_no
-                       );
+                      ,$loc1
+                      ,$loc2
+                      ,$affiliate_seq
+                      ,$isdirect
+                      ,$unaffiliate_seq
+                      ,$user_group_seq
+                      ,$open_dt
+                      ,$operation
+                      ,$theater_nm
+                      ,$zip
+                      ,$addr1
+                      ,$addr2
+                      ,$score_tel
+                      ,$score_fax
+                      ,$score_mail
+                      ,$score_sms
+                      ,$premium_tel
+                      ,$premium_fax
+                      ,$premium_mail
+                      ,$premium_sms
+                      ,$memo
+                      ,$fund_free
+                      ,$gubun_code
+                      ,$saup_no
+                      ,$owner
+                      ,$sangho
+                      ,$homepage
+                      ,$images_no
+                      );
 
     if ($stmt->fetch())
     {
-        $a_json = array("code" => $code
-                        ,"loc1" => $loc1
-                        ,"loc2" => $loc2
-                        ,"affiliate_seq" => $affiliate_seq
-                        ,"isdirect" => $isdirect
-                        ,"unaffiliate_seq" => $unaffiliate_seq
-                        ,"user_group_seq" => $user_group_seq
-                        ,"open_dt" => $open_dt
-                        ,"operation" => $operation
-                        ,"theater_nm" => $theater_nm
-                        ,"zip" => $zip
-                        ,"addr1" => $addr1
-                        ,"addr2" => $addr2
-                        ,"score_tel" => $score_tel
-                        ,"score_fax" => $score_fax
-                        ,"score_mail" => $score_mail
-                        ,"score_sms" => $score_sms
-                        ,"premium_tel" => $premium_tel
-                        ,"premium_fax" => $premium_fax
-                        ,"premium_mail" => $premium_mail
-                        ,"premium_sms" => $premium_sms
-                        ,"memo" => $memo
-                        ,"fund_free" => $fund_free
-                        ,"gubun_code" => $gubun_code
-                        ,"saup_no" => $saup_no
-                        ,"owner" => $owner
-                        ,"sangho" => $sangho
-                        ,"homepage" => $homepage
-                        ,"images_no" => $images_no
-                        ///////////////////////////////
-                        ,"contacts" => $a_contact
-                        ,"showrooms" => $a_showroom
-                        ,"distributors" => $a_distributor
-                        );
-    }
+        $a_json = array("code"             => $code
+                       ,"loc1"             => $loc1
+                       ,"loc2"             => $loc2
+                       ,"affiliate_seq"    => $affiliate_seq
+                       ,"isdirect"         => $isdirect
+                       ,"unaffiliate_seq"  => $unaffiliate_seq
+                       ,"user_group_seq"   => $user_group_seq
+                       ,"open_dt"          => $open_dt
+                       ,"operation"        => $operation
+                       ,"theater_nm"       => $theater_nm
+                       ,"zip"              => $zip
+                       ,"addr1"            => $addr1
+                       ,"addr2"            => $addr2
+                       ,"score_tel"        => $score_tel
+                       ,"score_fax"        => $score_fax
+                       ,"score_mail"       => $score_mail
+                       ,"score_sms"        => $score_sms
+                       ,"premium_tel"      => $premium_tel
+                       ,"premium_fax"      => $premium_fax
+                       ,"premium_mail"     => $premium_mail
+                       ,"premium_sms"      => $premium_sms
+                       ,"memo"             => $memo
+                       ,"fund_free"        => $fund_free
+                       ,"gubun_code"       => $gubun_code
+                       ,"saup_no"          => $saup_no
+                       ,"owner"            => $owner
+                       ,"sangho"           => $sangho
+                       ,"homepage"         => $homepage
+                       ,"images_no"        => $images_no
+                       ////////////////////
+                       ,"contacts"         => $a_contact
+                       ,"showrooms"        => $a_showroom
+                       ,"distributors"     => $a_distributor
+                       );
+     }
     $stmt->close();
 
 

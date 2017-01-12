@@ -24,7 +24,11 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_BAS_PREMIUM_RATE_SAVE(?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sss",$korabd_gbn,$values,$separator);
+    $stmt->bind_param("sss"
+                     ,$korabd_gbn
+                     ,$values
+                     ,$separator
+                     );
     $stmt->execute();
     $stmt->close();
 

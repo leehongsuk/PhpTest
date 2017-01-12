@@ -31,13 +31,15 @@
     <!-- 아이콘사용을 위해서..(http://axicon.axisj.com/) -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axicon/axicon.min.css"/>
 
-
-
     <!-- css block -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet "-->
+    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/font-awesome.min.css" />
 
 
+
+	<script type="text/javascript" src="<?=$path_Root?>/MainJavascript/CommonLib.js"></script>
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
+
 
     <style type="text/css">
     .modalProgramTitle{
@@ -69,6 +71,9 @@
     <script type="text/javascript">
 
     var theater_json ;
+
+    var myUpload         = new AXUpload5(); // 이미지 파일업로드
+
     var grid_Contact     = new AXGrid() ; // 연락처 그리드
     var grid_ChangeHist  = new AXGrid() ; // 변경내역 그리드
     var grid_ShowRoom    = new AXGrid() ; // 상영관 그리드
@@ -460,7 +465,7 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"distributor_seq",label:" ",               width:"0", formatter: function () { return '' ; }},
+                    {key:"distributor_seq",label:" ",               width:"1", formatter: function () { return '' ; }},
                     {key:"distributor_nm", label:"배급사",          width:"200"},
                     {key:"theater_knm",    label:"극장명(한글)",    width:"200"},
                     {key:"theater_enm",    label:"극장명(영문)",    width:"200"},
@@ -573,6 +578,8 @@
 						}
 						$('input[type=checkbox]').bindChecked();
 		          });
+
+            fnObj.upload.init();
 
         }, // end (pageStart: function())
 
@@ -822,6 +829,8 @@
                         jQuery("input[name=premium_mail").prop('checked',(theater_json.premium_mail=="Y"));
                         jQuery("input[name=premium_sms").prop('checked',(theater_json.premium_sms=="Y"));
 
+                        jQuery("input[name=images_no]").val(theater_json.images_no);
+
                         $('input[type=checkbox]').bindChecked();
 
                         jQuery("select[name=loc1]").setValueSelect(theater_json.loc1);
@@ -881,6 +890,113 @@
             });
         },
 
+        upload: {
+			init: function(){
+				myUpload.setConfig({
+					targetID:"AXUpload5",
+					//targetButtonClass:"Green",
+					uploadFileName:"fileData",
+
+                    fileSelectAutoUpload:false,
+                    buttonTxt: "전송 할 파일 찾기...",
+
+					//file_types:"*.*",  //audio/*|video/*|image/*|MIME_type (accept)
+					file_types:"image/*",
+					dropBoxID:"uploadQueueBox",
+					queueBoxID:"uploadQueueBox", // upload queue targetID
+					// html 5를 지원하지 않는 브라우저를 위한 swf upload 설정 원치 않는 경우엔 선언 하지 않아도 됩니다. ------- s
+					flash_url : "<?=$path_Root?>/js/axisj-1.1.11/lib/swfupload.swf",
+					flash9_url : "<?=$path_Root?>/js/axisj-1.1.11/lib/swfupload_fp9.swf",
+					// --------- e
+					onClickUploadedItem: function(){ // 업로드된 목록을 클릭했을 때.
+						//trace(this);
+						window.open(this.uploadedPath.dec() + this.saveName.dec(), "_blank", "width=500,height=500");
+					},
+
+					uploadMaxFileSize:(10*1024*1024), // 업로드될 개별 파일 사이즈 (클라이언트에서 제한하는 사이즈 이지 서버에서 설정되는 값이 아닙니다.)
+					uploadMaxFileCount:1, // 업로드될 파일갯수 제한 0 은 무제한
+					uploadUrl:"<?=$path_AjaxJSON?>/AXU5_fileUpload.php",  // <-----
+					uploadPars:{userID:'tom', userName:'액시스'},
+
+					deleteUrl:"<?=$path_AjaxJSON?>/AXU5_fileDelete.php",  // <-----
+					deletePars:{userID:'tom', userName:'액시스'},
+
+					fileKeys:{ // 서버에서 리턴하는 json key 정의 (id는 예약어 사용할 수 없음)
+						name:"name",
+						type:"type",
+						saveName:"saveName",
+						fileSize:"fileSize",
+						uploadedPath:"uploadedPath",
+						thumbPath:"thumbUrl" // 서버에서 키값을 다르게 설정 할 수 있다는 것을 확인 하기 위해 이름을 다르게 처리한 예제 입니다.
+					},
+
+					formatter: function(f){
+						var po = [];
+						po.push("<div id='"+this.id+"_AXUploadLabel_mainImageFile' class='AXUploadMainImage' >mainImage</div>");
+
+						return po.join('');
+					},
+
+					onUpload: function() // 이미지 업로드가 완료되면..
+					{
+					    var list = myUpload.getUploadedList();
+
+					    jQuery("input:hidden[name=images_no]").val( list[0].result ) ; // <input type="hidden" name="images_no"> 값을 설정한다.
+
+					    trace(list[0].result);
+					},
+					onComplete: function() {},
+					onStart: function() {},
+					onDelete: function() {},
+
+					onError: function(errorType, extData)
+					{
+						if(errorType == "html5Support"){
+							//dialog.push('The File APIs are not fully supported in this browser.');
+						}else if(errorType == "fileSize"){
+							trace(extData);
+							alert("파일사이즈가 초과된 파일을 업로드 할 수 없습니다. 업로드 목록에서 제외 합니다.\n("+extData.name+" : "+extData.size.byte()+")");
+						}else if(errorType == "fileCount"){
+							alert("업로드 갯수 초과 초과된 아이템은 업로드 되지 않습니다.");
+						}
+					}
+				});
+				// changeConfig
+
+				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- s
+				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php?gubun=theater&code=<?=$_GET['code']?>";  // <-----
+				var pars = "dummy="+AXUtil.timekey();
+				new AXReq(url, {pars:pars, onsucc:function(res){
+                    if(!res.error){
+                        myUpload.setUploadedList(res);
+                    }else{
+                        alert(res.msg.dec());
+                    }
+				}});
+				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- e
+
+			},
+			printMethodReturn: function(method, type){
+				var list = myUpload[method](type);
+				//trace(list);
+				trace(myUpload.getUploadedList());
+				toast.push(Object.toJSON(list));
+			},
+			changeOption: function(){
+
+				// 업로드 갯수 등 업로드 관련 옵션을 동적으로 변경 할 수 있습니다.
+				myUpload.changeConfig({
+					/*
+					uploadUrl:"uploadFile.asp",
+					uploadPars:{userID:'tom', userName:'액시스'},
+					deleteUrl:"deleteFile.asp",
+					deletePars:{userID:'tom', userName:'액시스'},
+					*/
+					uploadMaxFileCount:10
+				});
+			}
+		},
+
         // 우편번호를 모달로 검색하거나 선택한다.
         addr:
         {
@@ -908,6 +1024,60 @@
 		save_theater : function()
 		{
 		    var errorMsg = '' ;
+
+		    var theater_nm      = jQuery("input[name=theater_nm]").val().trim() ;
+		    var open_dt         = jQuery("input[name=open_dt]").val().trim() ;
+		    var saup_no         = jQuery("input[name=saup_no]").val().trim() ;
+            var owner           = jQuery("input[name=owner]").val().trim() ;
+            var sangho          = jQuery("input[name=sangho]").val().trim() ;
+            var homepage        = jQuery("input[name=homepage]").val().trim() ;
+            var loc1            = jQuery("select[name=loc1]").val() ;
+            var loc2            = jQuery("select[name=loc2]").val() ;
+            var zip             = jQuery("input[name=zip]").val().trim() ;
+            var addr2           = jQuery("input[name=addr2]").val().trim() ;
+            var affiliate_seq   = jQuery("select[name=affiliate_seq]").val() ;
+            var isdirect        = jQuery("select[name=isdirect]").val() ;
+            var unaffiliate_seq = jQuery("select[name=unaffiliate_seq]").val() ;
+            var user_group_seq  = jQuery("select[name=user_group_seq]").val() ;
+
+		    if  (theater_nm == '') errorMsg += '극장명이 없습니다.<br>' ;
+		    if  (open_dt == '')    errorMsg += '개관일이 없습니다.<br>';
+		    if  (saup_no == '')    errorMsg += '사업자번호가 없습니다.<br>';
+		    if  (owner == '')      errorMsg += '대표자명이 없습니다.<br>';
+		    if  (sangho == '')     errorMsg += '상호가 없습니다.<br>';
+	        if  (loc1 == '')       errorMsg += '지역1이 없습니다.<br>';
+	        if  (loc2 == '')       errorMsg += '지역2가 없습니다.<br>';
+	        if  (zip == '')        errorMsg += '우편번호가 없습니다.<br>';
+	        if  (addr2 == '')      errorMsg += '상세주소가 없습니다.<br>';
+
+	        if  ((affiliate_seq == '') && (unaffiliate_seq == ''))  errorMsg += '계열사와 비계열중 하나는 선택되어야 합니다.<br>'
+	        else
+	        {
+    	        if  ((affiliate_seq != '') && (unaffiliate_seq != ''))   errorMsg += '계열사와 비계열은 같이 지정할 수 없습니다.<br>'
+    	        else
+    	        {
+    	            if  ((affiliate_seq != '') && (isdirect ==''))   errorMsg += '계열사가 있으면 직영/위탁여부도 같이 지정해야 합니다.<br>'
+    	        }
+	        }
+
+	        var count = 0 ;
+	        theater_json.showrooms.forEach(function(e)
+            {
+	            if (typeof e._CUD != "undefined")
+	            {
+	                if (e._CUD != 'D') count++ ;
+	            }
+	            else
+	            {
+	                count++ ;
+	            }
+            });
+
+            if  (count == 0)
+            {
+                errorMsg += '상영관이 하나이상 존재해야 됩니다.<br>';
+            }
+
 
 		    if (errorMsg == '')
             {
@@ -996,7 +1166,7 @@
     };
 
     jQuery(document).ready([ fnObj.pageStart.delay(0.1)
-                             <?php if ($MODE=="EDIT") { ?>,fnObj.readTheaterOne.delay(1)<?php } ?>
+                             <?php if ($MODE=="EDIT") { ?>,fnObj.readTheaterOne.delay(2)<?php } ?>
                              ]);
 
 
@@ -1006,6 +1176,7 @@
     function test()
     {
         //jQuery("#AXSelect_Affiliate").setValueSelect("1");
+        jQuery("select[name=isdirect]").setValueSelect(theater_json.isdirect);
     }
 
     </script>
@@ -1014,7 +1185,7 @@
 
 <body>
 
-    <!-- button onclick="test();">test</button -->
+    <button onclick="test();">test</button>
     <?php
     if ($MODE=="APPEND")  { ?><h1>극장 등록</h1><?php     }
     if ($MODE=="EDIT")    { ?><h1>극장 편집</h1><?php     }
@@ -1025,6 +1196,7 @@
     	<input type="hidden" name="contacts">
     	<input type="hidden" name="showrooms">
     	<input type="hidden" name="distributors">
+    	<input type="hidden" name="images_no">
 
 
         <table cellpadding="0" cellspacing="0" class="AXFormTable">
@@ -1076,6 +1248,17 @@
                                 <td class="white_board">
                                     : <input type="text" name="open_dt" id="AXInputDate" placeholder="개관일" class="AXInput W100" />
                                 </td>
+                                <td class="white_board" rowspan="7">
+
+                					<input type="button" value="업로드" class="AXButton" onclick="myUpload.uploadQueue(true);" />
+                					<input type="button" value="삭제" class="AXButton" onclick="myUpload.deleteSelect('all');" />
+                					<div style="height: 5px;"></div>
+
+                		            <div id="uploadQueueBox" class="AXUpload5QueueBox" style="height:188px;width:140px;"></div>
+            						<div style="height: 5px;"></div>
+                                    <div class="AXUpload5" id="AXUpload5"></div>
+
+                                </td>
                             </tr>
                             <tr>
                                 <td class="white_board"><label>사업자등록번호</label></td>
@@ -1100,6 +1283,12 @@
                                 <td class="white_board">
                                     : <input type="text" name="homepage" value="" placeholder="홈페이지" class="AXInput W250" />
                                 </td>
+                            </tr>
+                            <tr>
+                                <td class="white_board" calspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="white_board" calspan="2">&nbsp;</td>
                             </tr>
                             </table>
 

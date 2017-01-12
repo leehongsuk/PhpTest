@@ -149,7 +149,7 @@ print_r( $_POST["distributor"] );
         //$theater_code  = $contacts[$key]->theater_code ;
         $room_nm       = $contacts[$key]->room_nm ;
         $room_alias    = $contacts[$key]->room_alias ;
-        $art_room      = $contacts[$key]->art_room ;
+        $art_room      = ($contacts[$key]->art_room=='Y') ? 'Y' : 'N' ;
         $seat          = $contacts[$key]->seat ;
 
         //print_r ( $contacts[$key] );
@@ -162,14 +162,14 @@ print_r( $_POST["distributor"] );
             $stmt = $mysqli->prepare($query);
 
             $stmt->bind_param("sissssi"
-              ,$_CUD
-              ,$seq
-              ,$theater_code
-              ,$room_nm
-              ,$room_alias
-              ,$art_room
-              ,$seat
-              );
+                             ,$_CUD
+                             ,$seq
+                             ,$theater_code
+                             ,$room_nm
+                             ,$room_alias
+                             ,$art_room
+                             ,$seat
+                             );
             $stmt->execute();
             $stmt->close();
         }
@@ -198,14 +198,14 @@ print_r( $_POST["distributor"] );
             $stmt = $mysqli->prepare($query);
 
             $stmt->bind_param("sisisss"
-              ,$_CUD
-              ,$seq
-              ,$theater_code
-              ,$distributor_seq
-              ,$theater_knm
-              ,$theater_enm
-              ,$theater_dcode
-              );
+                             ,$_CUD
+                             ,$seq
+                             ,$theater_code
+                             ,$distributor_seq
+                             ,$theater_knm
+                             ,$theater_enm
+                             ,$theater_dcode
+                             );
             $stmt->execute();
             $stmt->close();
         }

@@ -17,7 +17,8 @@ else fclose($fp);
 
     $a_json  = array() ;
 
-    $query= "CALL SP_WRK_FILM_UPLOAD_IMAGE(?)" ; // <-----
+    if  ($_GET["gubun"] == 'film')    $query= "CALL SP_WRK_FILM_UPLOAD_IMAGE(?)" ; // <-----
+    if  ($_GET["gubun"] == 'theater') $query= "CALL SP_WRK_THEATER_UPLOAD_IMAGE(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $_GET["code"]);

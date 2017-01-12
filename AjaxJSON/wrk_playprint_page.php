@@ -27,7 +27,11 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_PLAYPRINT_SEL_PAGE(?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sii", $post_film_code, $post_pageNo, $post_pageSize);
+    $stmt->bind_param("sii"
+                     , $post_film_code
+                     , $post_pageNo
+                     , $post_pageSize
+                     );
     $stmt->execute();
 
     $stmt->bind_result($seq,$playprint1,$playprint2,$memo);

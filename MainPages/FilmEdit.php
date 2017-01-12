@@ -31,7 +31,8 @@
 
 
   	<!-- css block -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet "-->
+    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/font-awesome.min.css" />
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.min.css" />
 
@@ -68,7 +69,7 @@
 
     var film_json ;
 
-    var myUpload       = new AXUpload5();
+    var myUpload       = new AXUpload5(); // 이미지 파일업로드
     var grid_PlayPrint = new AXGrid() ; // 연락처 그리드
 
     var myModal = new AXModal(); // 우편번호검색을 위한 팝업창과 범용팝업
@@ -367,7 +368,7 @@
 	            grid_PlayPrint.setList(film_json.playprints);
             }
 
-           fnObj.upload.init();
+			fnObj.upload.init();
         }, // end (pageStart: function())
 
         //상영프린트 그리드 관련 이벤트 함수 그룹..
@@ -526,7 +527,7 @@
 					{
 					    var list = myUpload.getUploadedList();
 
-					    jQuery("input:hidden[name=images_no]").val( list[0].result ) ;
+					    jQuery("input:hidden[name=images_no]").val( list[0].result ) ; // <input type="hidden" name="images_no"> 값을 설정한다.
 
 					    trace(list[0].result);
 					},
@@ -549,7 +550,7 @@
 				// changeConfig
 
 				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- s
-				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php?code=<?=$_GET['code']?>";  // <-----
+				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php?gubun=film&code=<?=$_GET['code']?>";  // <-----
 				var pars = "dummy="+AXUtil.timekey();
 				new AXReq(url, {pars:pars, onsucc:function(res){
                     if(!res.error){

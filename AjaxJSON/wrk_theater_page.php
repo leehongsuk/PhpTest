@@ -19,13 +19,14 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_SEL_COUNT(?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("iiisss", $post_location1
-                              , $post_location2
-                              , $post_affiliate
-                              , $post_theaterNm
-                              , $post_operation
-                              , $post_fundFree
-                              );
+    $stmt->bind_param("iiisss"
+                     , $post_location1
+                     , $post_location2
+                     , $post_affiliate
+                     , $post_theaterNm
+                     , $post_operation
+                     , $post_fundFree
+                     );
     $stmt->execute();
     $stmt->bind_result($count);
     $stmt->fetch();
@@ -37,15 +38,16 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_SEL_PAGE(?,?,?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("iiisssii", $post_location1
-                                , $post_location2
-                                , $post_affiliate
-                                , $post_theaterNm
-                                , $post_operation
-                                , $post_fundFree
-                                , $post_pageNo
-                                , $post_pageSize
-                            );
+    $stmt->bind_param("iiisssii"
+                     , $post_location1
+                     , $post_location2
+                     , $post_affiliate
+                     , $post_theaterNm
+                     , $post_operation
+                     , $post_fundFree
+                     , $post_pageNo
+                     , $post_pageSize
+                     );
     $stmt->execute();
 
     $stmt->bind_result( $code

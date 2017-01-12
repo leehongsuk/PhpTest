@@ -26,7 +26,11 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_CHGHIST_SEL_PAGE(?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sii", $post_theater_code, $post_pageNo, $post_pageSize);
+    $stmt->bind_param("sii"
+                     , $post_theater_code
+                     , $post_pageNo
+                     , $post_pageSize
+                     );
     $stmt->execute();
 
     $stmt->bind_result($seq,$gubun,$theater_code,$change_date,$change_time,$loc1,$loc2,$affiliate_seq,$dir_mng,$unaffiliate,$user_group,$operation,$theater_nnm,$fund_free,$gubun_code,$saup_no,$owner,$sangho,$homepage,$images_no);

@@ -36,13 +36,14 @@ require_once("../config/DB_CONNECT.php");
 
         $query= "CALL SP_WRK_UPLOADED_IMAGES_SAVE(?,?,?,?,?,?,@result)" ; // <-----
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("bssiii", $NULL
-                                  , $file_name
-                                  , $new_file_name
-                                  , $imagesize["0"]
-                                  , $imagesize["1"]
-                                  , $file_size
-                                  );
+        $stmt->bind_param("bssiii"
+                         , $NULL
+                         , $file_name
+                         , $new_file_name
+                         , $imagesize["0"]
+                         , $imagesize["1"]
+                         , $file_size
+                         );
 
         /*
         while (!feof($handle))

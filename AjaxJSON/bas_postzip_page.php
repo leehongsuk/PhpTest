@@ -28,11 +28,12 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_BAS_POSTZIP_SEL_PAGE(?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("ssii", $post_dongNm
-                            , $post_roadNm
-                            , $post_pageNo
-                            , $post_pageSize
-                      );
+    $stmt->bind_param("ssii"
+                     , $post_dongNm
+                     , $post_roadNm
+                     , $post_pageNo
+                     , $post_pageSize
+                     );
     $stmt->execute();
 
     /**
