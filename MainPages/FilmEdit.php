@@ -460,6 +460,7 @@
 
                         jQuery("select[name=korabd_cd]").setValueSelect(film_json.korabd_cd);
                         jQuery("select[name=grade_seq]").setValueSelect(film_json.grade_seq);
+                        jQuery("select[name=images_no]").setValueSelect(film_json.images_no);
 
                         if  (typeof film_json.playprints == "undefined") // 상영 프린터가 존재 할 경우
 						{
@@ -521,7 +522,14 @@
 						return po.join('');
 					},
 
-					onUpload: function() {},
+					onUpload: function() // 이미지 업로드가 완료되면..
+					{
+					    var list = myUpload.getUploadedList();
+
+					    jQuery("input:hidden[name=images_no]").val( list[0].result ) ;
+
+					    trace(list[0].result);
+					},
 					onComplete: function() {},
 					onStart: function() {},
 					onDelete: function() {},
@@ -541,7 +549,7 @@
 				// changeConfig
 
 				// 서버에 저장된 파일 목록을 불러와 업로드된 목록에 추가 합니다. ----------------------------- s
-				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php";  // <-----
+				var url = "<?=$path_AjaxJSON?>/AXU5_fileListLoad.php?code=<?=$_GET['code']?>";  // <-----
 				var pars = "dummy="+AXUtil.timekey();
 				new AXReq(url, {pars:pars, onsucc:function(res){
                     if(!res.error){
@@ -678,6 +686,7 @@
     <form name="frmFilm" onsubmit="return false;">
 
     	<input type="hidden" name="playprints">
+    	<input type="hidden" name="images_no">
 
     	<table cellpadding="0" cellspacing="0" class="AXFormTable">
     		<colgroup>
