@@ -81,74 +81,109 @@
 
     var myModal = new AXModal(); // 우편번호검색을 위한 팝업창과 범용팝업
 
-
-    // 하나의 극장정보를 읽어 온다.
-    function readTheaterOne(mode)
-    {
-        jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one_sel.php", { mode: mode,  code: '<?=$_GET['code']?>' })  // <-----
-              .done(function( data )
-              {
-                  	theater_json = eval('('+data+')');
-
-                    jQuery("input[name=code]").val(theater_json.code);
-                    jQuery("input[name=theater_nm]").val(theater_json.theater_nm);
-                    jQuery("input[name=zip]").val(theater_json.zip);
-                    jQuery("input[name=addr1]").val(theater_json.addr1);
-                    jQuery("input[name=addr2]").val(theater_json.addr2);
-                    jQuery("textarea[name=memo]").text(theater_json.memo);
-                    jQuery("input[name=open_dt]").val(theater_json.open_dt);
-                    jQuery("input[name=gubun_code]").val(theater_json.gubun_code);
-                    jQuery("input[name=saup_no]").val(theater_json.saup_no);
-                    jQuery("input[name=owner]").val(theater_json.owner);
-                    jQuery("input[name=sangho]").val(theater_json.sangho);
-                    jQuery("input[name=homepage]").val(theater_json.homepage);
-
-                    jQuery("input[name=fund_free").prop('checked',(theater_json.fund_free=="Y"));
-
-                    jQuery("input[name=score_tel").prop('checked',(theater_json.score_tel=="Y"));
-                    jQuery("input[name=score_fax").prop('checked',(theater_json.score_fax=="Y"));
-                    jQuery("input[name=score_mail").prop('checked',(theater_json.score_mail=="Y"));
-                    jQuery("input[name=score_sms").prop('checked',(theater_json.score_sms=="Y"));
-
-                    jQuery("input[name=premium_tel").prop('checked',(theater_json.premium_tel=="Y"));
-                    jQuery("input[name=premium_fax").prop('checked',(theater_json.premium_fax=="Y"));
-                    jQuery("input[name=premium_mail").prop('checked',(theater_json.premium_mail=="Y"));
-                    jQuery("input[name=premium_sms").prop('checked',(theater_json.premium_sms=="Y"));
-
-                    jQuery("input:hidden[name=images_no]").val(theater_json.images_no);
-
-                    $('input[type=checkbox]').bindChecked();
-
-
-                    jQuery("select[name=affiliate_seq]").setValueSelect(theater_json.affiliate_seq);
-                    jQuery("select[name=isdirect]").setValueSelect(theater_json.isdirect);
-                    jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq);
-                    jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq);
-
-                    grid_ChangeHist.setList({
-                        ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_chghist_page.php",  // <-----
-                        ajaxPars: {
-                            "theater_code": theater_json.code
-                        },
-                        onLoad  : function(){
-                            //trace(this);
-                        }
-                    });
-
-                    fnObj.pageStart.delay(0.1) ; ///////////////////////// pageStart
-
-        });
-    }
-
     var fnObj =
     {
-        readTheaterOne_callbak: function()
+        pageStart: function()
         {
-            // 지역1,2 (seelct)
-            jQuery("select[name=loc2]").setValueSelect(theater_json.loc2);
-            jQuery("select[name=loc1]").setValueSelect(theater_json.loc1);
+            // 이걸하지않으면 디자인이 나오지 않는다.
+            $('input[type=checkbox]').bindChecked();
+            $('input[type=radio]').bindChecked();
 
+            myModal.setConfig({windowID:"myModalCT",
+                displayLoading: false,
+                scrollLock: false
+               });  // 우편번호검색을 위한 팝업창
+
+
+             // 담당자 종류를 가지고 온다음 탭을 구성한다.
+            jQuery.post( "<?=$path_AjaxJSON?>/bas_contact.php")  // <-----
+                  .done(function( data )
+                  {
+                        var obj = eval("("+data+")");
+
+                        $("#AXTabs_Contact").closeTab();
+                        $("#AXTabs_Contact").addTabs(obj.options);
+
+                        if  (obj.options.length > 0)
+                        {
+                            $("#AXTabs_Contact").setValueTab(obj.options[0].optionValue);
+
+							// theater_json가 정의 되지않을 경우(즉, 신규극장인경우) 가지고온 담당자 종류를 바탕으로
+							// theater_json의 contacts를 구성하고 첫번째 것을 연락처그리드에 적용한다...
+							// 헉헉!! 숨차다..!!
+                            if (typeof theater_json == "undefined")
+                            {
+                                theater_json = new Object();
+
+                                var contact = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                                obj.options.forEach(function(e)
+                                {
+									var contacts = new Array();
+
+                                    contact.push({code       : e.optionValue,
+                                                  contact_nm : e.optionText,
+                                                  contacts   : contacts  // 새로 생기는 것이므로 비어있다...
+                                                 });
+                                });
+                                theater_json.contacts = contact; // contact로 theater_json.contacts를 만든다.
+
+                                grid_Contact.setList(contact[0].contacts); // 첫번째 연락처 그리드에 리스트 적용...
+
+                                var showrooms = new Array(); // 새로 생기는 것이므로 비어있다...
+                                var distributors = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                                theater_json.showrooms = showrooms ;
+                                theater_json.distributors = distributors ;
+
+                                grid_ShowRoom.setList(theater_json.showrooms);
+                                grid_Distributor.setList(theater_json.distributors);
+                            }
+                        }
+
+                  });
+
+            // 연락처 탭을 구성한다.
+            $("#AXTabs_Contact").bindTab({
+                theme : "AXTabs",
+                //value:"S", // 첫번째가 바로 선택되도록..
+                overflow:"scroll", /* "visible" */
+                /*
+                options:[
+                    {optionValue:"S", optionText:"스코어담당"},
+                    {optionValue:"P", optionText:"부율담당"},
+                    {optionValue:"T", optionText:"극장관리"}
+                ],
+                */
+                onchange: function(selectedObject, value){
+                    //toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(selectedObject));
+                    //toast.push("onchange: "+Object.toJSON(value));
+
+                    if (typeof theater_json != "undefined")
+                    {
+                        jQuery.each(theater_json.contacts,function()
+                        {
+                            if (this.code == value)
+                            {
+                                 grid_Contact.setList(this.contacts); // theater_json.contacts[?].contacts 를 각 탭이 변경될때마다 적용한다.
+                            }
+                        })
+                    }
+                },
+                onclose: function(selectedObject, value){
+                    //toast.push(Object.toJSON(this));
+                    //toast.push(Object.toJSON(selectedObject));
+                    //toast.push("onclose: "+Object.toJSON(value));
+                }
+            });
+
+            // 지역1 초기화
             jQuery("#AXSelect_Loccation1").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_location1.php",  // <-----
+                ajaxPars: "",
+                isspace: true,
+                isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                     jQuery("#AXSelect_Loccation2").bindSelect({
@@ -163,31 +198,53 @@
                 }
             });
 
-            // 상영관(grid)
-            grid_ShowRoom.setList(theater_json.showrooms);
+            // 지역2 초기화
+            jQuery("#AXSelect_Loccation2").bindSelect({
+                options:[
+                    {optionValue:'', optionText:"없음"}
+                ]
+            });
 
-            // 배급사(grid)
-            grid_Distributor.setList(theater_json.distributors);
-        },
-        pageStart: function()
-        {
-            // 이걸하지않으면 디자인이 나오지 않는다.
-            $('input[type=checkbox]').bindChecked();
-            $('input[type=radio]').bindChecked();
-
-            myModal.setConfig({windowID:"myModalCT",
-                displayLoading: false,
-                scrollLock: false
-               });  // 우편번호검색을 위한 팝업창
-
-			// 개관일 초기화
-            $("#AXInputDate_Open").bindDate({
-                align:"right",
-                valign:"top",
-                onChange:function(){
-                    //toast.push(Object.toJSON(this));
+            // 계열사 초기화
+            jQuery("#AXSelect_Affiliate").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",  // <-----
+                isspace: true,
+                isspaceTitle: "없음",
+                onChange: function(){
+                    //console.log(this.value);
                 }
             });
+
+            // 직영위탁 초기화
+            jQuery("#AXSelect_IsDirect").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_isdirect.php",  // <-----
+                isspace: true,
+                isspaceTitle: "없음",
+                onChange: function(){
+                    //console.log(this.value);
+                }
+            });
+
+            // 비계열 초기화
+            jQuery("#AXSelect_Unaffiliate").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_unaffiliate.php",  // <-----
+                isspace: true,
+                isspaceTitle: "없음",
+                onChange: function(){
+                    //console.log(this.value);
+                }
+            });
+
+            // 사용자그룹 초기화
+            jQuery("#AXSelect_UserGroup").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_user_group.php",  // <-----
+                isspace: true,
+                isspaceTitle: "없음",
+                onChange: function(){
+                    //console.log(this.value);
+                }
+            });
+
 
             // 연락처 그리드 초기화
             grid_Contact.setConfig(
@@ -265,120 +322,6 @@
                     }
                 }
             });
-
-
-            // 연락처 탭을 구성한다.
-            $("#AXTabs_Contact").bindTab({
-                theme : "AXTabs",
-                //value:"S", // 첫번째가 바로 선택되도록..
-                overflow:"scroll", // "visible"
-
-                onchange: function(selectedObject, value){
-                    //toast.push(Object.toJSON(this));
-                    //toast.push(Object.toJSON(selectedObject));
-                    //toast.push("onchange: "+Object.toJSON(value));
-
-                    jQuery.each(theater_json.contacts,function()
-                    {
-                        if (this.code == value)
-                        {
-                            grid_Contact.setList(this.contacts); // theater_json.contacts[?].contacts 를 각 탭이 변경될때마다 적용한다.
-                        }
-                    })
-                },
-                onclose: function(selectedObject, value){
-                    //toast.push(Object.toJSON(this));
-                    //toast.push(Object.toJSON(selectedObject));
-                    //toast.push("onclose: "+Object.toJSON(value));
-                }
-            });
-
-            $("#AXTabs_Contact").closeTab();
-            $("#AXTabs_Contact").addTabs(theater_json.contact_option.options);
-
-            if  (theater_json.contact_option.options.length > 0) // 하나라도 있다면...
-            {
-                $("#AXTabs_Contact").setValueTab(theater_json.contact_option.options[0].optionValue); // 첫번째를 먼저 선택한다.
-            }
-
-            // 지역1 초기화
-            jQuery("#AXSelect_Loccation1").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: theater_json.loc1_option.options,
-                isspace: true,
-                isspaceTitle: "없음"
-            });
-
-            // 지역2 초기화
-            jQuery("#AXSelect_Loccation2").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: theater_json.loc2_option.options,
-                isspace: true,
-                isspaceTitle: "없음"
-            });
-
-            // 계열사 초기화
-            jQuery("#AXSelect_Affiliate").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: theater_json.affiliate_option.options,
-                isspace: true,
-                isspaceTitle: "없음",
-                onChange: function(){
-                    //console.log(this.value);
-                }
-            });
-            // 직영위탁 초기화
-            jQuery("#AXSelect_IsDirect").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: theater_json.isdirect_option.options,
-                isspace: true,
-                isspaceTitle: "없음",
-                onChange: function(){
-                    //console.log(this.value);
-                }
-            });
-
-
-            // 비계열 초기화
-            jQuery("#AXSelect_Unaffiliate").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: theater_json.unaffiliate_option.options,
-                isspace: true,
-                isspaceTitle: "없음",
-                onChange: function(){
-                    //console.log(this.value);
-                }
-            });
-
-            // 사용자그룹 초기화
-            jQuery("#AXSelect_UserGroup").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: theater_json.usergroup_option.options,
-                isspace: true,
-                isspaceTitle: "없음",
-                onChange: function(){
-                    //console.log(this.value);
-                }
-            });
-
 
             // 변경정보 그리드 초기화
             grid_ChangeHist.setConfig(
@@ -611,22 +554,32 @@
                 }
             });
 
-            var obj  = theater_json.unitprices;
-			var tag1 = '<div class="unitprice_item"><label>';
-			var tag2 = '</label></div>';
+            $("#AXInputDate").bindDate({
+                align:"right",
+                valign:"top",
+                onChange:function(){
+                    //toast.push(Object.toJSON(this));
+                }
+            });
 
-			for (var i=0 ; i<obj.options.length ; i++)
-			{
-			    var checked = (obj.options[i].unit_price_seq != null) ? 'checked=checked' : '' ;
+            // 해당극장의 요금을 가지고 온다.
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_unitprice.php", { code: '<?=$_GET['code']?>' })  // <-----
+		          .done(function( data )
+				  {
+		            	var obj  = eval("("+data+")");
+     				    var tag1 = '<div class="unitprice_item"><label>';
+     				    var tag2 = '</label></div>';
 
-			    $("#divUnitPrice").before(tag1 + '<input type="checkbox" name="unitPrices[]" value="'+obj.options[i].seq+'" '+checked+'/> ' + obj.options[i].unit_price + tag2);
-			}
-			$('input[type=checkbox]').bindChecked();
+						for (var i=0 ; i<obj.options.length ; i++)
+						{
+						    var checked = (obj.options[i].unit_price_seq != null) ? 'checked=checked' : '' ;
 
+						    $("#divUnitPrice").before(tag1 + '<input type="checkbox" name="unitPrices[]" value="'+obj.options[i].seq+'" '+checked+'/> ' + obj.options[i].unit_price + tag2);
+						}
+						$('input[type=checkbox]').bindChecked();
+		          });
 
-			fnObj.upload.init();
-
-            fnObj.readTheaterOne_callbak.delay(0.1) ;
+            fnObj.upload.init();
 
         }, // end (pageStart: function())
 
@@ -837,6 +790,106 @@
         },
 
 
+		// 지역2를 다시 구한다.
+        setLoc2: function(loc2)
+        {
+            jQuery("select[name=loc2]").setValueSelect(loc2);
+        },
+
+        // 하나의 극장정보를 읽어 온다.
+        readTheaterOne: function()
+        {
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_theater_one.php", { code: '<?=$_GET['code']?>' })  // <-----
+                  .done(function( data )
+                  {
+                      	theater_json = eval('('+data+')');
+
+                        jQuery("input[name=code]").val(theater_json.code);
+                        jQuery("input[name=theater_nm]").val(theater_json.theater_nm);
+                        jQuery("input[name=zip]").val(theater_json.zip);
+                        jQuery("input[name=addr1]").val(theater_json.addr1);
+                        jQuery("input[name=addr2]").val(theater_json.addr2);
+                        jQuery("textarea[name=memo]").text(theater_json.memo);
+                        jQuery("input[name=open_dt]").val(theater_json.open_dt);
+                        jQuery("input[name=gubun_code]").val(theater_json.gubun_code);
+                        jQuery("input[name=saup_no]").val(theater_json.saup_no);
+                        jQuery("input[name=owner]").val(theater_json.owner);
+                        jQuery("input[name=sangho]").val(theater_json.sangho);
+                        jQuery("input[name=homepage]").val(theater_json.homepage);
+
+                        jQuery("input[name=fund_free").prop('checked',(theater_json.fund_free=="Y"));
+
+                        jQuery("input[name=score_tel").prop('checked',(theater_json.score_tel=="Y"));
+                        jQuery("input[name=score_fax").prop('checked',(theater_json.score_fax=="Y"));
+                        jQuery("input[name=score_mail").prop('checked',(theater_json.score_mail=="Y"));
+                        jQuery("input[name=score_sms").prop('checked',(theater_json.score_sms=="Y"));
+
+                        jQuery("input[name=premium_tel").prop('checked',(theater_json.premium_tel=="Y"));
+                        jQuery("input[name=premium_fax").prop('checked',(theater_json.premium_fax=="Y"));
+                        jQuery("input[name=premium_mail").prop('checked',(theater_json.premium_mail=="Y"));
+                        jQuery("input[name=premium_sms").prop('checked',(theater_json.premium_sms=="Y"));
+
+                        jQuery("input:hidden[name=images_no]").val(theater_json.images_no);
+
+                        $('input[type=checkbox]').bindChecked();
+
+                        jQuery("select[name=loc1]").setValueSelect(theater_json.loc1);
+                        jQuery("select[name=loc2]").bindSelect({
+                            ajaxUrl: "<?=$path_AjaxJSON?>/bas_location2.php",  // <-----
+                            ajaxPars: {"parent_seq":theater_json.loc1 },
+                            isspace: true,
+                            isspaceTitle: "없음",
+                            onChange: function(){
+                                //console.log(this.value);
+
+                            }
+                        });
+                        fnObj.setLoc2.delay(1,theater_json.loc2);
+
+                        jQuery("select[name=affiliate_seq]").setValueSelect(theater_json.affiliate_seq);
+                        jQuery("select[name=isdirect]").setValueSelect(theater_json.isdirect);
+                        jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq);
+                        jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq);
+
+						if  (typeof theater_json.contacts != "undefined") // 연락처가 존재 할 경우
+						{
+                            if  (theater_json.contacts.length > 0)
+                            {
+                                grid_Contact.setList(theater_json.contacts[0].contacts);
+                            }
+						}
+
+						if  (typeof theater_json.showrooms == "undefined") // 상영관이 존재 하지 않을 경우
+						{
+                            var showrooms = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                            theater_json.showrooms = showrooms ;
+						}
+                        grid_ShowRoom.setList(theater_json.showrooms);
+
+
+                        if  (typeof theater_json.distributors == "undefined") // 배급사가 존재 하지 않을 경우
+                        {
+                            var distributors = new Array(); // 새로 생기는 것이므로 비어있다...
+
+                            theater_json.distributors = distributors ;
+						}
+                        grid_Distributor.setList(theater_json.distributors);
+
+
+                        grid_ChangeHist.setList({
+                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_chghist_page.php",  // <-----
+                            ajaxPars: {
+                                "theater_code": theater_json.code
+                            },
+                            onLoad  : function(){
+                                //trace(this);
+                            }
+                        });
+
+            });
+        },
+
         upload: {
 			init: function(){
 				myUpload.setConfig({
@@ -933,7 +986,12 @@
 
 				// 업로드 갯수 등 업로드 관련 옵션을 동적으로 변경 할 수 있습니다.
 				myUpload.changeConfig({
-
+					/*
+					uploadUrl:"uploadFile.asp",
+					uploadPars:{userID:'tom', userName:'액시스'},
+					deleteUrl:"deleteFile.asp",
+					deletePars:{userID:'tom', userName:'액시스'},
+					*/
 					uploadMaxFileCount:10
 				});
 			}
@@ -1045,6 +1103,14 @@
 
                 fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
             }
+
+			/*
+		    var a = AXUtil.clientHeight();
+		    var b = AXUtil.scrollHeight();
+		    var c = AXUtil.clientWidth();
+		    var d = AXUtil.scrollWidth();
+		    trace({a:a,b:b,c:c,d:d});
+		    */
 		},
 
 		onFnClose : function()
@@ -1072,6 +1138,17 @@
         // 모달창을 띄운다.
         modalOpen: function (width,top,title,errorMsg,onFnClose)
         {
+            /*
+            myModal.openDiv({
+                modalID: "modalDiv02",
+                targetID: "modalContent2",
+                width: width,
+                top: top,
+                verticalAlign: true,
+                closeByEscKey: true,
+                closeButton: true
+            });
+            */
             myModal.setConfig({onclose: onFnClose, displayLoading: false});
 
             var pars = "title="+title+"&content="+errorMsg ;
@@ -1088,7 +1165,10 @@
 
     };
 
-    jQuery(document).ready(readTheaterOne('<?=$MODE?>'));
+    jQuery(document).ready([ fnObj.pageStart.delay(0.1)
+                             <?php if ($MODE=="EDIT") { ?>,fnObj.readTheaterOne.delay(2.5)<?php } ?>
+                             ]);
+
 
 
 
@@ -1166,7 +1246,7 @@
                             <tr>
                                 <td class="white_board"><label>개관일</label></td>
                                 <td class="white_board">
-                                    : <input type="text" name="open_dt" id="AXInputDate_Open" placeholder="개관일" class="AXInput W100" />
+                                    : <input type="text" name="open_dt" id="AXInputDate" placeholder="개관일" class="AXInput W100" />
                                 </td>
                                 <td class="white_board" rowspan="7">
 

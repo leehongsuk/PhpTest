@@ -1,8 +1,22 @@
 <?php
     session_start();
 
-    // clound 9용 설정
-    if  ($_SERVER['REMOTE_ADDR']!="::1")
+    // 로컬용 설정
+    //if  ($_SERVER['REMOTE_ADDR']=="::1")
+    if  (($_SERVER["HTTP_HOST"] == "localhost.") || ($_SERVER["HTTP_HOST"] == "lhs0806.iptime.org"))
+    {
+        // 값 변수
+        $db_host   = "localhost";
+        $db_user   = "root";
+        $db_passwd = "l2619097";
+
+        $db_name   = "my_test_db";
+
+        // 경로 변수
+        $path_AjaxJSON = "../AjaxJSON" ;
+        $path_Root     = "/PhpTest" ;
+    }
+    else
     {
         // 값 변수
         $db_host   = "localhost";
@@ -14,22 +28,6 @@
         // 경로 변수
         $path_AjaxJSON = "../AjaxJSON" ;
         $path_Root     = "" ;
-    }
-
-    // 로컬용 설정
-    if  ($_SERVER['REMOTE_ADDR']=="::1")
-    {
-        // 값 변수
-        $db_host   = "localhost";
-        $db_user   = "root";
-        $db_passwd = "l2619097";
-
-        $db_name   = "my_test_db";
-
-
-        // 경로 변수
-        $path_AjaxJSON = "../AjaxJSON" ;
-        $path_Root     = "/PhpTest" ;
     }
 
 

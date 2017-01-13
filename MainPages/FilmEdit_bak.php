@@ -74,78 +74,44 @@
 
     var myModal = new AXModal(); // 우편번호검색을 위한 팝업창과 범용팝업
 
-	// 하나의 영화정보를 읽어 온다.
-    function readFilmOne(mode)
-    {
-        jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_one_sel.php", { mode: mode, code: '<?=$_GET['code']?>' })  // <-----
-              .done(function( data )
-              {
-                  	film_json = eval('('+data+')');
-
-                    jQuery("input[name=code]").val(film_json.code);
-                    jQuery("input[name=distributor_cd]").val(film_json.distributor_cd);
-                    jQuery("input[name=film_nm]").val(film_json.film_nm);
-                    jQuery("input[name=first_play_dt]").val(film_json.first_play_dt);
-                    jQuery("input[name=open_dt]").val(film_json.open_dt);
-                    jQuery("input[name=close_dt]").val(film_json.close_dt);
-                    jQuery("input[name=reopem_dt]").val(film_json.reopem_dt);
-                    jQuery("input[name=reclose_dt]").val(film_json.reclose_dt);
-                    jQuery("input:hidden[name=images_no]").val(film_json.images_no);
-
-                    jQuery("input[name=poster_yn").prop('checked',(film_json.poster_yn=="Y"));
-
-                    $('input[type=radio]').bindChecked();
-                    $('input[type=checkbox]').bindChecked();
-
-                    fnObj.pageStart.delay(0.1) ; ///////////////////////// pageStart
-              });
-    }
-
-
-
 
     var fnObj =
     {
-        readFilmOne_callbak: function()
-        {
-            // 배급사 (radio)
-    		jQuery("input:radio[name='distributor_seq']:radio[value="+film_json.distributor_seq+"]").attr("checked",true);
-    		$('input[type=radio]').bindChecked();
-
-    		// 방화/외화 구분, 등급(seelct)
-    		jQuery("select[name=korabd_cd]").setValueSelect( film_json.korabd_cd );
-    		jQuery("select[name=grade_seq]").setValueSelect( film_json.grade_seq );
-
-    		// 상영프린트(grid)
-    		grid_PlayPrint.setList(film_json.playprints);
-        },
-
         pageStart: function()
         {
             // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
 
-
             // 배급사를 가지고 온다.
-			var obj = film_json.distributors ;
+            jQuery.post( "<?=$path_AjaxJSON?>/bas_distributor.php")  // <-----
+		          .done(function( data )
+				  {
+		            	var obj = eval("("+data+")");
 
-			for (var i=0 ;i<obj.options.length;i++)
-			{
-			    $('<label><input type="radio" name="distributor_seq" value="'+obj.options[i].optionValue+'" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
-			}
-			$('input[type=radio]').bindChecked();
+						for (var i=0 ;i<obj.options.length;i++)
+						{
+						    $('<label><input type="radio" name="distributor_seq" value="'+obj.options[i].optionValue+'" id="AXCheck_Distributor'+obj.options[i].optionValue+'" /> '+obj.options[i].optionText+'</label>').appendTo("#tdDistributor");
+						}
+						$('input[type=radio]').bindChecked();
+		          });
+
 
             // 장르를 가지고 온다.
-			var obj = film_json.genres ;
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_genre.php", { code: '<?=$_GET['code']?>' })  // <-----
+		          .done(function( data )
+				  {
+		            	var obj = eval("("+data+")");
 
-			for (var i=0 ;i<obj.options.length;i++)
-			{
-			    var checked = (obj.options[i].genre_seq != null) ? 'checked=checked' : '' ;
+						for (var i=0 ;i<obj.options.length;i++)
+						{
+						    var checked = (obj.options[i].genre_seq != null) ? 'checked=checked' : '' ;
 
-			    $('<label><input type="checkbox" name="genres[]" value="'+obj.options[i].seq+'" id="AXCheck_Genre'+obj.options[i].seq+'" '+checked+'/> '+obj.options[i].genre_nm+'</label>').appendTo("#tdGenre");
-			}
-			$('input[type=checkbox]').bindChecked();
+						    $('<label><input type="checkbox" name="genres[]" value="'+obj.options[i].seq+'" id="AXCheck_Genre'+obj.options[i].seq+'" '+checked+'/> '+obj.options[i].genre_nm+'</label>').appendTo("#tdGenre");
+						}
+						$('input[type=checkbox]').bindChecked();
+		          });
+
 
 
             $("#AXInputDate1").bindDate({
@@ -213,11 +179,7 @@
 
 			// 방화/외화 구분
             jQuery("#AXSelect_KorabdGbn").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: film_json.korabdgbns.options,
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_korabd_gbn.php",  // <-----
                 isspace: true,
                 isspaceTitle: "없음",
                 onChange: function(){
@@ -228,17 +190,36 @@
 
             // 관람등급 초기화
             jQuery("#AXSelect_Grade").bindSelect({
-                reserveKeys: {
-                    optionValue: "optionValue",
-                    optionText: "optionText"
-                },
-                options: film_json.grade.options,
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_grade.php",  // <-----
                 isspace: true,
                 isspaceTitle: "없음",
                 onChange: function(){
                     //console.log(this.value);
                 }
             });
+
+            /*
+            // 상영프린트1 초기화
+            jQuery("#AXSelect_Grade").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_playprint1.php",  // <-----
+                isspace: true,
+                isspaceTitle: "전체",
+                onChange: function(){
+                    console.log(this.value);
+                }
+            });
+
+            // 상영프린트2 초기화
+            jQuery("#AXSelect_Grade").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_playprint2.php",  // <-----
+                isspace: true,
+                isspaceTitle: "전체",
+                onChange: function(){
+                    console.log(this.value);
+                }
+            });
+            */
+
 
 
             grid_PlayPrint.setConfig(
@@ -376,10 +357,18 @@
 
             });
 
+            if (typeof film_json == "undefined")
+            {
+	            film_json = new Object();
+
+	            var playprints = new Array(); // 새로 생기는 것이므로 비어있다...
+
+	            film_json.playprints = playprints ;
+
+	            grid_PlayPrint.setList(film_json.playprints);
+            }
+
 			fnObj.upload.init();
-
-
-			fnObj.readFilmOne_callbak.delay(0.1) ;
         }, // end (pageStart: function())
 
         //상영프린트 그리드 관련 이벤트 함수 그룹..
@@ -448,6 +437,43 @@
                 });
                 grid_PlayPrint.restoreList(removeList);
             }
+        },
+
+        // 하나의 영화정보를 읽어 온다.
+        readFilmOne: function()
+        {
+            jQuery.post( "<?=$path_AjaxJSON?>/wrk_film_one.php", { code: '<?=$_GET['code']?>' })  // <-----
+                  .done(function( data )
+                  {
+                      	film_json = eval('('+data+')');
+
+                        jQuery("input[name=code]").val(film_json.code);
+                        jQuery("input[name=distributor_cd]").val(film_json.distributor_cd);
+                        jQuery("input:radio[name='distributor_seq']:radio[value="+film_json.distributor_seq+"]").attr("checked",true);
+                        jQuery("input[name=film_nm]").val(film_json.film_nm);
+                        jQuery("input[name=first_play_dt]").val(film_json.first_play_dt);
+                        jQuery("input[name=open_dt]").val(film_json.open_dt);
+                        jQuery("input[name=close_dt]").val(film_json.close_dt);
+                        jQuery("input[name=reopem_dt]").val(film_json.reopem_dt);
+                        jQuery("input[name=reclose_dt]").val(film_json.reclose_dt);
+                        jQuery("input:hidden[name=images_no]").val(film_json.images_no);
+
+                        jQuery("input[name=poster_yn").prop('checked',(film_json.poster_yn=="Y"));
+
+                        jQuery("select[name=korabd_cd]").setValueSelect(film_json.korabd_cd);
+                        jQuery("select[name=grade_seq]").setValueSelect(film_json.grade_seq);
+
+                        if  (typeof film_json.playprints == "undefined") // 상영 프린터가 존재 할 경우
+						{
+                            var playprints = new Array(); // 새로 생기는 것이므로 비어있다...
+
+            	            film_json.playprints = playprints ;
+						}
+                        grid_PlayPrint.setList(film_json.playprints);
+
+                        $('input[type=radio]').bindChecked();
+                        $('input[type=checkbox]').bindChecked();
+                  });
         },
 
         upload: {
@@ -668,9 +694,9 @@
         }
     };
 
-
-    jQuery(document).ready(readFilmOne('<?=$MODE?>'));
-
+    jQuery(document).ready(fnObj.pageStart.delay(0.1)
+                          <?php if ($MODE=="EDIT") { ?>,fnObj.readFilmOne.delay(2.5)<?php } ?>
+                          );
 
 
     function test()
@@ -678,6 +704,8 @@
     	jQuery("#AXSelect_Grade").setValueSelect("1");
     	$('input[type=checkbox]').bindChecked();
     }
+
+
     </script>
 </head>
 
