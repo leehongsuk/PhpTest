@@ -577,8 +577,9 @@
 		    if  (genres_num == 0)      errorMsg += '장르가 선택되지 않았습니다.<br>' ;
 		    if  (grade_seq == '')      errorMsg += '영화등급이 없습니다.<br>';
 
+			// 상영프린터 개수 체크....
 		    var count = 0 ;
-		    film_json.playprints.forEach(function(e)
+		    grid_PlayPrint.list.forEach(function(e)
             {
 	            if (typeof e._CUD != "undefined")
 	            {
@@ -590,15 +591,64 @@
 	            }
             });
 
+            var skip = false ;
+
             if  (count == 0)
             {
                 errorMsg += '상영프린터가 하나이상 존재해야 됩니다.<br>';
+            }
+            else
+            {
+                if  (count > 1)
+                {
+					var duplicate = false ; // 중복자료가 발견되면  true
+
+                    for(var i=0 ; i<grid_PlayPrint.list.length ; i++)
+                    {
+                        var skip_i = false ;
+
+                        if (typeof grid_PlayPrint.list[i]._CUD != "undefined")
+        	            {
+                        	if  (grid_PlayPrint.list[i]._CUD == 'D') skip_i = true;
+        	            }
+
+        	            if  (!skip_i)
+        	            {
+                            var playprint1_seq_i = grid_PlayPrint.list[i].playprint1_seq ;
+                            var playprint2_seq_i = grid_PlayPrint.list[i].playprint2_seq ;
+
+							for(var j=0 ; j<grid_PlayPrint.list.length ; j++)
+                            {
+                               	var skip_j = false ;
+
+								if (typeof grid_PlayPrint.list[j]._CUD != "undefined")
+               	            	{
+                               		if  (grid_PlayPrint.list[j]._CUD == 'D') skip_j = true;
+               	            	}
+
+                	            if  (!skip_j)
+                	            {
+                	                var playprint1_seq_j = grid_PlayPrint.list[j].playprint1_seq ;
+                                    var playprint2_seq_j = grid_PlayPrint.list[j].playprint2_seq ;
+
+                                    if  ((i != j) && (playprint1_seq_i == playprint1_seq_j) && (playprint2_seq_i == playprint2_seq_j) )
+                                    {
+                                        duplicate = true; // 중복확인...!!
+                                    }
+                	            }
+         	            	} // for(var j=0 ; j<grid_PlayPrint.list.length ; j++)
+        	            }
+                    } // for(var i=0 ; i<grid_PlayPrint.list.length ; i++)
+
+                    if  (duplicate == true) errorMsg += '상영프린터1,2가 중복됩니다.<br>';
+
+                } // if  (count > 1)
             }
 
 
 		    if (errorMsg == '')
             {
-		        jQuery("input:hidden[name=playprints]").val( JSON.stringify( film_json.playprints ) ) ;
+		        jQuery("input:hidden[name=playprints]").val( JSON.stringify( grid_PlayPrint.list ) ) ;
 
                 // 저장할 값들을 취합한다.
                 var formData = jQuery("form[name=frmFilm]").serialize();

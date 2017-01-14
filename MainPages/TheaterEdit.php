@@ -163,6 +163,12 @@
                 }
             });
 
+            // 계열사,직위,비계열,사용자그룹 (seelct)
+            jQuery("select[name=affiliate_seq]").setValueSelect(theater_json.affiliate_seq) ;
+            jQuery("select[name=isdirect]").setValueSelect(theater_json.isdirect) ;
+            jQuery("select[name=unaffiliate_seq]").setValueSelect(theater_json.unaffiliate_seq) ;
+            jQuery("select[name=user_group_seq]").setValueSelect(theater_json.user_group_seq) ;
+
             // 상영관(grid)
             grid_ShowRoom.setList(theater_json.showrooms);
 
@@ -1002,6 +1008,7 @@
     	        }
 	        }
 
+			// 상영관리스트 갯수 체크
 	        var count = 0 ;
 	        theater_json.showrooms.forEach(function(e)
             {
@@ -1018,6 +1025,73 @@
             if  (count == 0)
             {
                 errorMsg += '상영관이 하나이상 존재해야 됩니다.<br>';
+            }
+
+
+            // 배급사리스트 갯수 체크
+            var count = 0 ;
+		    grid_Distributor.list.forEach(function(e)
+            {
+	            if (typeof e._CUD != "undefined")
+	            {
+	                if (e._CUD != 'D') count++ ;
+	            }
+	            else
+	            {
+	                count++ ;
+	            }
+            });
+
+            var skip = false ;
+
+            if  (count == 0)
+            {
+                errorMsg += '배급사가 하나이상 존재해야 됩니다.<br>';
+            }
+            else
+            {
+                if  (count > 1)
+                {
+					var duplicate = false ; // 중복자료가 발견되면  true
+
+                    for(var i=0 ; i<grid_Distributor.list.length ; i++)
+                    {
+                        var skip_i = false ;
+
+                        if (typeof grid_Distributor.list[i]._CUD != "undefined")
+        	            {
+                        	if  (grid_Distributor.list[i]._CUD == 'D') skip_i = true;
+        	            }
+
+        	            if  (!skip_i)
+        	            {
+                            var distributor_seq_i = grid_Distributor.list[i].distributor_seq ;
+
+							for(var j=0 ; j<grid_Distributor.list.length ; j++)
+                            {
+                               	var skip_j = false ;
+
+								if (typeof grid_Distributor.list[j]._CUD != "undefined")
+               	            	{
+                               		if  (grid_Distributor.list[j]._CUD == 'D') skip_j = true;
+               	            	}
+
+                	            if  (!skip_j)
+                	            {
+                	                var distributor_seq_j = grid_Distributor.list[j].distributor_seq ;
+
+                                    if  ((i != j) && (distributor_seq_i == distributor_seq_j))
+                                    {
+                                        duplicate = true; // 중복확인...!!
+                                    }
+                	            }
+         	            	} // for(var j=0 ; j<grid_Distributor.list.length ; j++)
+        	            }
+                    } // for(var i=0 ; i<grid_Distributor.list.length ; i++)
+
+                    if  (duplicate == true) errorMsg += '배급사가 중복됩니다.<br>';
+
+                } // if  (count > 1)
             }
 
 
