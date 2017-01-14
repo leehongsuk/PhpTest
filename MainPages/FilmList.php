@@ -36,7 +36,13 @@
 
     <script type="text/javascript">
 
-    var gridFilm = new AXGrid() ; // instance
+    var filmCode ; // 선택된 영화코드..
+    var filmName ; // 선택된 영화명..
+
+    var gridFilm      = new AXGrid() ; // 영화 그리드
+    var gridPlayprint = new AXGrid() ; // 상영프린트 그리드
+
+    var myModal = new AXModal(); // 범용팝업
 
     var fnObj =
     {
@@ -58,6 +64,7 @@
                 }
             });
 
+            // 그리드(영화)
             gridFilm.setConfig(
             {
                 targetID : "AXGridFilm",
@@ -91,6 +98,7 @@
                     {key:"reclose_dt", label:"재종영일", width:"100"},
                     {key:"poster_yn", label:"포스터사용 유무", width:"100"},
                     {key:"korabd_gbn_nm", label:"방화외화", width:"100"},
+                    {key:"cnt_playprint", label:"상영프린터수", width:"100"},
                     {key:"images_no", label:"이미지 첨부파일번호", width:"100"}
                 ],
                 body :
@@ -99,11 +107,20 @@
                     onclick: function()
                     {
                         //console.log(this.item.code);
+                        filmCode = this.item.code ; // 선택된 영화코드..
+                        filmName = this.item.film_nm ;  // 선택된 영화명..
+
+                        gridPlayprint.setList({
+                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint.php",  // <-----
+                            ajaxPars:"code="+this.item.code,
+                            onLoad  : function(){
+                                //trace(this);
+
+                                //gridFilm.setFocus(0);
+                            }
+                        });
                     }
                 },
-                //              page:{
-                //                  paging:false
-                //              }
                 page:{
                     paging:true,
                     pageNo:1,
@@ -118,6 +135,48 @@
                     //trace(this);
 
                     gridFilm.setFocus(0);
+                }
+            });
+
+			// 그리드(상영프린트)
+            gridPlayprint.setConfig(
+            {
+                targetID : "AXGridPlayprint",
+                theme : "AXGrid",
+                autoChangeGridView: { // autoChangeGridView by browser width
+                    mobile:[0,600], grid:[600]
+                },
+                fitToWidth: false, // 너비에 자동 맞춤
+                colGroup : [
+                    {key:"seq", label:"no", width:"100"},
+                    {key:"playprint1_seq", label:" ", width:"1", formatter: function () { return '' ; }},
+                    {key:"playprint1", label:"상영프린트1", width:"100"},
+                    {key:"playprint2_seq", label:" ", width:"1", formatter: function () { return '' ; }},
+                    {key:"playprint2", label:"상영프린트2", width:"100"},
+                    {key:"memo", label:"메모", width:"100"},
+                    {
+                        key: "btns", label: "상영관지정", width: "100", align: "center", formatter: function ()
+                        {
+                            var playprintSeq  = this.item.seq
+                            var playprintName = this.item.playprint1 + ' ' + this.item.playprint2 ;
+                            return '<button class="AXButton" onclick="fnObj.joinShowroom(\'' + filmCode + '\',\'' + filmName + '\',\'' + playprintSeq + '\',\'' + playprintName + '\');">상영관지정</button>';
+                        }
+                    },
+                    {key:"cnt_theater", label:"극장수", width:"100"},
+                    {key:"cnt_showroom", label:"상영관수", width:"100"}
+                ],
+                body :
+                {
+                    height: 3,
+                    onclick: function()
+                    {
+                        //console.log(this.item.code);
+                    }
+                },
+                page:{
+                    paging:true,
+                    pageNo:1,
+                    pageSize:10
                 }
             });
 
@@ -175,9 +234,28 @@
             //toast.push('deleteItem1: ' + index);
             if (typeof code == "undefined") location.href = "./FilmEdit.php"
             else                            location.href = "./FilmEdit.php?code="+code ;
+        },
+
+        // 상영프린트에서 상영관지정 버튼을 누를 시...
+        joinShowroom: function (filmCode, filmName, playprintSeq, playprintName)
+        {
+            //alert(code);
+            myModal.open({
+				method: "post",
+				url: "AXMdl_SchShowroom.php",  // <-----
+				pars: {
+					   filmCode : filmCode
+					  ,filmName : filmName
+					  ,playprintSeq  : playprintSeq
+					  ,playprintName : playprintName
+					  },
+				closeByEscKey: true,
+				top: 100,
+				width: 900
+			});
         }
 
-    };
+    }; // var fnObj =
 
     jQuery(document).ready(fnObj.pageStart.delay(0.1));
 
@@ -200,6 +278,9 @@
     </div>
 
     <div id="AXGridFilm"></div>
+	<br>
+	<h3>상영프린트</h3>
+    <div id="AXGridPlayprint"></div>
 
 </body>
 </html>

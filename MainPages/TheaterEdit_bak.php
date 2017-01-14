@@ -1004,7 +1004,7 @@
 			{
 				myModal.open({
 					method:"get",
-					url:"AXMdl_AddrFinder.php",  // <-----
+					url:"AXMdl_SchAddress.php",  // <-----
 					pars:"",
 					closeByEscKey: true,
 					top:100,

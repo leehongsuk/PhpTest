@@ -70,7 +70,7 @@
     var film_json ;
 
     var myUpload       = new AXUpload5(); // 이미지 파일업로드
-    var grid_PlayPrint = new AXGrid() ; // 연락처 그리드
+    var grid_PlayPrint = new AXGrid() ;   // 연락처 그리드
 
     var myModal = new AXModal(); // 우편번호검색을 위한 팝업창과 범용팝업
 

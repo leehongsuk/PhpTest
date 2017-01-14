@@ -112,6 +112,8 @@ require_once("../config/DB_CONNECT.php");
                           ,$playprint2_seq
                           ,$playprint2_nm
                           ,$memo
+                          ,$cnt_theater
+                          ,$cnt_showroom
                           );
 
         while ($stmt->fetch())
@@ -123,6 +125,8 @@ require_once("../config/DB_CONNECT.php");
                                            ,"playprint2_seq" => $playprint2_seq
                                            ,"playprint2_nm" => $playprint2_nm
                                            ,"memo" => $memo
+                                           ,"cnt_theater" => $cnt_theater
+                                           ,"cnt_showroom" => $cnt_showroom
                                            )
                       ) ;
         }

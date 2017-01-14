@@ -53,6 +53,7 @@ require_once("../config/DB_CONNECT.php");
                       ,$images_no
                       ,$korabd_gbn_nm
                       ,$del_flag
+                      ,$cnt_playprint
                       );
 
     while ($stmt->fetch())
@@ -71,6 +72,7 @@ require_once("../config/DB_CONNECT.php");
                                   ,"poster_yn" => $poster_yn
                                   ,"images_no" => $images_no
                                   ,"korabd_gbn_nm" => $korabd_gbn_nm
+                                  ,"cnt_playprint" => $cnt_playprint
                                   )
                   );
     }

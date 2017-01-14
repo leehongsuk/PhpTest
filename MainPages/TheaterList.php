@@ -34,7 +34,7 @@
 
     <script type="text/javascript">
 
-    var gridTheater = new AXGrid() ; // instance
+    var gridTheater = new AXGrid() ; // 극장 그리드
 
 
     var fnObj =
@@ -84,6 +84,7 @@
                 }
             });
 
+			// 그리드(극장)
             gridTheater.setConfig(
             {
                 targetID : "AXGrid_Theater",
