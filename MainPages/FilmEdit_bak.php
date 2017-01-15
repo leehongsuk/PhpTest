@@ -47,6 +47,7 @@
         font-weight:bold;
         padding-left:15px;
         border-bottom:1px solid #a6a6a6;
+        background-color: #DBDDE6;
     }
     .modalButtonBox{
         padding:10px;

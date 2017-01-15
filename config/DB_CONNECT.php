@@ -13,10 +13,20 @@
     $stmt->bind_param("s", $PhpSelf);
     $stmt->execute();
     $stmt->close();
-     * */
+     */
 
     if  ($_SERVER['REMOTE_ADDR']!="::1")
     {
         $mysqli->set_charset("utf8"); // 한글문제로 설정(my.cfg)파일을 수정하지못할경우
     }
+
+
+    function get_time()
+    {
+        list($usec, $sec) = explode(" ", microtime());
+
+        return ((float)$usec + (float)$sec);
+    }
+
+    $excute_start = get_time(); // 시작시간
 ?>

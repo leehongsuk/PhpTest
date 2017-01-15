@@ -37,6 +37,7 @@
         font-weight:bold;
         padding-left:15px;
         border-bottom:1px solid #a6a6a6;
+        background-color: #DBDDE6;
     }
     .modalButtonBox{
         padding:10px;
@@ -56,13 +57,9 @@
 
         pageStart: function()
         {
-
-         // 이걸하지않으면 디자인이 나오지 않는다.
+            // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
-
-
-
 
 
             // 지역1 초기화
@@ -123,12 +120,24 @@
                     {key:"theater_nm",    label:"극장명",      width:"110"},
                     {key:"showroom_nm",   label:"상영관명",    width:"110"},
                     {
-                        key: "btns", label: "수정", width: "90", align: "center", formatter: function ()
+                        key: "btns", label: "지정/해지", width: "90", align: "center", formatter: function ()
                         {
-                            return '<input type="text" name="" id="' + this.item.code + '_' + this.item.room_seq + '" value="지정" class="AXInputSwitch" style="width:60px;height:21px;border:0px none;" >';
-                            //return '<button class="AXButton" onclick="fnObj.editItem(\'' + this.item.code + '\');"><i class="axi axi-pencil"></i>지정</button>';
+                            var id  = this.item.code + '_' + this.item.room_seq + '_<?=$_POST["filmCode"]?>_<?=$_POST["playprintSeq"]?>' ;
+                            var val = ((this.item.mapping_dt != null)&&(this.item.unmapping_dt == null)) // 지정일자만 있고 해지일자가 없을경우..
+                                      ? "지정"
+                                      : "해지"
+                                      ;
+
+                            return '<input type="text"                                       '
+                                  +'        name=""                                          '
+                                  +'        id="' + id + '"                                  '
+                                  +'        value="' + val + '"                              '
+                                  +'        class="AXInputSwitch"                            '
+                                  +'        style="width:60px;height:21px;border:0px none;" >';
                         }
-                    }
+                    },
+                    {key:"mapping_dt",    label:"지정일",    width:"110"},
+                    {key:"unmapping_dt",  label:"해지일",    width:"110"}
                 ],
                 body : {
                     onclick: function(){
@@ -154,7 +163,7 @@
             var theaterNm = jQuery("#AXText_TheaterNm").val();
             var operation = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
             var fundFree  = '' ;
-            var asigned   = (jQuery("#AXCheck_Asigned").prop('checked')) ? "Y" : "N" ;
+            var mappinged = (jQuery("#AXCheck_Mappinged").prop('checked')) ? "Y" : "N" ;
 
             gridTheater.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_showroom_page.php",  // <-----
@@ -166,16 +175,35 @@
                            ,"theaterNm": theaterNm
                            ,"operation": operation
                            ,"fundFree": fundFree
-                           ,"asigned": asigned
+                           ,"mappinged": mappinged
                 },
                 onLoad  : function(){
                     //gridTheater.setFocus(0);
 
-                    $(".AXInputSwitch").bindSwitch({ off:"미지정"
+                    $(".AXInputSwitch").bindSwitch({ off:"해지"
                                                     ,on:"지정"
                                                     ,onChange:function(){
-                                          				//toast.push(Object.toJSON({targetID:this.targetID, on:this.on, off:this.off, value:this.value}));
+
                                           				trace(this);
+
+                                          				var id = this.targetID.split("_");
+                                          				var theater_code  = id[0] ;
+                                          				var showroom_seq  = id[1] ;
+                                          				var film_code     = id[2] ;
+                                          				var playprint_seq = id[3] ;
+
+                                          				jQuery.post( "<?=$path_AjaxJSON?>/wrk_play_mast_save.php", // <-----
+                                                  				       {
+                                          				                  theater_code  : theater_code
+                                          				                 ,showroom_seq  : showroom_seq
+                                          				                 ,film_code     : film_code
+                                          				                 ,playprint_seq : playprint_seq
+                                          				                 ,change_value  : (this.value=='지정') ? 'Y' : 'N'
+                                         				               }
+                            				                       )
+                                                		      .done(function( data )
+                                                			  {
+                                                		      });
                                           			 }
         			                               });
                 }
@@ -204,7 +232,7 @@
 
             <label class="label">극장명 :</label><input type="text" name="input" value="" class="AXInput W150" id="AXText_TheaterNm"/>
 
-            <label class="label"><input type="checkbox" name="Asigned" value="true" id="AXCheck_Asigned" /> 지정된</label>
+            <label class="label"><input type="checkbox" name="Mappinged" value="true" id="AXCheck_Mappinged" /> 지정된</label>
 
             <button style="margin-left: 10px;" type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchTheater();"><i class="axi axi-search2"></i> 조회</button>
         </div>
@@ -218,7 +246,7 @@
         </div>
 
         <div class="modalButtonBox" align="center">
-            <button class="AXButton W60" onclick="parent.myModal.close();">취소</button>
+            <button class="AXButton W60" onclick="parent.myModal.close();">닫기</button>
         </div>
 
     </div>
