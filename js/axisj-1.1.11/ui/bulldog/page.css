@@ -1,7 +1,7 @@
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 html,
 body {
-  font-family: "Nanum Gothic";
+  font-family: "굴림";
   margin: 0;
   padding: 0;
   height: 100%;
@@ -64,7 +64,7 @@ body h3 {
   font-size: 1px;
 }
 #AXPage {
-  font-family: "Nanum Gothic";
+  font-family: "굴림";
   font-size: 12px;
   overflow: hidden;
 }
