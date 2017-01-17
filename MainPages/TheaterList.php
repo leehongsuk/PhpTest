@@ -151,21 +151,10 @@
                     {key:"direct_nm", label:"직위", width:"50", align: "center"},
                     {key:"unaffiliate_nm", label:"비계열", width:"90", align: "center"},
                     {key:"user_group_nm", label:"사용자그룹", width:"70", align: "center"},
-
                     {key:"open_dt", label:"개관일", width:"100", align: "center"},
                     {key:"operation", label:"운영여부", width:"30", align: "center"},
                     {key:"location", label:"지역", width:"100"},
                     {key:"address", label:"주소", width:"120"},
-                    /*
-                    {key:"score_tel", label:"스코어 전화", width:"100"},
-                    {key:"score_fax", label:"스코어 팩스", width:"100"},
-                    {key:"score_mail", label:"스코어 메일", width:"100"},
-                    {key:"score_sms", label:"스코어 문자", width:"100"},
-                    {key:"premium_tel", label:"부금 전화", width:"100"},
-                    {key:"premium_fax", label:"부금 팩스", width:"100"},
-                    {key:"premium_mail", label:"부금 메일", width:"100"},
-                    {key:"premium_sms", label:"부금 문자", width:"100"},
-                    */
                     {key:"meno", label:"비고(극장특징)", width:"100"},
                     {key:"fund_free", label:"기금면제여부", width:"100"},
                     {key:"gubun_code", label:"구분코드?", width:"100"},
@@ -185,11 +174,7 @@
                         gridShowroom.setList({
                             ajaxUrl : "<?=$path_AjaxJSON?>/wrk_showroom.php",  // <-----
                             ajaxPars:"code="+this.item.code,
-                            onLoad  : function(){
-                                //trace(this);
-
-                                //.setFocus(0);
-                            }
+                            onLoad  : function(){}
                         });
                     }
                 },
@@ -276,7 +261,12 @@
                     "fundFree": fundFree
                 },
                 onLoad  : function(){
-                    gridTheater.setFocus(0);
+                    //gridTheater.setFocus(0);
+                    gridShowroom.setList({
+                        ajaxUrl : "<?=$path_AjaxJSON?>/wrk_showroom.php",  // <-----
+                        ajaxPars:"code=",
+                        onLoad  : function(){}
+                    });
                 }
             });
 

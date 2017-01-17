@@ -81,13 +81,13 @@ require_once("../config/DB_CONNECT.php");
     while ($stmt->fetch())
     {
         array_push($a_list, array("code" => $code
+                                 ,"room_seq" => $room_seq
                                  ,"location" => $loc1 ." ". $loc2
                                  ,"affiliate_nm" => $affiliate_nm
                                  ,"direct_nm" => $direct_nm
                                  ,"unaffiliate_nm" => $unaffiliate_nm
                                  ,"user_group_nm" => $user_group_nm
                                  ,"theater_nm" => $theater_nm
-                                 ,"room_seq" => $room_seq
                                  ,"showroom_nm" => $room_nm ."(". $room_alias .")"
                                  ,"mapping_dt" => $mapping_dt
                                  ,"unmapping_dt" => $unmapping_dt

@@ -568,6 +568,38 @@
 		    var genres_num      = jQuery("input[name='genres[]']:checked").length ;
 		    var grade_seq       = jQuery("select[name=grade_seq]").val() ;
 
+		    var first_play_dt   = jQuery("input[name=first_play_dt]").val();
+            var open_dt         = jQuery("input[name=open_dt]").val();
+            var close_dt        = jQuery("input[name=close_dt]").val();
+            var reopen_dt       = jQuery("input[name=reopen_dt]").val();
+            var reclose_dt      = jQuery("input[name=reclose_dt]").val();
+
+            /*
+            if  ((first_play_dt=="") && (open_dt.close_dt.reopen_dt.reclose_dt != "")) // 다른 날짜는 있는데 최초상영일이 없다?
+                errorMsg += '최초상영일이 없습니다.<br>' ;
+            else
+            {
+
+            }
+            */
+            if  ((open_dt == "") && (close_dt != "")) errorMsg += '개봉일이 없습니다.<br>'
+            else
+            {
+                if  ((open_dt != "") && (close_dt != "") && (open_dt > close_dt)) errorMsg += '종영일은 개봉일 다음 이어야 합니다.<br>'
+            }
+            if  ((reopen_dt == "") && (reclose_dt != ""))  errorMsg += '재개봉일이 없습니다.<br>'
+            else
+            {
+                if  ((reopen_dt != "") && (reclose_dt != ""))
+                {
+                    if  ((reopen_dt > reclose_dt)) errorMsg += '재종영일은 재개봉일 다음 이어야 합니다.<br>'
+                    else
+                    {
+                        if  ((open_dt == "") || (close_dt == "")) errorMsg += '개봉일 혹은 종영일이 없습니다.(재개봉시 필요)<br>'
+                    }
+                }
+            }
+            if  ((reopen_dt != "") && (close_dt != "") && (reopen_dt < close_dt)) errorMsg += '재개봉일은 종영일 다음 이어야 합니다.<br>'
 
 		    if  (distributor_cd == '') errorMsg += '배급사 영화코드가 없습니다.<br>' ;
 		    if  (!distributor_seq)     errorMsg += '배급사가 선택되지 않았습니다.<br>' ;

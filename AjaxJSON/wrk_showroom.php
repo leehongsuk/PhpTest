@@ -19,12 +19,12 @@ require_once("../config/DB_CONNECT.php");
     while ($stmt->fetch())
     {
         array_push($a_list, array("seq" => $seq
-                                  ,"theater_code" => $theater_code
-                                  ,"room_nm" => $room_nm
-                                  ,"room_alias" => $room_alias
-                                  ,"art_room" => $art_room
-                                  ,"seat" => $seat
-                                  )
+                                 ,"theater_code" => $theater_code
+                                 ,"room_nm" => $room_nm
+                                 ,"room_alias" => $room_alias
+                                 ,"art_room" => $art_room
+                                 ,"seat" => $seat
+                                 )
                   );
     }
     $stmt->close();

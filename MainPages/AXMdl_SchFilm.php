@@ -84,12 +84,33 @@
                 },
                 fitToWidth: false, // 너비에 자동 맞춤
                 colGroup : [
+                    {
+                        key: "btns", label: "스코어입력", width: "100", align: "center", formatter: function ()
+                        {
+                            //trace(this.item);
+
+                            // 지정한 날짜가 있는경우
+                            if  ( (this.item.mapping_dt != null) && (this.item.unmapping_dt == null) )
+                            {
+                                var theater_code  = '<?=$_POST["theaterCode"]?>' ;
+                                var showroom_seq  = <?=$_POST["showroomSeq"]?> ;
+                                var film_code     = this.item.code ;
+                                var playprint_seq = this.item.playprint_seq ;
+
+                                return '<button class="AXButton" onclick="fnObj.playScore(\''+theater_code+'\','+showroom_seq+',\''+film_code+'\','+playprint_seq+');">스코어입력</button>'
+                            }
+                            else
+                                return '미지정' ;
+                        }
+                    },
                     {key:"code", label:"영화코드", width:"70"},
                     {key:"film_nm", label:"대표영화명", width:"100"},
                     {key:"play_print_nm", label:"프린트", width:"100"},
                     {key:"distributor_nm", label:"배급사", width:"100"},
                     {key:"play_term", label:"상영기간", width:"160"},
-                    {key:"replay_term", label:"재상영기간", width:"160"}
+                    {key:"replay_term", label:"재상영기간", width:"160"},
+                    {key:"mapping_dt",    label:"지정일",    width:"80"},
+                    {key:"unmapping_dt",  label:"해지일",    width:"80"}
                 ],
                 body :
                 {
@@ -105,28 +126,43 @@
                 }
             });
 
-            fnObj.searchTheater(); // 전체 상영관을 리스팅한다.
+            fnObj.searchFilm(); // 전체 상영관을 리스팅한다.
 
         }, // pageStart: function()
 
         // 검색버튼을 누를시..
-        searchTheater: function()
+        searchFilm: function()
         {
             var distributor_seq = jQuery("#AXSelect_Distributor").val();
             var film_nm         = jQuery("#AXText_FilmeNm").val();
+            var mappinged       = (jQuery("#AXCheck_Mappinged").prop('checked')) ? "Y" : "N" ;
 
             gridFilm.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_playprint_page.php",  // <-----
-                ajaxPars: {
-                    "theaterCode" : '<?=$_POST["theaterCode"]?>',
-                    "showroomSeq" :<?=$_POST["showroomSeq"]?>,
-                    "distributor_seq" : distributor_seq,
-                    "film_nm"         : film_nm
+                ajaxPars: { "theaterCode" : '<?=$_POST["theaterCode"]?>'
+                           ,"showroomSeq" : <?=$_POST["showroomSeq"]?>
+                           ,"distributor_seq" : distributor_seq
+                           ,"film_nm"         : film_nm
+                           ,"mappinged"       : mappinged
                 },
                 onLoad  : function(){
                     //gridFilm.setFocus(0);
                 }
             });
+        },
+
+        // 상영스코어 입력화면으로 들어간다.
+        playScore : function(theater_code, showroom_seq, film_code, playprint_seq)
+        {
+            trace(theater_code+' , '+ showroom_seq+' , '+ film_code+' , '+ playprint_seq);
+
+            jQuery("form[name=frmMain]").attr({action: 'PlayDetail.php', target:'_parent', method:'post'});
+            jQuery('<input>').attr({ type: 'hidden', name: 'theater_code', value: theater_code }).appendTo('form[name=frmMain]');
+            jQuery('<input>').attr({ type: 'hidden', name: 'showroom_seq', value: showroom_seq }).appendTo('form[name=frmMain]');
+            jQuery('<input>').attr({ type: 'hidden', name: 'film_code', value: film_code }).appendTo('form[name=frmMain]');
+            jQuery('<input>').attr({ type: 'hidden', name: 'playprint_seq', value: playprint_seq }).appendTo('form[name=frmMain]');
+
+            jQuery("form[name=frmMain]").submit();
         }
 
     }; // var fnObj = {
@@ -138,6 +174,9 @@
 </head>
 <body>
     <div class="bodyHeightDiv">
+
+    	<form name="frmMain"></form>
+
         <div class="modalProgramTitle">
             상영영화선택 (<?=$_POST["theaterName"]?>,<?=$_POST["showroomName"]?>)
         </div>
@@ -148,9 +187,9 @@
         	<label class="label">영화명 :</label><input type="text" name="FilmName" value="" id="AXText_FilmeNm" class="AXInput" />
 
 
-            <label class="label"><input type="checkbox" name="Mappinged" value="true" id="AXCheck_All" /> 전체</label>
+            <label class="label"><input type="checkbox" name="Mappinged" value="true" id="AXCheck_Mappinged" checked="checked"/> 지정된</label>
 
-            <button style="margin-left: 10px;" type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchTheater();"><i class="axi axi-search2"></i> 조회</button>
+            <button style="margin-left: 10px;" type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchFilm();"><i class="axi axi-search2"></i> 조회</button>
         </div>
 
         <div class="masterModalBody" id="masterModalBody">
