@@ -89,7 +89,7 @@
                     jQuery("input[name=first_play_dt]").val(film_json.first_play_dt);
                     jQuery("input[name=open_dt]").val(film_json.open_dt);
                     jQuery("input[name=close_dt]").val(film_json.close_dt);
-                    jQuery("input[name=reopem_dt]").val(film_json.reopem_dt);
+                    jQuery("input[name=reopen_dt]").val(film_json.reopen_dt);
                     jQuery("input[name=reclose_dt]").val(film_json.reclose_dt);
                     jQuery("input:hidden[name=images_no]").val(film_json.images_no);
 
@@ -291,8 +291,7 @@
                                                   type:"selector",
                                                   config:{
                                                           appendable:true,
-                                                          ajaxUrl:"<?=$path_AjaxJSON?>/bas_playprint1.php",  // <-----
-                                                          ajaxPars:"",
+                                                          options: film_json.playprint1.options,
                                                           onChange:function(){
                                                               if(this.selectedOption){
 
@@ -312,14 +311,13 @@
                                          		 }
 
                                 },
-                                {colSeq:4, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:4, align:"left", valign:"top", form:{type:"hidden", value:"itemValue"}},
                                 {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}
                                          ,AXBind:{
                                                   type:"selector",
                                                   config:{
                                                           appendable:true,
-                                                          ajaxUrl:"<?=$path_AjaxJSON?>/bas_playprint2.php",  // <-----
-                                                          ajaxPars:"",
+                                                          options: film_json.playprint2.options,
                                                           onChange:function(){
                                                               if(this.selectedOption){
 
@@ -834,7 +832,7 @@
     						<tr>
     							<td class="white_board"><label>4. 재개봉일</label></td>
     							<td class="white_board">
-    								: <input type="text" name="reopem_dt" id="AXInputDate4" class="AXInput W100" />
+    								: <input type="text" name="reopen_dt" id="AXInputDate4" class="AXInput W100" />
     							</td>
     						</tr>
     						<tr>

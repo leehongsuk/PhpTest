@@ -47,7 +47,7 @@ require_once("../config/DB_CONNECT.php");
                       ,$first_play_dt
                       ,$open_dt
                       ,$close_dt
-                      ,$reopem_dt
+                      ,$reopen_dt
                       ,$reclose_dt
                       ,$poster_yn
                       ,$images_no
@@ -67,8 +67,10 @@ require_once("../config/DB_CONNECT.php");
                                   ,"first_play_dt" => $first_play_dt
                                   ,"open_dt" => $open_dt
                                   ,"close_dt" => $close_dt
-                                  ,"reopem_dt" => $reopem_dt
+                                  ,"play_term" => $open_dt ." ~ ". $close_dt
+                                  ,"reopen_dt" => $reopen_dt
                                   ,"reclose_dt" => $reclose_dt
+                                  ,"replay_term" => $reopen_dt ." ~ ". $reclose_dt
                                   ,"poster_yn" => $poster_yn
                                   ,"images_no" => $images_no
                                   ,"korabd_gbn_nm" => $korabd_gbn_nm

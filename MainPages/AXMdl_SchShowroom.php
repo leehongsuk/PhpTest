@@ -44,8 +44,8 @@
         border-top:1px solid #ccc;
     }
     .label{
-        margin-left: 10px;
-        margin-right: 5px;
+        margin-left: 7px;
+        margin-right: 3px;
     }
     </style>
 
@@ -92,6 +92,16 @@
             // 계열사 초기화
             jQuery("#AXSelect_Affiliate").bindSelect({
                 ajaxUrl: "<?=$path_AjaxJSON?>/bas_affiliate.php",  // <-----
+                isspace: true,
+                isspaceTitle: "전체",
+                onChange: function(){
+                   // console.log(this.value);
+                }
+            });
+
+            // 비계열사 초기화
+            jQuery("#AXSelect_Unaffiliate").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_unaffiliate.php",  // <-----
                 isspace: true,
                 isspaceTitle: "전체",
                 onChange: function(){
@@ -157,13 +167,14 @@
         // 검색버튼을 누를시..
         searchTheater: function()
         {
-            var location1 = jQuery("#AXSelect_Location1").val();
-            var location2 = jQuery("#AXSelect_Location2").val();
-            var affiliate = jQuery("#AXSelect_Affiliate").val();
-            var theaterNm = jQuery("#AXText_TheaterNm").val();
-            var operation = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
-            var fundFree  = '' ;
-            var mappinged = (jQuery("#AXCheck_Mappinged").prop('checked')) ? "Y" : "N" ;
+            var location1   = jQuery("#AXSelect_Location1").val();
+            var location2   = jQuery("#AXSelect_Location2").val();
+            var affiliate   = jQuery("#AXSelect_Affiliate").val();
+            var unaffiliate = jQuery("#AXSelect_Unaffiliate").val();
+            var theaterNm   = jQuery("#AXText_TheaterNm").val();
+            var operation   = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
+            var fundFree    = '' ;
+            var mappinged   = (jQuery("#AXCheck_Mappinged").prop('checked')) ? "Y" : "N" ;
 
             gridTheater.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_showroom_page.php",  // <-----
@@ -172,6 +183,7 @@
                            ,"location1": location1
                            ,"location2": location2
                            ,"affiliate": affiliate
+                           ,"unaffiliate": unaffiliate
                            ,"theaterNm": theaterNm
                            ,"operation": operation
                            ,"fundFree": fundFree
@@ -222,15 +234,15 @@
     <div class="bodyHeightDiv">
         <div class="modalProgramTitle">
             상영관찾기 (<?=$_POST["filmName"]?>,<?=$_POST["playprintName"]?>)
-
         </div>
 
         <div style="margin-top: 8px;margin-bottom: 5px;">
-            <label class="label">지역1 :</label><select name="Location1" class="AXSelect" id="AXSelect_Location1" style="width:100px;" tabindex="1"></select>
-            <label class="label">지역2 :</label><select name="Location2" class="AXSelect" id="AXSelect_Location2" style="width:100px;" tabindex="2"></select>
-            <label class="label">계열사 :</label><select name="Affiliate" class="AXSelect" id="AXSelect_Affiliate" style="width:100px;" tabindex="3"></select>
+            <label class="label">지역1 :</label><select name="Location1" class="AXSelect" id="AXSelect_Location1" style="width:70px;" tabindex="1"></select>
+            <label class="label">지역2 :</label><select name="Location2" class="AXSelect" id="AXSelect_Location2" style="width:70px;" tabindex="2"></select>
+            <label class="label">계열사 :</label><select name="Affiliate" class="AXSelect" id="AXSelect_Affiliate" style="width:80px;" tabindex="3"></select>
+            <label class="label">비계열사 :</label><select name="Unaffiliate" class="AXSelect" id="AXSelect_Unaffiliate" style="width:80px;" tabindex="3"></select>
 
-            <label class="label">극장명 :</label><input type="text" name="input" value="" class="AXInput W150" id="AXText_TheaterNm"/>
+            <label class="label">극장명 :</label><input type="text" name="input" value="" class="AXInput W140" id="AXText_TheaterNm"/>
 
             <label class="label"><input type="checkbox" name="Mappinged" value="true" id="AXCheck_Mappinged" /> 지정된</label>
 

@@ -556,8 +556,7 @@
                                                   type:"selector",
                                                   config:{
                                                           appendable:true,
-                                                          ajaxUrl:"<?=$path_AjaxJSON?>/bas_distributor.php",  // <-----
-                                                          ajaxPars:"",
+                                                          options: theater_json.distributor.options,
                                                           onChange:function(){
                                                               if(this.selectedOption){
 

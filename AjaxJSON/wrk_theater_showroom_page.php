@@ -2,14 +2,15 @@
 require_once("../config/CONFIG.php");
 require_once("../config/DB_CONNECT.php");
 
-    $post_location1  = $_POST["location1"] ;
-    $post_location2  = $_POST["location2"] ;
-    $post_affiliate  = $_POST["affiliate"] ;
-    $post_theaterNm  = $_POST["theaterNm"] ;
-    $post_operation  = $_POST["operation"] ;
-    $post_fundFree   = $_POST["fundFree"] ;
-    $post_pageNo     = $_POST["pageNo"] ;
-    $post_pageSize   = $_POST["pageSize"] ;
+    $post_location1    = $_POST["location1"] ;
+    $post_location2    = $_POST["location2"] ;
+    $post_affiliate    = $_POST["affiliate"] ;
+    $post_unaffiliate  = $_POST["unaffiliate"] ;
+    $post_theaterNm    = $_POST["theaterNm"] ;
+    $post_operation    = $_POST["operation"] ;
+    $post_fundFree     = $_POST["fundFree"] ;
+    $post_pageNo       = $_POST["pageNo"] ;
+    $post_pageSize     = $_POST["pageSize"] ;
 
     $post_filmcode     = $_POST["filmCode"] ; // 8
     $post_playprintseq = $_POST["playprintSeq"] ;
@@ -20,13 +21,14 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
 
 
-    $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL_COUNT(?,?,?,?,?,?,?,?,?)" ; // <-----
+    $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL_COUNT(?,?,?,?,?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("iiissssis"
+    $stmt->bind_param("iiiissssis"
                      , $post_location1
                      , $post_location2
                      , $post_affiliate
+                     , $post_unaffiliate
                      , $post_theaterNm
                      , $post_operation
                      , $post_fundFree
@@ -42,13 +44,14 @@ require_once("../config/DB_CONNECT.php");
     $pageCount = floor($count / $post_pageSize) + ( ($count % $post_pageSize)>0 ? 1 : 0 ) ;
 
 
-    $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL_PAGE(?,?,?,?,?,?,?,?,?,?,?)" ; // <-----
+    $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL_PAGE(?,?,?,?,?,?,?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("iiissssisii"
+    $stmt->bind_param("iiiissssisii"
                      , $post_location1
                      , $post_location2
                      , $post_affiliate
+                     , $post_unaffiliate
                      , $post_theaterNm
                      , $post_operation
                      , $post_fundFree

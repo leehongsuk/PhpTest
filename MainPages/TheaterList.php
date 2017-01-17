@@ -34,7 +34,13 @@
 
     <script type="text/javascript">
 
-    var gridTheater = new AXGrid() ; // 극장 그리드
+    var theaterCode ; // 선택된 극장코드..
+    var theaterName ; // 선택된 극장명..
+
+    var gridTheater = new AXGrid() ;  // 극장 그리드
+    var gridShowroom = new AXGrid() ; // 상영관 그리드
+
+    var myModal = new AXModal(); // 범용팝업
 
 
     var fnObj =
@@ -84,10 +90,42 @@
                 }
             });
 
+            // 직.위 초기화
+            jQuery("#AXSelect_Isdirect").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_isdirect.php",  // <-----
+                isspace: true,
+                isspaceTitle: "전체",
+                onChange: function(){
+                   // console.log(this.value);
+                }
+            });
+
+            // 비계열 초기화
+            jQuery("#AXSelect_Unaffiliate").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_unaffiliate.php",  // <-----
+                isspace: true,
+                isspaceTitle: "전체",
+                onChange: function(){
+                   // console.log(this.value);
+                }
+            });
+
+            // 사용자그룹 초기화
+            jQuery("#AXSelect_Usergroup").bindSelect({
+                ajaxUrl: "<?=$path_AjaxJSON?>/bas_user_group.php",  // <-----
+                isspace: true,
+                isspaceTitle: "전체",
+                onChange: function(){
+                   // console.log(this.value);
+                }
+            });
+
+
+
 			// 그리드(극장)
             gridTheater.setConfig(
             {
-                targetID : "AXGrid_Theater",
+                targetID : "AXGridTheater",
                 theme : "AXGrid",
                 autoChangeGridView: { // autoChangeGridView by browser width
                     mobile:[0,600], grid:[600]
@@ -139,7 +177,20 @@
                     {key:"cnt_showroom", label:"관수", width:"50", align: "right"}
                 ],
                 body : {
-                    onclick: function(){
+                    onclick: function()
+                    {
+                        theaterCode = this.item.code ;       // 선택된 극장코드..
+                        theaterName = this.item.theater_nm ; // 선택된 극장명..
+
+                        gridShowroom.setList({
+                            ajaxUrl : "<?=$path_AjaxJSON?>/wrk_showroom.php",  // <-----
+                            ajaxPars:"code="+this.item.code,
+                            onLoad  : function(){
+                                //trace(this);
+
+                                //.setFocus(0);
+                            }
+                        });
                     }
                 },
                 page:{
@@ -157,17 +208,59 @@
                 }
             });
 
+            // 그리드(상영관)
+            gridShowroom.setConfig(
+            {
+                targetID : "AXGridShowroom",
+                theme : "AXGrid",
+                autoChangeGridView: { // autoChangeGridView by browser width
+                    mobile:[0,600], grid:[600]
+                },
+                fitToWidth: false, // 너비에 자동 맞춤
+                colGroup : [
+                    {key:"seq", label:"no", width:"100"},
+                    {key:"room_nm", label:"상영관명", width:"100"},
+                    {key:"room_alias", label:"상영관별칭", width:"100"},
+                    {
+                        key: "btns", label: "스코어입력", width: "100", align: "center", formatter: function ()
+                        {
+                            //trace(this.item);
+
+                            var showroomSeq  = this.item.seq
+                            var showroomName = this.item.room_nm + ' ' + this.item.room_alias ;
+                            return '<button class="AXButton" onclick="fnObj.mappingFilm(\'' + theaterCode + '\',\'' + theaterName + '\',\'' + showroomSeq + '\',\'' + showroomName + '\');">스코어입력</button>';
+
+                        }
+                    },
+                    {key:"cnt_film", label:"상영영화수", width:"100"}
+                ],
+                body :
+                {
+                    height: 3,
+                    onclick: function()
+                    {
+                        //console.log(this.item.code);
+                    }
+                },
+                page:{
+                    paging:false
+                }
+            });
+
         },
 
         // 검색버튼을 누를시..
         searchTheater: function()
         {
-            var location1 = jQuery("#AXSelect_Location1").val();
-            var location2 = jQuery("#AXSelect_Location2").val();
-            var affiliate = jQuery("#AXSelect_Affiliate").val();
-            var theaterNm = jQuery("#AXText_TheaterNm").val();
-            var operation = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
-            var fundFree  = (jQuery("#AXCheck_FundFree").prop('checked')) ? "Y" : "N" ;
+            var location1   = jQuery("#AXSelect_Location1").val();
+            var location2   = jQuery("#AXSelect_Location2").val();
+            var affiliate   = jQuery("#AXSelect_Affiliate").val();
+            var isdirect    = jQuery("#AXSelect_Isdirect").val();
+            var unaffiliate = jQuery("#AXSelect_Unaffiliate").val();
+            var usergroup   = jQuery("#AXSelect_Usergroup").val();
+            var theaterNm   = jQuery("#AXText_TheaterNm").val();
+            var operation   = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
+            var fundFree    = (jQuery("#AXCheck_FundFree").prop('checked')) ? "Y" : "N" ;
 
             gridTheater.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_theater_page.php",  // <-----
@@ -175,6 +268,9 @@
                     "location1": location1,
                     "location2": location2,
                     "affiliate": affiliate,
+                    "isdirect": isdirect,
+                    "unaffiliate": unaffiliate,
+                    "usergroup": usergroup,
                     "theaterNm": theaterNm,
                     "operation": operation,
                     "fundFree": fundFree
@@ -213,8 +309,28 @@
             if (typeof code == "undefined") location.href = "./TheaterEdit.php"
             else                            location.href = "./TheaterEdit.php?code="+code ;
             //toast.push('deleteItem: ' + index);
+        },
+
+        // 상영관에서 스코어입력 버튼을 누를 시...
+        mappingFilm: function (theaterCode, theaterName, showroomSeq, showroomName)
+        {
+            //alert(code);
+            myModal.open({
+				method: "post",
+				url: "AXMdl_SchFilm.php",  // <-----
+				pars: {
+					   theaterCode : theaterCode
+					  ,theaterName : theaterName
+					  ,showroomSeq  : showroomSeq
+					  ,showroomName : showroomName
+					  },
+				closeByEscKey: true,
+				top: 100,
+				width: 900
+			});
         }
-    };
+
+    }; // var fnObj =
 
     jQuery(document).ready(fnObj.pageStart.delay(0.1));
 
@@ -225,22 +341,33 @@
 <body>
 
     <h1>극장정보</h1>
-    <div style="height: 50px;">
+    <div>
 
-        <label>지역1 :</label><select name="Location1" class="AXSelect" id="AXSelect_Location1" style="width:100px;" tabindex="1"></select>
-        <label>지역2 :</label><select name="Location2" class="AXSelect" id="AXSelect_Location2" style="width:100px;" tabindex="2"></select>
-        <label>계열사 :</label><select name="Affiliate" class="AXSelect" id="AXSelect_Affiliate" style="width:100px;" tabindex="3"></select>
+		<div class="bodyHeightDiv"  style="height: 40px;">
+			<label>극장명 :</label><input type="text" name="input" value="" class="AXInput W150" id="AXText_TheaterNm"/>
 
-        <label>극장명 :</label><input type="text" name="input" value="" class="AXInput W150" id="AXText_TheaterNm"/>
+            <label><input type="checkbox" name="Operation" value="true" id="AXCheck_Operation" /> 폐관제외</label>
+            <label><input type="checkbox" name="FundFree" value="true" id="AXCheck_FundFree" /> 영진위기금면제</label>
 
-        <label><input type="checkbox" name="Operation" value="true" id="AXCheck_Operation" /> 폐관제외</label>
-        <label><input type="checkbox" name="FundFree" value="true" id="AXCheck_FundFree" /> 영진위기금면제</label>
+            <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchTheater();"><i class="axi axi-search2"></i> 조회</button>
+            <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.editItem();"><i class="axi axi-ion-document-text"></i> 등록</button>
+		</div>
+        <div class="bodyHeightDiv"  style="height: 40px;">
+            <label>지역1 :</label><select name="Location1" class="AXSelect" id="AXSelect_Location1" style="width:100px;" tabindex="1"></select>
+            <label>지역2 :</label><select name="Location2" class="AXSelect" id="AXSelect_Location2" style="width:100px;" tabindex="2"></select>
+            <label>계열사 :</label><select name="Affiliate" class="AXSelect" id="AXSelect_Affiliate" style="width:100px;" tabindex="3"></select>
 
-        <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchTheater();"><i class="axi axi-search2"></i> 조회</button>
-        <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.editItem();"><i class="axi axi-ion-document-text"></i> 등록</button>
+            <label>직.위 :</label><select name="Isdirect" class="AXSelect" id="AXSelect_Isdirect" style="width:100px;" tabindex="4"></select>
+            <label>비계열 :</label><select name="Unaffiliate" class="AXSelect" id="AXSelect_Unaffiliate" style="width:100px;" tabindex="5"></select>
+            <label>사용자그룹 :</label><select name="Usergroup" class="AXSelect" id="AXSelect_Usergroup" style="width:100px;" tabindex="6"></select>
+
+		</div>
     </div>
 
-    <div id="AXGrid_Theater"></div>
+    <div id="AXGridTheater"></div>
+    <br>
+	<h3>상영관</h3>
+    <div id="AXGridShowroom"></div>
 
 </body>
 </html>

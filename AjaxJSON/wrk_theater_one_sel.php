@@ -5,10 +5,10 @@ require_once("../config/DB_CONNECT.php");
     $post_mode = $_POST["mode"] ;
     $post_code = $_POST["code"] ;
 
-    $a_json        = array() ;
-    $a_contact     = array() ;
-    $a_showroom    = array() ;
-    $a_distributor = array() ;
+    $a_json         = array() ;
+    $a_contacts     = array() ;
+    $a_showrooms    = array() ;
+    $a_distributors = array() ;
 
 
     // 연락처 구분 리스트 (탭에 사용)..
@@ -166,6 +166,26 @@ require_once("../config/DB_CONNECT.php");
     // 요금체제 리스트를 구한다. ......
 
 
+    // 배급사 기초자료 리스트
+    $a_distributor  = array() ;
+    $a_list  = array() ;
+
+
+    $query= "CALL SP_BAS_DISTRIBUTOR_SEL()" ; // <-----
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+
+    $stmt->bind_result($seq,$distributor_nm);
+
+    while ($stmt->fetch())
+    {
+     array_push($a_list, array("optionValue" => $seq, "optionText" => $distributor_nm)) ;
+    }
+    $stmt->close();
+
+    $a_distributor = array("result" => "ok", "options" => $a_list,"etcs" => "");
+    // 배급사 기초자료 리스트
+
 
 
 
@@ -181,15 +201,15 @@ require_once("../config/DB_CONNECT.php");
 
         while ($stmt->fetch())
         {
-            array_push($a_contact, array("code" => $code, "contact_nm" => $contact_nm)) ;
+            array_push($a_contacts, array("code" => $code, "contact_nm" => $contact_nm)) ;
         }
         $stmt->close();
 
-        $arrlength=count($a_contact);
+        $arrlength=count($a_contacts);
 
         for($x=0;$x<$arrlength;$x++)
         {
-             $contactGbn = $a_contact[$x]["code"] ; // 연락처구분 코드.,
+             $contactGbn = $a_contacts[$x]["code"] ; // 연락처구분 코드.,
 
              $query= "CALL SP_WRK_THEATER_CONTACT_SEL(?,?)" ; // <-----
              $stmt = $mysqli->prepare($query);
@@ -215,7 +235,7 @@ require_once("../config/DB_CONNECT.php");
              }
              $stmt->close();
 
-             $a_contact[$x]["contacts"] = $a_temp ;
+             $a_contacts[$x]["contacts"] = $a_temp ;
         }
 
         $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL(?)" ; // <-----
@@ -228,7 +248,7 @@ require_once("../config/DB_CONNECT.php");
 
         while ($stmt->fetch())
         {
-            array_push($a_showroom, array("seq"           => $seq
+            array_push($a_showrooms, array("seq"           => $seq
                                           ,"theater_code" => $theater_code
                                           ,"room_nm"      => $room_nm
                                           ,"room_alias"   => $room_alias
@@ -250,7 +270,7 @@ require_once("../config/DB_CONNECT.php");
 
         while ($stmt->fetch())
         {
-            array_push($a_distributor, array("seq"              => $seq
+            array_push($a_distributors, array("seq"              => $seq
                                              ,"theater_code"    => $theater_code
                                              ,"distributor_seq" => $distributor_seq
                                              ,"distributor_nm"  => $distributor_nm
@@ -332,9 +352,9 @@ require_once("../config/DB_CONNECT.php");
                            ,"homepage"         => $homepage
                            ,"images_no"        => $images_no
                            ////////////////////
-                           ,"contacts"         => $a_contact
-                           ,"showrooms"        => $a_showroom
-                           ,"distributors"     => $a_distributor
+                           ,"contacts"         => $a_contacts
+                           ,"showrooms"        => $a_showrooms
+                           ,"distributors"     => $a_distributors
                            ,"contact_option"   => $a_contact_option
                            ,"loc1_option"      => $a_loc1_option
                            ,"loc2_option"      => null
@@ -343,6 +363,7 @@ require_once("../config/DB_CONNECT.php");
                            ,"unaffiliate_option" => $a_unaffiliate_option
                            ,"usergroup_option" => $a_usergroup_option
                            ,"unitprices"       => $a_unitprices
+                           ,"distributor"      => $a_distributor
                            );
         }
         $stmt->close();
@@ -404,9 +425,9 @@ require_once("../config/DB_CONNECT.php");
                         ,"homepage"         => $homepage
                         ,"images_no"        => $images_no
                         ////////////////////
-                        ,"contacts"         => $a_contact
-                        ,"showrooms"        => $a_showroom
-                        ,"distributors"     => $a_distributor
+                        ,"contacts"         => $a_contacts
+                        ,"showrooms"        => $a_showrooms
+                        ,"distributors"     => $a_distributors
                         ,"contact_option"   => $a_contact_option
                         ,"loc1_option"      => $a_loc1_option
                         ,"loc2_option"      => $a_loc2_option
@@ -415,6 +436,7 @@ require_once("../config/DB_CONNECT.php");
                         ,"unaffiliate_option" => $a_unaffiliate_option
                         ,"usergroup_option" => $a_usergroup_option
                         ,"unitprices"       => $a_unitprices
+                        ,"distributor"      => $a_distributor
                        );
     }
 

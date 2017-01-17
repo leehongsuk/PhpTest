@@ -87,15 +87,13 @@
                         }
                     },
                     {key:"code", label:"영화코드", width:"100"},
-                    {key:"distributor_nm", label:"배급사", width:"100"},
-                    {key:"distributor_cd", label:"배급사 영화코드", width:"100"},
                     {key:"film_nm", label:"대표영화명", width:"100"},
                     {key:"grade_nm", label:"상영등급", width:"100"},
+                    {key:"distributor_nm", label:"배급사", width:"100"},
+                    {key:"distributor_cd", label:"배급사 영화코드", width:"100"},
                     {key:"first_play_dt", label:"최초상영일", width:"100"},
-                    {key:"open_dt", label:"개봉일", width:"100"},
-                    {key:"close_dt", label:"종영일", width:"100"},
-                    {key:"reopem_dt", label:"재개봉일", width:"100"},
-                    {key:"reclose_dt", label:"재종영일", width:"100"},
+                    {key:"play_term", label:"상영기간", width:"180"},
+                    {key:"replay_term", label:"재상영기간", width:"180"},
                     {key:"poster_yn", label:"포스터사용 유무", width:"100"},
                     {key:"korabd_gbn_nm", label:"방화외화", width:"100"},
                     {key:"cnt_playprint", label:"상영프린터수", width:"100"},
@@ -106,9 +104,8 @@
                     height: 3,
                     onclick: function()
                     {
-                        //console.log(this.item.code);
-                        filmCode = this.item.code ; // 선택된 영화코드..
-                        filmName = this.item.film_nm ;  // 선택된 영화명..
+                        filmCode = this.item.code ;    // 선택된 영화코드..
+                        filmName = this.item.film_nm ; // 선택된 영화명..
 
                         gridPlayprint.setList({
                             ajaxUrl : "<?=$path_AjaxJSON?>/wrk_playprint.php",  // <-----
@@ -159,7 +156,7 @@
                         {
                             var playprintSeq  = this.item.seq
                             var playprintName = this.item.playprint1 + ' ' + this.item.playprint2 ;
-                            return '<button class="AXButton" onclick="fnObj.joinShowroom(\'' + filmCode + '\',\'' + filmName + '\',\'' + playprintSeq + '\',\'' + playprintName + '\');">상영관지정</button>';
+                            return '<button class="AXButton" onclick="fnObj.mappingShowroom(\'' + filmCode + '\',\'' + filmName + '\',\'' + playprintSeq + '\',\'' + playprintName + '\');">상영관지정</button>';
                         }
                     },
                     {key:"cnt_theater", label:"극장수", width:"100"},
@@ -174,9 +171,7 @@
                     }
                 },
                 page:{
-                    paging:true,
-                    pageNo:1,
-                    pageSize:10
+                    paging:false
                 }
             });
 
@@ -186,17 +181,17 @@
         // 검색버튼을 누를시..
         searchFilm: function()
         {
-            var affiliate = jQuery("#AXSelect_Distributor").val();
-            var filmNm = jQuery("#AXText_FilmeNm").val();
+            var distributor_seq = jQuery("#AXSelect_Distributor").val();
+            var film_Nm         = jQuery("#AXText_FilmeNm").val();
 
-            gridTheater.setList({
+            gridFilm.setList({
                 ajaxUrl : "<?=$path_AjaxJSON?>/wrk_film_page.php",  // <-----
                 ajaxPars: {
                     "distributor_seq" : distributor_seq,
                     "film_Nm"         : film_Nm
                 },
                 onLoad  : function(){
-                    gridTheater.setFocus(0);
+                    //gridFilm.setFocus(0);
                 }
             });
 
@@ -237,7 +232,7 @@
         },
 
         // 상영프린트에서 상영관지정 버튼을 누를 시...
-        joinShowroom: function (filmCode, filmName, playprintSeq, playprintName)
+        mappingShowroom: function (filmCode, filmName, playprintSeq, playprintName)
         {
             //alert(code);
             myModal.open({
@@ -269,7 +264,7 @@
 
     <div style="height: 50px;">
 
-        <label>배급사 :</label><select name="Distributor" class="AXSelectSmall" id="AXSelect_Distributor" style="width:100px;" tabindex="3"></select>
+        <label>배급사 :</label><select name="Distributor" class="AXSelect" id="AXSelect_Distributor" style="width:150px;" tabindex="3"></select>
         <label>영화명 :</label><input type="text" name="FilmName" value="" id="AXText_FilmeNm" class="AXInput" />
 
         <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchFilm();"><i class="axi axi-search2"></i> 조회</button>

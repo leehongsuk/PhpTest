@@ -94,6 +94,46 @@ require_once("../config/DB_CONNECT.php");
     $a_grade = array("result" => "ok", "options" => $a_list,"etcs" => "");
     // 등급 리스트 ...
 
+    // 상영프린트 1 기초자료 리스트
+    $a_playprint1  = array() ;
+    $a_list  = array() ;
+
+
+    $query= "CALL SP_BAS_PLAYPRINT1_SEL()" ; // <-----
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+
+    $stmt->bind_result($seq,$play_print_nm);
+
+    while ($stmt->fetch())
+    {
+     array_push($a_list, array("optionValue" => $seq, "optionText" => $play_print_nm)) ;
+    }
+    $stmt->close();
+
+    $a_playprint1 = array("result" => "ok", "options" => $a_list,"etcs" => "");
+    // 상영프린트 1 기초자료 리스트
+
+    // 상영프린트 2 기초자료 리스트
+    $a_playprint2  = array() ;
+    $a_list  = array() ;
+
+
+    $query= "CALL SP_BAS_PLAYPRINT2_SEL()" ; // <-----
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+
+    $stmt->bind_result($seq,$play_print_nm);
+
+    while ($stmt->fetch())
+    {
+     array_push($a_list, array("optionValue" => $seq, "optionText" => $play_print_nm)) ;
+    }
+    $stmt->close();
+
+    $a_playprint2 = array("result" => "ok", "options" => $a_list,"etcs" => "");
+    // 상영프린트 2 기초자료 리스트
+
 
 
 
@@ -147,7 +187,7 @@ require_once("../config/DB_CONNECT.php");
                           ,$first_play_dt
                           ,$open_dt
                           ,$close_dt
-                          ,$reopem_dt
+                          ,$reopen_dt
                           ,$reclose_dt
                           ,$poster_yn
                           ,$images_no
@@ -165,7 +205,7 @@ require_once("../config/DB_CONNECT.php");
                            ,"first_play_dt" => $first_play_dt
                            ,"open_dt" => $open_dt
                            ,"close_dt" => $close_dt
-                           ,"reopem_dt" => $reopem_dt
+                           ,"reopen_dt" => $reopen_dt
                            ,"reclose_dt" => $reclose_dt
                            ,"poster_yn" => $poster_yn
                            ,"images_no" => $images_no
@@ -177,6 +217,8 @@ require_once("../config/DB_CONNECT.php");
                            ,"genres" => $a_genres
                            ,"korabdgbns" => $a_korabdgbns
                            ,"grade" => $a_grade
+                           ,"playprint1" => $a_playprint1
+                           ,"playprint2" => $a_playprint2
                            );
         }
         $stmt->close();
@@ -192,7 +234,7 @@ require_once("../config/DB_CONNECT.php");
                        ,"first_play_dt" => $first_play_dt
                        ,"open_dt" => $open_dt
                        ,"close_dt" => $close_dt
-                       ,"reopem_dt" => $reopem_dt
+                       ,"reopen_dt" => $reopen_dt
                        ,"reclose_dt" => $reclose_dt
                        ,"poster_yn" => $poster_yn
                        ,"images_no" => $images_no
@@ -204,6 +246,8 @@ require_once("../config/DB_CONNECT.php");
                        ,"genres" => $a_genres
                        ,"korabdgbns" => $a_korabdgbns
                        ,"grade" => $a_grade
+                       ,"playprint1" => $a_playprint1
+                       ,"playprint2" => $a_playprint2
                        );
      }
 

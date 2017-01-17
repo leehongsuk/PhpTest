@@ -21,7 +21,7 @@ print_r( $_POST["playprint"] );
     $post_first_play_dt    = ($_POST["first_play_dt"]!="")?$_POST["first_play_dt"]:null ;
     $post_open_dt          = ($_POST["open_dt"]!="")?$_POST["open_dt"]:null ;
     $post_close_dt         = ($_POST["close_dt"]!="")?$_POST["close_dt"]:null ;
-    $post_reopem_dt        = ($_POST["reopem_dt"]!="")?$_POST["reopem_dt"]:null ;
+    $post_reopen_dt        = ($_POST["reopen_dt"]!="")?$_POST["reopen_dt"]:null ;
     $post_reclose_dt       = ($_POST["reclose_dt"]!="")?$_POST["reclose_dt"]:null ;
     $post_poster_yn        = ($_POST["poster_yn"]=="Y")?"Y":"N" ;
     $post_images_no        = $_POST["images_no"] ;
@@ -45,7 +45,7 @@ print_r( $_POST["playprint"] );
                      ,$post_first_play_dt
                      ,$post_open_dt
                      ,$post_close_dt
-                     ,$post_reopem_dt
+                     ,$post_reopen_dt
                      ,$post_reclose_dt
                      ,$post_poster_yn
                      ,$post_images_no

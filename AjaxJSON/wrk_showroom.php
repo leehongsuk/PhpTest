@@ -2,7 +2,7 @@
 require_once("../config/CONFIG.php");
 require_once("../config/DB_CONNECT.php");
 
-    $post_theater_code = $_POST["theater_code"] ;
+    $post_code  = $_POST["code"] ;
 
     $a_json  = array() ;
     $a_list  = array() ;
@@ -11,7 +11,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("s", $post_theater_code);
+    $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
     $stmt->bind_result($seq,$theater_code,$room_nm,$room_alias,$art_room,$seat);
