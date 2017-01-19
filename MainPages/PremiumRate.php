@@ -52,7 +52,7 @@
 
     <script type="text/javascript">
 
-    var jsonLocChldAll ;  // 지역리스트의 json
+    var jsonLocChldAll ;  // 하부 지역리스트의 json
     var jsonPremiumRate ; // 부율전체 json
 
     var grid_PremiumRate = new AXGrid() ; // 부율 그리드
@@ -174,7 +174,7 @@
                         colgrp.push(o);
 
 
-                        /***/
+                        /** 하부 지역 갯수 만큼 컬럼타이틀을 구성한다. **/
                         for (var i=0;i<jsonLocChldAll.options.length ;i++)
                         {
                             var o={} ;

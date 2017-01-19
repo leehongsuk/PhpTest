@@ -72,7 +72,7 @@
                         onLoad  : function(){
                             //gridTheater.goPageMove(1); // 상대적인 페이지 이동..
                             //gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
-                            setTimeout(fnObj.replash, 1000);
+                            setTimeout(fnObj.replash, 2000);
                         }
                     });
         },
@@ -88,7 +88,7 @@
                          success : fnObj.onSuccess
             });
 
-			setTimeout(fnObj.replash, 1000);
+			setTimeout(fnObj.replash, 2000);
         },
 
         onSuccess : function(data)

@@ -166,6 +166,27 @@ require_once("../config/DB_CONNECT.php");
     // 요금체제 리스트를 구한다. ......
 
 
+    // 특별좌석 기초자료 리스트
+    $a_spcial_seat  = array() ;
+    $a_list  = array() ;
+
+
+    $query= "CALL SP_BAS_SPCIAL_SEAT_SEL()" ; // <-----
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+
+    $stmt->bind_result($seq,$special_seat_nm);
+
+    array_push($a_list, array("optionValue" => -1, "optionText" => "없음")) ;
+    while ($stmt->fetch())
+    {
+     array_push($a_list, array("optionValue" => $seq, "optionText" => $special_seat_nm)) ;
+    }
+    $stmt->close();
+
+    $a_spcial_seat = array("result" => "ok", "options" => $a_list,"etcs" => "");
+    // 특별좌석 기초자료 리스트
+
     // 배급사 기초자료 리스트
     $a_distributor  = array() ;
     $a_list  = array() ;
@@ -244,7 +265,7 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("s", $post_code);
         $stmt->execute();
 
-        $stmt->bind_result($seq,$theater_code,$room_nm,$room_alias,$art_room,$seat);
+        $stmt->bind_result($seq,$theater_code,$room_nm,$room_alias,$art_room,$seat,$special_seq,$special_nm,$special_etc,$specail_seet);
 
         while ($stmt->fetch())
         {
@@ -254,6 +275,10 @@ require_once("../config/DB_CONNECT.php");
                                           ,"room_alias"   => $room_alias
                                           ,"art_room"     => ($art_room=='Y') ? 'Y' : 'N'
                                           ,"seat"         => $seat
+                                          ,"special_seq"  => $special_seq
+                                          ,"special_nm"   => $special_nm
+                                          ,"special_etc"  => $special_etc
+                                          ,"special_seat" => $specail_seet
                                           )
                       );
         }
@@ -363,6 +388,7 @@ require_once("../config/DB_CONNECT.php");
                            ,"unaffiliate_option" => $a_unaffiliate_option
                            ,"usergroup_option" => $a_usergroup_option
                            ,"unitprices"       => $a_unitprices
+                           ,"spcial_seat"      => $a_spcial_seat
                            ,"distributor"      => $a_distributor
                            );
         }
@@ -436,6 +462,7 @@ require_once("../config/DB_CONNECT.php");
                         ,"unaffiliate_option" => $a_unaffiliate_option
                         ,"usergroup_option" => $a_usergroup_option
                         ,"unitprices"       => $a_unitprices
+                        ,"spcial_seat"      => $a_spcial_seat
                         ,"distributor"      => $a_distributor
                        );
     }

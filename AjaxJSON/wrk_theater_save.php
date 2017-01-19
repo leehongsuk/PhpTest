@@ -151,17 +151,27 @@ print_r( $_POST["distributor"] );
         $room_alias    = $contacts[$key]->room_alias ;
         $art_room      = ($contacts[$key]->art_room=='Y') ? 'Y' : 'N' ;
         $seat          = $contacts[$key]->seat ;
+        $special_seq   = $contacts[$key]->special_seq ;
+        $special_etc   = $contacts[$key]->special_etc ;
+        $special_seat  = $contacts[$key]->special_seat ;
+
 
         //print_r ( $contacts[$key] );
         //print_r ( $_CUD ." : ".$seq." | ".$theater_code." | ".$room_nm." | ".$room_alias." | ".$art_room." | ".$seat." | " );
         //print_r ( "\n" );
 
+        if  ($special_seq == -1) // '없음'을 선택하면..
+        {
+            $special_etc   = "";
+            $special_seat  = -1;
+        }
+
         if  ($_CUD != "")
         {
-            $query= "CALL SP_WRK_THEATER_SHOWROOM_SAVE(?,?,?,?,?,?,?)" ; // <-----
+            $query= "CALL SP_WRK_THEATER_SHOWROOM_SAVE(?,?,?,?,?,?,?,?,?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
 
-            $stmt->bind_param("sissssi"
+            $stmt->bind_param("sissssiisi"
                              ,$_CUD
                              ,$seq
                              ,$theater_code
@@ -169,6 +179,9 @@ print_r( $_POST["distributor"] );
                              ,$room_alias
                              ,$art_room
                              ,$seat
+                             ,$special_seq
+                             ,$special_etc
+                             ,$special_seat
                              );
             $stmt->execute();
             $stmt->close();

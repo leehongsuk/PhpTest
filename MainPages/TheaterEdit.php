@@ -427,7 +427,7 @@
             grid_ShowRoom.setConfig(
             {
                 targetID : "AXGrid_ShowRoom",
-                height : 250,
+                height : 400,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
                 passiveMode:true,
@@ -446,10 +446,14 @@
 	                        else if(this.item._CUD == "U"){ return "수정"; }
 	                    }
                     },
-                    {key:"room_nm",    label:"상영관명",   width:"100"},
-                    {key:"room_alias", label:"상영관별칭", width:"100"},
+                    {key:"room_nm",    label:"상영관명",   width:"90"},
+                    {key:"room_alias", label:"상영관별칭", width:"200"},
                     {key:"art_room",   label:"예술관",     width:"70"},
-                    {key:"seat",       label:"좌석수",     width:"100"}
+                    {key:"seat",       label:"좌석수",     width:"100"},
+                    {key:"special_seq",label:" ",          width:"1", formatter: function () { return '' ; }},
+                    {key:"special_nm", label:"특별좌석",   width:"150"},
+                    {key:"special_etc",label:"직접입력",   width:"200"},
+                    {key:"special_seat",label:"좌석수",    width:"80"}
                 ],
                 body : {
                     ondblclick: function()
@@ -469,7 +473,35 @@
                                 {colSeq:2, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
                                 {colSeq:3, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
                                 {colSeq:4, align:"center", valign:"middle", form:{type:"checkbox", value:"itemValue", options:[ {value:'Y', text:''} ] }},
-                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}, AXBind:{type:"number", config:{min:1, max:500}}} // 1석에서 500석까지..
+                                {colSeq:5, align:"left", valign:"top", form:{type:"text", value:"itemValue"}, AXBind:{type:"number", config:{min:1, max:500}}}, // 1석에서 500석까지..
+                                {colSeq:6, align:"center", valign:"middle", form:{type:"hidden", value:"itemValue"}},
+                                {colSeq:7, align:"left", valign:"top", form:{type:"text", value:"itemValue"}
+                                         ,AXBind:{
+                                                  type:"selector",
+                                                  config:{
+                                                          appendable:true,
+                                                          options: theater_json.spcial_seat.options,
+                                                          onChange:function(){
+                                                              if(this.selectedOption){
+
+                                                              grid_ShowRoom.setEditorForm({
+                                                                  key:"special_seq",
+                                                                  position:[0,6], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionValue
+                                                              });
+                                                              grid_ShowRoom.setEditorForm({
+                                                                  key:"special_nm",
+                                                                  position:[0,7], // editor rows 적용할 대상의 배열 포지션 (다르면 적용되지 않습니다.)
+                                                                  value:this.selectedOption.optionText
+                                                              });
+                                                              }
+                                                          }
+                                                         }
+                                         		 }
+
+                                },
+                                {colSeq:8, align:"left", valign:"top", form:{type:"text", value:"itemValue"}},
+                                {colSeq:9, align:"left", valign:"top", form:{type:"text", value:"itemValue"}, AXBind:{type:"number", config:{min:1, max:100}}}
                             ]
                     ],
                     response: function()
@@ -495,9 +527,9 @@
                         {
                             fnObj.gridShowroom.restoreList(this.index); // 삭제된걸 다시 복구한다.
 
-                           	trace(this.index);
-                           	trace(this.list);
-                           	trace(this.res.item);
+                           	//trace(this.index);
+                           	//trace(this.list);
+                           	//trace(this.res.item);
 
 							AXUtil.overwriteObject(this.list[this.index], this.res.item, true); // this.list[this.index] object 에 this.res.item 값 덮어쓰기
 							grid_ShowRoom.updateList(this.index, this.list[this.index]);
@@ -1097,6 +1129,7 @@
 
 		    if (errorMsg == '')
             {
+//trace( theater_json.showrooms );
 		        jQuery("input:hidden[name=contacts]").val( JSON.stringify( theater_json.contacts ) ) ;
 		        jQuery("input:hidden[name=showrooms]").val( JSON.stringify( theater_json.showrooms ) ) ;
 		        jQuery("input:hidden[name=distributors]").val( JSON.stringify( theater_json.distributors ) ) ;
@@ -1415,13 +1448,13 @@
 
                     </td>
                 </tr>
-                <tr>
+                <!-- tr>
                     <th>
                         <div class="tdRel">업로드<br>극장명</div>
                     </th>
                     <td class="last">
                     </td>
-                </tr>
+                </tr -->
                 <tr>
                     <th>
                         <div class="tdRel">요금체계</div>

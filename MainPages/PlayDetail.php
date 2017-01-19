@@ -58,18 +58,17 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
 
     <script type="text/javascript">
 
-    var jsonLocChldAll ;  // 지역리스트의 json
-    var jsonPremiumRate ; // 부율전체 json
+    var jsonInning ;  // 하부 지역리스트의 json
+    var jsonPlayDetail ; // 스코어전체 json
 
-    var grid_PremiumRate = new AXGrid() ; // 부율 그리드
     var myModal = new AXModal();
+    var grid_PlayDetail = new AXGrid() ; // 스코어 그리드
 
 
     var fnObj =
     {
         pageStart: function()
         {
-
             myModal.setConfig({
                 windowID: "myModalCT",
                 width: 740,
@@ -88,10 +87,24 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
 
-            // 부율그리드
-            grid_PremiumRate.setConfig(
+            $("#AXInputDate").bindDate({
+                align:"right",
+                valign:"top",
+                onChange:function(){
+                    //toast.push(Object.toJSON(this));
+                    //dialog.push({body:'<b>Caution</b> Application Call dialog push', type:'Caution', onConfirm:fnObj.btnOnConfirm, data:'onConfirmData'});
+                }
+                //minDate:"2013-05-10",
+                //maxDate:"2013-05-20",
+                //defaultDate:"2013-05-15"
+            });
+
+            jQuery("input[name=play_dt]").val('2017-01-15');
+
+            // 스코어그리드
+            grid_PlayDetail.setConfig(
             {
-                targetID : "AXgrid_PremiumRate",
+                targetID : "AXgrid_PlayDetail",
                 height : 500,
                 theme : "AXGrid",
                 fitToWidth: false, // 너비에 자동 맞춤
@@ -109,37 +122,105 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                 page:{
                     paging:false
                 }
-
             });
+
+
+            jQuery.post( "<?=$path_AjaxJSON?>/lst_inning.php", {})  // <-----
+                  .done(function( data )
+                  {
+      				    jsonInning = eval("("+data+")");  // 회차리스트의 json
+                        //trace(jsonInning); ////////////
+
+                        var colgrp = [];
+
+                        var o={} ;
+                        o['key'] = 'price';
+                        o['label'] = '요금';
+                        o['width'] = '100';
+                        colgrp.push(o);
+
+                        var o={} ;
+                        o['key'] = 'sum';
+                        o['label'] = '합계';
+                        o['width'] = '90';
+                        colgrp.push(o);
+
+                        /** 회차 갯수 만큼 컬럼타이틀을 구성한다. **/
+                        for (var i=0;i<jsonInning.options.length ;i++)
+                        {
+                            var o={} ;
+
+                            for (var prop in jsonInning.options[i])
+                            {
+                                 if  (prop=="seq")  o['key']   = jsonInning.options[i][prop];
+                                 if  (prop=="name") o['label'] = jsonInning.options[i][prop];
+                            }
+                            o['width'] = '70';
+                            o['formatter'] = fnObj.formatter;// <input typw="text"> 태그를 단다...
+
+                            colgrp.push(o);
+                        }
+
+                        grid_PlayDetail.setConfig({colGroup : colgrp}); // 컬럼 그룹정보를 설정한다...
+
+
+                        var result = '' ;
+                        grid_PlayDetail.setList({
+                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_play_detail_selected_sel.php",  // <-----
+                              ajaxPars: {
+                                  "play_dt"       : jQuery("input[name=play_dt]").val() ,
+                                  "theater_code"  : '<?=$post_theater_code?>' ,
+                                  "showroom_seq"  : <?=$post_showroom_seq?> ,
+                                  "film_code"     : '<?=$post_film_code?>' ,
+                                  "playprint_seq" : <?=$post_playprint_seq?>
+                              },
+                              onLoad : function()
+                              {
+                                  /*
+      							jsonPremiumRate = this;
+
+                                jQuery("#btnSave").removeAttr("disabled"); // 저장가능하도록 한다.
+
+                                    // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
+                                $('body').on('keydown', 'input, select, textarea', function(e)
+                                {
+                                    var self = $(this);
+                                    var form = self.parents('form:eq(0)');
+                                    var focusable;
+                                     var next;
+
+                                    if (e.keyCode == 13)
+                                    {
+                                        focusable = form.find('input,a,select,button,textarea').filter(':visible');
+                                        next = focusable.eq(focusable.index(this)+1);
+                                        if (next.length) {
+                                            next.focus();
+                                            next.select(); // 전체가 선택되도록 한다.
+                                        } else {
+                                            form.submit();
+                                        }
+                                        return false;
+                                    }
+                                });
+                                  */
+                              }
+                        });
+
+                  });
 
         }, // end (pageStart: function())
 
-        // 부율값으로 text박스를 만든다.
+
+
+        // 스코어값으로 text박스를 만든다.
         formatter : function()
         {
-            var location_nm = "";
-
-            // 지역리스트 json에서 지역코드로 지역명을 구한다.
-            for (var i = 0; i < jsonLocChldAll.options.length; i++)
-            {
-                if (jsonLocChldAll.options[i].seq == this.key)
-                {
-                    location_nm = jsonLocChldAll.options[i].location_nm ;
-                }
-            }
-
-            var name = "pr_"+this.key+"_"+this.item.a_seq+"_"+this.item.id_code+"_"+this.item.ua_seq ;
+trace(this.value);
+            //var name = "pr_"+this.key+"_"+this.item.a_seq+"_"+this.item.id_code+"_"+this.item.ua_seq ;
 
             return   '<input type="text"                                    '
                    + '       name="'+name+'"                                '
                    + '       style="text-align: right; padding-right:5px;"  '
-                   + '       loc="'+this.key+'"                             '
-                   + '       location_nm="'+location_nm+'"                  '
-                   + '       a_seq="'+this.item.a_seq+'"                    '
-                   + '       id_code="'+this.item.id_code+'"                '
-                   + '       ua_seq="'+this.item.ua_seq+'"                  '
-                   + '       title1="'+this.item.title1+'"                  '
-                   + '       title2="'+this.item.title2+'"                  '
                    + '       class="AXInput W40 dot"                        '
                    + '       value="'+this.value +'"                        '
                    + '       onkeyup="fnKeyup(this,event)"                        '
@@ -151,13 +232,13 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
         // '저장' 버튼을 누를때
         save_premium_rate: function()
         {
-            //trace(jsonPremiumRate.list);
+            //trace(jsonPlayDetail.list);
             var errorMsg = '' ;
 
-            for (var i=0; i<jsonPremiumRate.list.length;i++)
+            for (var i=0; i<jsonPlayDetail.list.length;i++)
             {
-                var keys = Object.keys(jsonPremiumRate.list[i]) ;
-                var values = Object.values(jsonPremiumRate.list[i]) ;
+                var keys = Object.keys(jsonPlayDetail.list[i]) ;
+                var values = Object.values(jsonPlayDetail.list[i]) ;
 
                 var nonLoc = [ 'a_seq'
                               ,'a_affiliate_nm'
@@ -192,12 +273,12 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                             errorMsg += title1+title2+'의 '+location_nm+'에 값이100보다 크면 안됍니다.<br>';
                     }
                 });
-            } // for (var i=0; i<jsonPremiumRate.list.length;i++)
+            } // for (var i=0; i<jsonPlayDetail.list.length;i++)
 
             if (errorMsg == '')
             {
                 // 저장할 값들을 취합한다.
-                var formData = jQuery("form[name=frmPremiumRate]").serialize();
+                var formData = jQuery("form[name=frmPlayDetail]").serialize();
 
                 jQuery.ajax({
                              type : "POST",
@@ -221,7 +302,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
         {
         },
 
-        // 부율 저장이 성공적일때..
+        // 스코어 저장이 성공적일때..
         onSuccessPreminumRate : function()
         {
             fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
@@ -326,13 +407,15 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
 
     <h1>스코어 입력</h1>
 
-    <form name="frmPremiumRate" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php" onsubmit="return false;">
+    <form name="frmPlayDetail" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php" onsubmit="return false;">
+
+        <input type="text" name="play_dt" id="AXInputDate" class="AXInput W100" /> <!-- 조회일 -->
 
         <button type="button" class="AXButton" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" ><i class="axi axi-save  W100"></i> 저장</button>
         <br>
 
          <div style="padding-top: 10px;">
-             <div id="AXgrid_PremiumRate"></div>
+             <div id="AXgrid_PlayDetail"></div>
          </div>
 
     </form>

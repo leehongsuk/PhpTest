@@ -14,18 +14,22 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$theater_code,$room_nm,$room_alias,$art_room,$seat);
+    $stmt->bind_result($seq,$theater_code,$room_nm,$room_alias,$art_room,$seat,$special_seq,$special_nm,$special_etc,$specail_seet);
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("seq" => $seq
+        array_push($a_list, array("seq"          => $seq
                                  ,"theater_code" => $theater_code
-                                 ,"room_nm" => $room_nm
-                                 ,"room_alias" => $room_alias
-                                 ,"art_room" => $art_room
-                                 ,"seat" => $seat
-                                 )
-                  );
+                                 ,"room_nm"      => $room_nm
+                                 ,"room_alias"   => $room_alias
+                                 ,"art_room"     => ($art_room=='Y') ? 'Y' : 'N'
+                                 ,"seat"         => $seat
+                                 ,"special_seq"  => $special_seq
+                                 ,"special_nm"   => $special_nm
+                                 ,"special_etc"  => $special_etc
+                                 ,"special_seat" => $specail_seet
+                               )
+                   );
     }
     $stmt->close();
 
