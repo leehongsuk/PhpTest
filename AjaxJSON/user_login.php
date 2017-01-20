@@ -3,14 +3,14 @@ require_once("../config/CONFIG.php");
 require_once("../config/DB_CONNECT.php");
 
     $post_user_id   = $_POST["user_id"] ;
-    $post_user_pw   = $_POST["user_pw"] ;
+    $post_user_pw   = Hex2String($_POST["user_pw"]) ;  // 암호를 복호화 한다.
 
     $a_json  = array() ;
     $a_page  = array() ;
     $a_list  = array() ;
 
 
-    $query= "CALL SP_BAS_LOGIN_ID_CHECK(?)" ; // <-----
+    $query= "CALL SP_USR_LOGIN_ID_CHECK(?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param("s", $post_user_id);
@@ -32,7 +32,7 @@ require_once("../config/DB_CONNECT.php");
     {
         if ($del_flag == "N") // 삭제되지않을 경우..
         {
-            $query= "CALL SP_BAS_LOGIN_IDPW_CHECK(?,?)" ; // <-----
+            $query= "CALL SP_USR_LOGIN_IDPW_CHECK(?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
 
             $stmt->bind_param("ss", $post_user_id, $post_user_pw);

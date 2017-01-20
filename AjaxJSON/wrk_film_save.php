@@ -58,7 +58,7 @@ print_r( $_POST["playprint"] );
     $result = $mysqli->query('SELECT @newCode,@output');
     list($newCode,$output) = $result->fetch_row();
 
-    $file_code = ($newCode!="") ? $newCode : $post_code ;
+    $film_code = ($newCode!="") ? $newCode : $post_code ;
 
 
     // 상영프린트를 받아온다.
@@ -87,7 +87,7 @@ print_r( $_POST["playprint"] );
                 $stmt->bind_param("sisiis"
                                  ,$_CUD
                                  ,$seq
-                                 ,$file_code
+                                 ,$film_code
                                  ,$playprint1_seq
                                  ,$playprint2_seq
                                  ,$memo

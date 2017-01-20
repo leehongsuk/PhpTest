@@ -232,7 +232,7 @@
                 }
             });
 
-        },
+        }, // pageStart: function()
 
         // 검색버튼을 누를시..
         searchTheater: function()
