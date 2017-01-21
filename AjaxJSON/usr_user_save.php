@@ -18,15 +18,15 @@ require_once ("../config/DB_CONNECT.php");
     $query= "CALL SP_USR_USER_SAVE(?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("isssssss"
-                     ,$seq
-                     ,$post_user_id
-                     ,$post_user_pw
-                     ,$post_user_nm
-                     ,$post_tel
-                     ,$post_hp
-                     ,$post_fax
-                     ,$post_email
+    $stmt->bind_param( "isssssss"
+                     , $seq
+                     , $post_user_id
+                     , $post_user_pw
+                     , $post_user_nm
+                     , $post_tel
+                     , $post_hp
+                     , $post_fax
+                     , $post_email
                      );
     $stmt->execute();
     $stmt->close();

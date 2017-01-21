@@ -10,15 +10,22 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$location_nm,$parent_seq);
+    $stmt->bind_result( $seq
+                      , $location_nm
+                      , $parent_seq
+                      );
 
     while ($stmt->fetch())
     {
-    	array_push($a_list, array("seq" => $seq, "location_nm" => $location_nm, "parent_seq" => $parent_seq)) ;
+    	array_push($a_list, array( "seq" => $seq
+    	                         , "location_nm" => $location_nm
+    	                         , "parent_seq" => $parent_seq
+    	                         )
+    	          );
     }
     $stmt->close();
 
-    $a_json = array("result" => "ok", "options" => $a_list,"etcs" => "");
+    $a_json = array("result" => "ok", "options" => $a_list, "etcs" => "");
 
 require_once("../config/DB_DISCONNECT.php");
 

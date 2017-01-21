@@ -13,12 +13,12 @@ require_once ("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_PLAY_MAST_SAVE(?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sisis"
-                     ,$post_theater_code
-                     ,$post_showroom_seq
-                     ,$post_film_code
-                     ,$post_playprint_seq
-                     ,$post_change_value
+    $stmt->bind_param( "sisis"
+                     , $post_theater_code
+                     , $post_showroom_seq
+                     , $post_film_code
+                     , $post_playprint_seq
+                     , $post_change_value
                      );
     $stmt->execute();
     $stmt->close();

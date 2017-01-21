@@ -14,11 +14,18 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$unit_price,$unit_price_seq);
+    $stmt->bind_result( $seq
+                      , $unit_price
+                      , $unit_price_seq
+                      );
 
     while ($stmt->fetch())
     {
-    	array_push($a_list, array("seq" => $seq, "unit_price" => $unit_price, "unit_price_seq" => $unit_price_seq)) ;
+    	array_push($a_list, array( "seq" => $seq
+              	                 , "unit_price" => $unit_price
+              	                 , "unit_price_seq" => $unit_price_seq
+    	                         )
+    	          ) ;
     }
     $stmt->close();
 

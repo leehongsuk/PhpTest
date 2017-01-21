@@ -19,7 +19,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_PLAYPRINT_SEL_COUNT(?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("issis"
+    $stmt->bind_param( "issis"
                      , $post_distributor_seq
                      , $post_film_nm
                      , $post_theaterCode
@@ -37,7 +37,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_PLAYPRINT_SEL_PAGE(?,?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("issisii"
+    $stmt->bind_param( "issisii"
                      , $post_distributor_seq
                      , $post_film_nm
                      , $post_theaterCode
@@ -48,51 +48,51 @@ require_once("../config/DB_CONNECT.php");
                      );
     $stmt->execute();
 
-    $stmt->bind_result($code
-                      ,$distributor_seq
-                      ,$distributor_nm
-                      ,$distributor_cd
-                      ,$film_nm
-                      ,$grade_nm
-                      ,$first_play_dt
-                      ,$open_dt
-                      ,$close_dt
-                      ,$reopen_dt
-                      ,$reclose_dt
-                      ,$poster_yn
-                      ,$images_no
-                      ,$korabd_gbn_nm
-                      ,$del_flag
-                      ,$playprint_seq
-                      ,$play_print1_nm
-                      ,$play_print2_nm
-                      ,$mapping_dt
-                      ,$unmapping_dt
+    $stmt->bind_result( $code
+                      , $distributor_seq
+                      , $distributor_nm
+                      , $distributor_cd
+                      , $film_nm
+                      , $grade_nm
+                      , $first_play_dt
+                      , $open_dt
+                      , $close_dt
+                      , $reopen_dt
+                      , $reclose_dt
+                      , $poster_yn
+                      , $images_no
+                      , $korabd_gbn_nm
+                      , $del_flag
+                      , $playprint_seq
+                      , $play_print1_nm
+                      , $play_print2_nm
+                      , $mapping_dt
+                      , $unmapping_dt
                       );
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("code" => $code
-                                 ,"playprint_seq" => $playprint_seq
-                                 ,"distributor_seq" => $distributor_seq
-                                 ,"distributor_nm" => $distributor_nm
-                                 ,"distributor_cd" => $distributor_cd
-                                 ,"film_nm" => $film_nm
-                                 ,"grade_nm" => $grade_nm
-                                 ,"first_play_dt" => $first_play_dt
-                                 ,"open_dt" => $open_dt
-                                 ,"close_dt" => $close_dt
-                                 ,"play_term" => $open_dt ." ~ ". $close_dt
-                                 ,"reopen_dt" => $reopen_dt
-                                 ,"reclose_dt" => $reclose_dt
-                                 ,"replay_term" => $reopen_dt ." ~ ". $reclose_dt
-                                 ,"poster_yn" => $poster_yn
-                                 ,"images_no" => $images_no
-                                 ,"korabd_gbn_nm" => $korabd_gbn_nm
-                                 ,"cnt_playprint" => $cnt_playprint
-                                 ,"play_print_nm" => $play_print1_nm ." ". $play_print2_nm
-                                 ,"mapping_dt" => $mapping_dt
-                                 ,"unmapping_dt" => $unmapping_dt
+        array_push($a_list, array( "code" => $code
+                                 , "playprint_seq" => $playprint_seq
+                                 , "distributor_seq" => $distributor_seq
+                                 , "distributor_nm" => $distributor_nm
+                                 , "distributor_cd" => $distributor_cd
+                                 , "film_nm" => $film_nm
+                                 , "grade_nm" => $grade_nm
+                                 , "first_play_dt" => $first_play_dt
+                                 , "open_dt" => $open_dt
+                                 , "close_dt" => $close_dt
+                                 , "play_term" => $open_dt ." ~ ". $close_dt
+                                 , "reopen_dt" => $reopen_dt
+                                 , "reclose_dt" => $reclose_dt
+                                 , "replay_term" => $reopen_dt ." ~ ". $reclose_dt
+                                 , "poster_yn" => $poster_yn
+                                 , "images_no" => $images_no
+                                 , "korabd_gbn_nm" => $korabd_gbn_nm
+                                 , "cnt_playprint" => $cnt_playprint
+                                 , "play_print_nm" => $play_print1_nm ." ". $play_print2_nm
+                                 , "mapping_dt" => $mapping_dt
+                                 , "unmapping_dt" => $unmapping_dt
                                  )
                   );
     }

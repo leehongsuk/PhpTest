@@ -23,21 +23,24 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_LOG_MYSQL_SEL_PAGE(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("ii", $post_pageNo, $post_pageSize);
+    $stmt->bind_param( "ii"
+                     , $post_pageNo
+                     , $post_pageSize
+                     );
     $stmt->execute();
 
-    $stmt->bind_result($event_time
-                      ,$command_type
-                      ,$argument
+    $stmt->bind_result( $event_time
+                      , $command_type
+                      , $argument
                       );
 
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("event_time" => substr($event_time, -8)
-                                  ,"command_type" => $command_type
-                                  ,"argument" => $argument
-                                  )
+        array_push($a_list, array( "event_time" => substr($event_time, -8)
+                                 , "command_type" => $command_type
+                                 , "argument" => $argument
+                                 )
                   );
     }
 

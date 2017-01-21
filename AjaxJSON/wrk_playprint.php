@@ -14,29 +14,29 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq
-                      ,$film_code
-                      ,$playprint1_seq
-                      ,$playprint1
-                      ,$playprint2_seq
-                      ,$playprint2
-                      ,$memo
-                      ,$cnt_theater
-                      ,$cnt_showroom
+    $stmt->bind_result( $seq
+                      , $film_code
+                      , $playprint1_seq
+                      , $playprint1
+                      , $playprint2_seq
+                      , $playprint2
+                      , $memo
+                      , $cnt_theater
+                      , $cnt_showroom
                       );
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("seq" => $seq
-                                  ,"film_code" => $film_code
-                                  ,"playprint1_seq" => $playprint1_seq
-                                  ,"playprint1" => $playprint1
-                                  ,"playprint2_seq" => $playprint2_seq
-                                  ,"playprint2" => $playprint2
-                                  ,"memo" => $memo
-                                  ,"cnt_theater" => $cnt_theater
-                                  ,"cnt_showroom" => $cnt_showroom
-                                  )
+        array_push($a_list, array( "seq" => $seq
+                                 , "film_code" => $film_code
+                                 , "playprint1_seq" => $playprint1_seq
+                                 , "playprint1" => $playprint1
+                                 , "playprint2_seq" => $playprint2_seq
+                                 , "playprint2" => $playprint2
+                                 , "memo" => $memo
+                                 , "cnt_theater" => $cnt_theater
+                                 , "cnt_showroom" => $cnt_showroom
+                                 )
                   );
     }
     $stmt->close();

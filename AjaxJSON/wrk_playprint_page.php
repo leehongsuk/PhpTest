@@ -27,22 +27,26 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_PLAYPRINT_SEL_PAGE(?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sii"
+    $stmt->bind_param( "sii"
                      , $post_film_code
                      , $post_pageNo
                      , $post_pageSize
                      );
     $stmt->execute();
 
-    $stmt->bind_result($seq,$playprint1,$playprint2,$memo);
+    $stmt->bind_result( $seq
+                      , $playprint1
+                      , $playprint2
+                      , $memo
+                      );
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("seq" => $seq
-                                  ,"playprint1" => $playprint1
-                                  ,"playprint2" => $playprint2
-                                  ,"memo" => $memo
-                                  )
+        array_push($a_list, array( "seq" => $seq
+                                 , "playprint1" => $playprint1
+                                 , "playprint2" => $playprint2
+                                 , "memo" => $memo
+                                 )
                   );
     }
     $stmt->close();

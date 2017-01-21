@@ -34,15 +34,15 @@ else fclose($fp);
             if ($fp)
             {
                 $seq = 0;
-                array_push($a_json, array("id" => "MF_AX_$seq"
-                                         ,"name" => $save_file
-                                         ,"saveName" => $save_file
-                                         ,"type" => filetype($upload_dir."/".$save_file)
-                                         ,"fileSize" => filesize($upload_dir."/".$save_file)
-                                         ,"uploadedPath" => "../AjaxJSON/files/"
-                                         ,"thumbUrl" => "../AjaxJSON/files/$save_file"
-                                         ,"mainImage" => ($seq == 0)?true:false
-                                       )
+                array_push($a_json, array( "id" => "MF_AX_$seq"
+                                         , "name" => $save_file
+                                         , "saveName" => $save_file
+                                         , "type" => filetype($upload_dir."/".$save_file)
+                                         , "fileSize" => filesize($upload_dir."/".$save_file)
+                                         , "uploadedPath" => "../AjaxJSON/files/"
+                                         , "thumbUrl" => "../AjaxJSON/files/$save_file"
+                                         , "mainImage" => ($seq == 0)?true:false
+                                         )
                            );
 
                 fclose($fp);
@@ -67,15 +67,15 @@ else fclose($fp);
 //echo $upload_dir."/".$file;
         if ($file == "." || $file == "..") continue; // . 과 .. 디렉토리는 무시
 
-        array_push($a_json, array("id" => "MF_AX_$seq"
-                                  ,"name" => $file
-                                  ,"saveName" => $file
-                                  ,"type" => filetype($upload_dir."\\".$file)
-                                  ,"fileSize" => filesize($upload_dir."\\".$file)
-                                  ,"uploadedPath" => "../AjaxJSON/files/"
-                                  ,"thumbUrl" => "../AjaxJSON/files/$file"
-                                  ,"mainImage" => ($seq == 0)?true:false
-                              )
+        array_push($a_json, array( "id" => "MF_AX_$seq"
+                                 , "name" => $file
+                                 , "saveName" => $file
+                                 , "type" => filetype($upload_dir."\\".$file)
+                                 , "fileSize" => filesize($upload_dir."\\".$file)
+                                 , "uploadedPath" => "../AjaxJSON/files/"
+                                 , "thumbUrl" => "../AjaxJSON/files/$file"
+                                 , "mainImage" => ($seq == 0)?true:false
+                                 )
                    ) ;
 
         $seq++;

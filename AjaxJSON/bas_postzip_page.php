@@ -15,7 +15,10 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_BAS_POSTZIP_SEL_COUNT(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("ss", $post_dongNm , $post_roadNm  );
+    $stmt->bind_param( "ss"
+                     , $post_dongNm
+                     , $post_roadNm
+                     );
     $stmt->execute();
 
     $stmt->bind_result($count);
@@ -28,7 +31,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_BAS_POSTZIP_SEL_PAGE(?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("ssii"
+    $stmt->bind_param( "ssii"
                      , $post_dongNm
                      , $post_roadNm
                      , $post_pageNo
@@ -38,48 +41,48 @@ require_once("../config/DB_CONNECT.php");
 
     /**
     $stmt->bind_result( $code
-                       ,$si_do_k
-                       ,$si_do_e
-                       ,$kun_ku_k
-                       ,$kun_ku_e
-                       ,$ub_myun_k
-                       ,$ub_myun_e
-                       ,$road_cd
-                       ,$road_nm_k
-                       ,$road_nm_e
-                       ,$under
-                       ,$buildno_bun1
-                       ,$buildno_bun2
-                       ,$buildno_mng
-                       ,$delivery_loc
-                       ,$building_nm
-                       ,$bjd_cd
-                       ,$bjd_nm
-                       ,$lee_nm
-                       ,$dong_nm
-                       ,$mountain
-                       ,$jibun1
-                       ,$ub_myun_dong_seq
-                       ,$jibun2
+                      , $si_do_k
+                      , $si_do_e
+                      , $kun_ku_k
+                      , $kun_ku_e
+                      , $ub_myun_k
+                      , $ub_myun_e
+                      , $road_cd
+                      , $road_nm_k
+                      , $road_nm_e
+                      , $under
+                      , $buildno_bun1
+                      , $buildno_bun2
+                      , $buildno_mng
+                      , $delivery_loc
+                      , $building_nm
+                      , $bjd_cd
+                      , $bjd_nm
+                      , $lee_nm
+                      , $dong_nm
+                      , $mountain
+                      , $jibun1
+                      , $ub_myun_dong_seq
+                      , $jibun2
                       ) ;
      * */
     $stmt->bind_result( $code
-                       ,$si_do_k
-                       ,$kun_ku_k
-                       ,$dong_nm
-                       ,$road_nm_k
-                       ) ;
+                      , $si_do_k
+                      , $kun_ku_k
+                      , $dong_nm
+                      , $road_nm_k
+                      ) ;
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("code" => $code
-                                  ,"address_nm" => $si_do_k." ".$kun_ku_k." ".$dong_nm." ".$road_nm_k
-                                  )
+        array_push($a_list, array( "code" => $code
+                                 , "address_nm" => $si_do_k." ".$kun_ku_k." ".$dong_nm." ".$road_nm_k
+                                 )
                   );
     }
     $stmt->close();
 
-    $a_page = array("pageNo" => $post_pageNo, "pageCount" => $pageCount,"listCount" => $post_pageSize);
+    $a_page = array("pageNo" => $post_pageNo, "pageCount" => $pageCount, "listCount" => $post_pageSize);
 
     $a_json = array("result" => "ok", "list" => $a_list, "page" => $a_page, "msg" => "");
 

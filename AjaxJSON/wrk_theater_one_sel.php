@@ -20,11 +20,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($code,$contact_nm);
+    $stmt->bind_result($code, $contact_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $code, "optionText" => $contact_nm)) ;
+        array_push($a_list, array( "optionValue" => $code
+                                 , "optionText" => $contact_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -42,11 +45,15 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$location_nm);
+    $stmt->bind_result($seq, $location_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $location_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $location_nm
+                                 )
+                  ) ;
+
     }
     $stmt->close();
 
@@ -64,11 +71,15 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$affiliate_nm);
+    $stmt->bind_result($seq, $affiliate_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $affiliate_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $affiliate_nm
+                                 )
+                  ) ;
+
     }
     $stmt->close();
 
@@ -87,11 +98,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($code,$direct_nm);
+    $stmt->bind_result($code, $direct_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $code, "optionText" => $direct_nm)) ;
+        array_push($a_list, array( "optionValue" => $code
+                                 , "optionText" => $direct_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -109,11 +123,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$unaffiliate_nm);
+    $stmt->bind_result($seq, $unaffiliate_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $unaffiliate_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $unaffiliate_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -129,11 +146,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$user_group_nm);
+    $stmt->bind_result($seq, $user_group_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $user_group_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $user_group_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -154,11 +174,19 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$unit_price,$unit_price_seq);
+    $stmt->bind_result( $seq
+                      , $unit_price
+                      , $unit_price_seq
+                      );
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("seq" => $seq, "unit_price" => $unit_price, "unit_price_seq" => $unit_price_seq)) ;
+        array_push($a_list, array( "seq" => $seq
+                          , "unit_price" => $unit_price
+                          , "unit_price_seq" => $unit_price_seq
+                          )
+                  ) ;
+
     }
     $stmt->close();
 
@@ -175,12 +203,19 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$special_seat_nm);
+    $stmt->bind_result($seq, $special_seat_nm);
 
-    array_push($a_list, array("optionValue" => -1, "optionText" => "없음")) ;
+    array_push($a_list, array( "optionValue" => -1
+                             , "optionText" => "없음"
+                             )
+              ) ;
+
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $special_seat_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $special_seat_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -196,11 +231,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$distributor_nm);
+    $stmt->bind_result($seq, $distributor_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $distributor_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $distributor_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -218,11 +256,14 @@ require_once("../config/DB_CONNECT.php");
         $stmt = $mysqli->prepare($query);
         $stmt->execute();
 
-        $stmt->bind_result($code,$contact_nm);
+        $stmt->bind_result($code, $contact_nm);
 
         while ($stmt->fetch())
         {
-            array_push($a_contacts, array("code" => $code, "contact_nm" => $contact_nm)) ;
+            array_push($a_contacts, array( "code" => $code
+                                         , "contact_nm" => $contact_nm
+                                         )
+                      ) ;
         }
         $stmt->close();
 
@@ -235,10 +276,20 @@ require_once("../config/DB_CONNECT.php");
              $query= "CALL SP_WRK_THEATER_CONTACT_SEL(?,?)" ; // <-----
              $stmt = $mysqli->prepare($query);
 
-             $stmt->bind_param("ss", $post_code, $contactGbn);
+             $stmt->bind_param( "ss"
+                              , $post_code
+                              , $contactGbn
+                              );
              $stmt->execute();
 
-             $stmt->bind_result($seq,$theater_code,$name,$tel,$hp,$fax,$mail);
+             $stmt->bind_result( $seq
+                               , $theater_code
+                               , $name
+                               , $tel
+                               , $hp
+                               , $fax
+                               , $mail
+                               );
 
              $a_temp = array() ;
 
@@ -265,7 +316,17 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("s", $post_code);
         $stmt->execute();
 
-        $stmt->bind_result($seq,$theater_code,$room_nm,$room_alias,$art_room,$seat,$special_seq,$special_nm,$special_etc,$specail_seet);
+        $stmt->bind_result( $seq
+                          , $theater_code
+                          , $room_nm
+                          , $room_alias
+                          , $art_room
+                          , $seat
+                          , $special_seq
+                          , $special_nm
+                          , $special_etc
+                          , $specail_seet
+                          );
 
         while ($stmt->fetch())
         {
@@ -291,7 +352,14 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("s", $post_code);
         $stmt->execute();
 
-        $stmt->bind_result($seq,$theater_code,$distributor_seq,$distributor_nm,$theater_knm,$theater_enm,$theater_dcode);
+        $stmt->bind_result( $seq
+                          , $theater_code
+                          , $distributor_seq
+                          , $distributor_nm
+                          , $theater_knm
+                          , $theater_enm
+                          , $theater_dcode
+                          );
 
         while ($stmt->fetch())
         {
@@ -314,82 +382,82 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("s", $post_code);
         $stmt->execute();
 
-        $stmt->bind_result($code
-                          ,$loc1
-                          ,$loc2
-                          ,$affiliate_seq
-                          ,$isdirect
-                          ,$unaffiliate_seq
-                          ,$user_group_seq
-                          ,$open_dt
-                          ,$operation
-                          ,$theater_nm
-                          ,$zip
-                          ,$addr1
-                          ,$addr2
-                          ,$score_tel
-                          ,$score_fax
-                          ,$score_mail
-                          ,$score_sms
-                          ,$premium_tel
-                          ,$premium_fax
-                          ,$premium_mail
-                          ,$premium_sms
-                          ,$memo
-                          ,$fund_free
-                          ,$gubun_code
-                          ,$saup_no
-                          ,$owner
-                          ,$sangho
-                          ,$homepage
-                          ,$images_no
+        $stmt->bind_result( $code
+                          , $loc1
+                          , $loc2
+                          , $affiliate_seq
+                          , $isdirect
+                          , $unaffiliate_seq
+                          , $user_group_seq
+                          , $open_dt
+                          , $operation
+                          , $theater_nm
+                          , $zip
+                          , $addr1
+                          , $addr2
+                          , $score_tel
+                          , $score_fax
+                          , $score_mail
+                          , $score_sms
+                          , $premium_tel
+                          , $premium_fax
+                          , $premium_mail
+                          , $premium_sms
+                          , $memo
+                          , $fund_free
+                          , $gubun_code
+                          , $saup_no
+                          , $owner
+                          , $sangho
+                          , $homepage
+                          , $images_no
                           );
 
         if ($stmt->fetch())
         {
-            $a_json = array("code"             => $code
-                           ,"loc1"             => $loc1
-                           ,"loc2"             => $loc2
-                           ,"affiliate_seq"    => $affiliate_seq
-                           ,"isdirect"         => $isdirect
-                           ,"unaffiliate_seq"  => $unaffiliate_seq
-                           ,"user_group_seq"   => $user_group_seq
-                           ,"open_dt"          => $open_dt
-                           ,"operation"        => $operation
-                           ,"theater_nm"       => $theater_nm
-                           ,"zip"              => $zip
-                           ,"addr1"            => $addr1
-                           ,"addr2"            => $addr2
-                           ,"score_tel"        => $score_tel
-                           ,"score_fax"        => $score_fax
-                           ,"score_mail"       => $score_mail
-                           ,"score_sms"        => $score_sms
-                           ,"premium_tel"      => $premium_tel
-                           ,"premium_fax"      => $premium_fax
-                           ,"premium_mail"     => $premium_mail
-                           ,"premium_sms"      => $premium_sms
-                           ,"memo"             => $memo
-                           ,"fund_free"        => $fund_free
-                           ,"gubun_code"       => $gubun_code
-                           ,"saup_no"          => $saup_no
-                           ,"owner"            => $owner
-                           ,"sangho"           => $sangho
-                           ,"homepage"         => $homepage
-                           ,"images_no"        => $images_no
+            $a_json = array( "code"             => $code
+                           , "loc1"             => $loc1
+                           , "loc2"             => $loc2
+                           , "affiliate_seq"    => $affiliate_seq
+                           , "isdirect"         => $isdirect
+                           , "unaffiliate_seq"  => $unaffiliate_seq
+                           , "user_group_seq"   => $user_group_seq
+                           , "open_dt"          => $open_dt
+                           , "operation"        => $operation
+                           , "theater_nm"       => $theater_nm
+                           , "zip"              => $zip
+                           , "addr1"            => $addr1
+                           , "addr2"            => $addr2
+                           , "score_tel"        => $score_tel
+                           , "score_fax"        => $score_fax
+                           , "score_mail"       => $score_mail
+                           , "score_sms"        => $score_sms
+                           , "premium_tel"      => $premium_tel
+                           , "premium_fax"      => $premium_fax
+                           , "premium_mail"     => $premium_mail
+                           , "premium_sms"      => $premium_sms
+                           , "memo"             => $memo
+                           , "fund_free"        => $fund_free
+                           , "gubun_code"       => $gubun_code
+                           , "saup_no"          => $saup_no
+                           , "owner"            => $owner
+                           , "sangho"           => $sangho
+                           , "homepage"         => $homepage
+                           , "images_no"        => $images_no
                            ////////////////////
-                           ,"contacts"         => $a_contacts
-                           ,"showrooms"        => $a_showrooms
-                           ,"distributors"     => $a_distributors
-                           ,"contact_option"   => $a_contact_option
-                           ,"loc1_option"      => $a_loc1_option
-                           ,"loc2_option"      => null
-                           ,"affiliate_option" => $a_affiliate_option
-                           ,"isdirect_option"  => $a_isdirect_option
-                           ,"unaffiliate_option" => $a_unaffiliate_option
-                           ,"usergroup_option" => $a_usergroup_option
-                           ,"unitprices"       => $a_unitprices
-                           ,"spcial_seat"      => $a_spcial_seat
-                           ,"distributor"      => $a_distributor
+                           , "contacts"         => $a_contacts
+                           , "showrooms"        => $a_showrooms
+                           , "distributors"     => $a_distributors
+                           , "contact_option"   => $a_contact_option
+                           , "loc1_option"      => $a_loc1_option
+                           , "loc2_option"      => null
+                           , "affiliate_option" => $a_affiliate_option
+                           , "isdirect_option"  => $a_isdirect_option
+                           , "unaffiliate_option" => $a_unaffiliate_option
+                           , "usergroup_option" => $a_usergroup_option
+                           , "unitprices"       => $a_unitprices
+                           , "spcial_seat"      => $a_spcial_seat
+                           , "distributor"      => $a_distributor
                            );
         }
         $stmt->close();
@@ -404,11 +472,14 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("i", $loc1);
         $stmt->execute();
 
-        $stmt->bind_result($seq,$location_nm);
+        $stmt->bind_result($seq, $location_nm);
 
         while ($stmt->fetch())
         {
-         array_push($a_list, array("optionValue" => $seq, "optionText" => $location_nm)) ;
+            array_push($a_list, array( "optionValue" => $seq
+                                     , "optionText" => $location_nm
+                                     )
+                      ) ;
         }
         $stmt->close();
 
@@ -421,50 +492,50 @@ require_once("../config/DB_CONNECT.php");
     {
          $a_loc2_option  = array() ;
 
-         $a_json = array("code"             => ""
-                        ,"loc1"             => $loc1
-                        ,"loc2"             => $loc2
-                        ,"affiliate_seq"    => $affiliate_seq
-                        ,"isdirect"         => $isdirect
-                        ,"unaffiliate_seq"  => $unaffiliate_seq
-                        ,"user_group_seq"   => $user_group_seq
-                        ,"open_dt"          => $open_dt
-                        ,"operation"        => $operation
-                        ,"theater_nm"       => $theater_nm
-                        ,"zip"              => $zip
-                        ,"addr1"            => $addr1
-                        ,"addr2"            => $addr2
-                        ,"score_tel"        => $score_tel
-                        ,"score_fax"        => $score_fax
-                        ,"score_mail"       => $score_mail
-                        ,"score_sms"        => $score_sms
-                        ,"premium_tel"      => $premium_tel
-                        ,"premium_fax"      => $premium_fax
-                        ,"premium_mail"     => $premium_mail
-                        ,"premium_sms"      => $premium_sms
-                        ,"memo"             => ""
-                        ,"fund_free"        => $fund_free
-                        ,"gubun_code"       => $gubun_code
-                        ,"saup_no"          => $saup_no
-                        ,"owner"            => $owner
-                        ,"sangho"           => $sangho
-                        ,"homepage"         => $homepage
-                        ,"images_no"        => $images_no
+         $a_json = array( "code"             => ""
+                        , "loc1"             => $loc1
+                        , "loc2"             => $loc2
+                        , "affiliate_seq"    => $affiliate_seq
+                        , "isdirect"         => $isdirect
+                        , "unaffiliate_seq"  => $unaffiliate_seq
+                        , "user_group_seq"   => $user_group_seq
+                        , "open_dt"          => $open_dt
+                        , "operation"        => $operation
+                        , "theater_nm"       => $theater_nm
+                        , "zip"              => $zip
+                        , "addr1"            => $addr1
+                        , "addr2"            => $addr2
+                        , "score_tel"        => $score_tel
+                        , "score_fax"        => $score_fax
+                        , "score_mail"       => $score_mail
+                        , "score_sms"        => $score_sms
+                        , "premium_tel"      => $premium_tel
+                        , "premium_fax"      => $premium_fax
+                        , "premium_mail"     => $premium_mail
+                        , "premium_sms"      => $premium_sms
+                        , "memo"             => ""
+                        , "fund_free"        => $fund_free
+                        , "gubun_code"       => $gubun_code
+                        , "saup_no"          => $saup_no
+                        , "owner"            => $owner
+                        , "sangho"           => $sangho
+                        , "homepage"         => $homepage
+                        , "images_no"        => $images_no
                         ////////////////////
-                        ,"contacts"         => $a_contacts
-                        ,"showrooms"        => $a_showrooms
-                        ,"distributors"     => $a_distributors
-                        ,"contact_option"   => $a_contact_option
-                        ,"loc1_option"      => $a_loc1_option
-                        ,"loc2_option"      => $a_loc2_option
-                        ,"affiliate_option" => $a_affiliate_option
-                        ,"isdirect_option"  => $a_isdirect_option
-                        ,"unaffiliate_option" => $a_unaffiliate_option
-                        ,"usergroup_option" => $a_usergroup_option
-                        ,"unitprices"       => $a_unitprices
-                        ,"spcial_seat"      => $a_spcial_seat
-                        ,"distributor"      => $a_distributor
-                       );
+                        , "contacts"         => $a_contacts
+                        , "showrooms"        => $a_showrooms
+                        , "distributors"     => $a_distributors
+                        , "contact_option"   => $a_contact_option
+                        , "loc1_option"      => $a_loc1_option
+                        , "loc2_option"      => $a_loc2_option
+                        , "affiliate_option" => $a_affiliate_option
+                        , "isdirect_option"  => $a_isdirect_option
+                        , "unaffiliate_option" => $a_unaffiliate_option
+                        , "usergroup_option" => $a_usergroup_option
+                        , "unitprices"       => $a_unitprices
+                        , "spcial_seat"      => $a_spcial_seat
+                        , "distributor"      => $a_distributor
+                        );
     }
 
 

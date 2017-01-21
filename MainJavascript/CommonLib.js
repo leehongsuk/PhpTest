@@ -13,3 +13,18 @@
         }
         return result;
     }
+    
+    // 오늘 일자를 구한다. (yyyy-mm-dd)
+    function GetToday()
+    {        
+        var date = new Date();
+   
+        var year  = date.getFullYear();
+        var month = date.getMonth() + 1; // 0부터 시작하므로 1더함 더함
+        var day   = date.getDate();
+    
+        if (("" + month).length == 1) { month = "0" + month; }
+        if (("" + day).length   == 1) { day   = "0" + day;   }
+       
+        return "" + year + "-" + month + "-" + day ;           
+    }

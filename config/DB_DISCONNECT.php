@@ -9,7 +9,10 @@
      *
     $query= "INSERT INTO tmp_log_execute (exe_php, exe_time) VALUES (?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("ss", $PhpSelf, $excute_time);
+    $stmt->bind_param( "ss"
+                     , $PhpSelf
+                     , $excute_time
+                     );
     $stmt->execute();
     $stmt->close();
 

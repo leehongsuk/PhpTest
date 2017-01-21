@@ -15,7 +15,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_SEL_COUNT(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("is"
+    $stmt->bind_param( "is"
                      , $post_affiliate
                      , $post_filmNm
                      );
@@ -30,7 +30,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_FILM_SEL_PAGE(?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("isii"
+    $stmt->bind_param( "isii"
                      , $post_distributor_seq
                      , $post_film_Nm
                      , $post_pageNo
@@ -38,44 +38,44 @@ require_once("../config/DB_CONNECT.php");
                      );
     $stmt->execute();
 
-    $stmt->bind_result($code
-                      ,$distributor_seq
-                      ,$distributor_nm
-                      ,$distributor_cd
-                      ,$film_nm
-                      ,$grade_nm
-                      ,$first_play_dt
-                      ,$open_dt
-                      ,$close_dt
-                      ,$reopen_dt
-                      ,$reclose_dt
-                      ,$poster_yn
-                      ,$images_no
-                      ,$korabd_gbn_nm
-                      ,$del_flag
-                      ,$cnt_playprint
+    $stmt->bind_result( $code
+                      , $distributor_seq
+                      , $distributor_nm
+                      , $distributor_cd
+                      , $film_nm
+                      , $grade_nm
+                      , $first_play_dt
+                      , $open_dt
+                      , $close_dt
+                      , $reopen_dt
+                      , $reclose_dt
+                      , $poster_yn
+                      , $images_no
+                      , $korabd_gbn_nm
+                      , $del_flag
+                      , $cnt_playprint
                       );
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("code" => $code
-                                  ,"distributor_seq" => $distributor_seq
-                                  ,"distributor_nm" => $distributor_nm
-                                  ,"distributor_cd" => $distributor_cd
-                                  ,"film_nm" => $film_nm
-                                  ,"grade_nm" => $grade_nm
-                                  ,"first_play_dt" => $first_play_dt
-                                  ,"open_dt" => $open_dt
-                                  ,"close_dt" => $close_dt
-                                  ,"play_term" => $open_dt ." ~ ". $close_dt
-                                  ,"reopen_dt" => $reopen_dt
-                                  ,"reclose_dt" => $reclose_dt
-                                  ,"replay_term" => $reopen_dt ." ~ ". $reclose_dt
-                                  ,"poster_yn" => $poster_yn
-                                  ,"images_no" => $images_no
-                                  ,"korabd_gbn_nm" => $korabd_gbn_nm
-                                  ,"cnt_playprint" => $cnt_playprint
-                                  )
+        array_push($a_list, array( "code" => $code
+                                 , "distributor_seq" => $distributor_seq
+                                 , "distributor_nm" => $distributor_nm
+                                 , "distributor_cd" => $distributor_cd
+                                 , "film_nm" => $film_nm
+                                 , "grade_nm" => $grade_nm
+                                 , "first_play_dt" => $first_play_dt
+                                 , "open_dt" => $open_dt
+                                 , "close_dt" => $close_dt
+                                 , "play_term" => $open_dt ." ~ ". $close_dt
+                                 , "reopen_dt" => $reopen_dt
+                                 , "reclose_dt" => $reclose_dt
+                                 , "replay_term" => $reopen_dt ." ~ ". $reclose_dt
+                                 , "poster_yn" => $poster_yn
+                                 , "images_no" => $images_no
+                                 , "korabd_gbn_nm" => $korabd_gbn_nm
+                                 , "cnt_playprint" => $cnt_playprint
+                                 )
                   );
     }
     $stmt->close();

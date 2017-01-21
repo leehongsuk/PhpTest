@@ -24,7 +24,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL_COUNT(?,?,?,?,?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("iiiissssis"
+    $stmt->bind_param( "iiiissssis"
                      , $post_location1
                      , $post_location2
                      , $post_affiliate
@@ -47,7 +47,7 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_SHOWROOM_SEL_PAGE(?,?,?,?,?,?,?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("iiiissssisii"
+    $stmt->bind_param( "iiiissssisii"
                      , $post_location1
                      , $post_location2
                      , $post_affiliate
@@ -64,33 +64,33 @@ require_once("../config/DB_CONNECT.php");
     $stmt->execute();
 
     $stmt->bind_result( $code
-                       ,$loc1
-                       ,$loc2
-                       ,$affiliate_nm
-                       ,$direct_nm
-                       ,$unaffiliate_nm
-                       ,$user_group_nm
-                       ,$theater_nm
-                       ,$room_seq
-                       ,$room_nm
-                       ,$room_alias
-                       ,$mapping_dt
-                       ,$unmapping_dt
+                      , $loc1
+                      , $loc2
+                      , $affiliate_nm
+                      , $direct_nm
+                      , $unaffiliate_nm
+                      , $user_group_nm
+                      , $theater_nm
+                      , $room_seq
+                      , $room_nm
+                      , $room_alias
+                      , $mapping_dt
+                      , $unmapping_dt
                       ) ;
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("code" => $code
-                                 ,"room_seq" => $room_seq
-                                 ,"location" => $loc1 ." ". $loc2
-                                 ,"affiliate_nm" => $affiliate_nm
-                                 ,"direct_nm" => $direct_nm
-                                 ,"unaffiliate_nm" => $unaffiliate_nm
-                                 ,"user_group_nm" => $user_group_nm
-                                 ,"theater_nm" => $theater_nm
-                                 ,"showroom_nm" => $room_nm ."(". $room_alias .")"
-                                 ,"mapping_dt" => $mapping_dt
-                                 ,"unmapping_dt" => $unmapping_dt
+        array_push($a_list, array( "code" => $code
+                                 , "room_seq" => $room_seq
+                                 , "location" => $loc1 ." ". $loc2
+                                 , "affiliate_nm" => $affiliate_nm
+                                 , "direct_nm" => $direct_nm
+                                 , "unaffiliate_nm" => $unaffiliate_nm
+                                 , "user_group_nm" => $user_group_nm
+                                 , "theater_nm" => $theater_nm
+                                 , "showroom_nm" => $room_nm ."(". $room_alias .")"
+                                 , "mapping_dt" => $mapping_dt
+                                 , "unmapping_dt" => $unmapping_dt
                                  )
                   );
     }

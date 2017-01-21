@@ -36,21 +36,21 @@ print_r( $_POST["playprint"] );
     $query= "CALL SP_WRK_FILM_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("sississssssiss"
-                     ,$post_code
-                     ,$post_distributor_seq
-                     ,$post_distributor_cd
-                     ,$post_film_nm
-                     ,$post_grade_seq
-                     ,$post_first_play_dt
-                     ,$post_open_dt
-                     ,$post_close_dt
-                     ,$post_reopen_dt
-                     ,$post_reclose_dt
-                     ,$post_poster_yn
-                     ,$post_images_no
-                     ,$post_korabd_cd
-                     ,$post_genres
+    $stmt->bind_param( "sississssssiss"
+                     , $post_code
+                     , $post_distributor_seq
+                     , $post_distributor_cd
+                     , $post_film_nm
+                     , $post_grade_seq
+                     , $post_first_play_dt
+                     , $post_open_dt
+                     , $post_close_dt
+                     , $post_reopen_dt
+                     , $post_reclose_dt
+                     , $post_poster_yn
+                     , $post_images_no
+                     , $post_korabd_cd
+                     , $post_genres
                      );
     $stmt->execute();
     $stmt->close();
@@ -84,13 +84,13 @@ print_r( $_POST["playprint"] );
                 $query= "CALL SP_WRK_FILM_PLAYPRINT_SAVE(?,?,?,?,?,?)" ; // <-----
                 $stmt = $mysqli->prepare($query);
 
-                $stmt->bind_param("sisiis"
-                                 ,$_CUD
-                                 ,$seq
-                                 ,$film_code
-                                 ,$playprint1_seq
-                                 ,$playprint2_seq
-                                 ,$memo
+                $stmt->bind_param( "sisiis"
+                                 , $_CUD
+                                 , $seq
+                                 , $film_code
+                                 , $playprint1_seq
+                                 , $playprint2_seq
+                                 , $memo
                                  );
                 $stmt->execute();
                 $stmt->close();

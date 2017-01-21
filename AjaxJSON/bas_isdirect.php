@@ -10,15 +10,18 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($code,$direct_nm);
+    $stmt->bind_result($code, $direct_nm);
 
     while ($stmt->fetch())
     {
-    	array_push($a_list, array("optionValue" => $code, "optionText" => $direct_nm)) ;
+    	array_push($a_list, array( "optionValue" => $code
+    	                         , "optionText" => $direct_nm
+    	                         )
+    	          ) ;
     }
     $stmt->close();
 
-    $a_json = array("result" => "ok", "options" => $a_list,"etcs" => "");
+    $a_json = array("result" => "ok", "options" => $a_list, "etcs" => "");
 
 require_once("../config/DB_DISCONNECT.php");
 

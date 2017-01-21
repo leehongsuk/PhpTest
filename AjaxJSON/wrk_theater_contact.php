@@ -12,21 +12,31 @@ require_once("../config/DB_CONNECT.php");
     $query= "CALL SP_WRK_THEATER_CONTACT_SEL(?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("ss", $post_theater_code, $post_gbn_code);
+    $stmt->bind_param( "ss"
+                     , $post_theater_code
+                     , $post_gbn_code
+                     );
     $stmt->execute();
 
-    $stmt->bind_result($seq,$theater_code,$name,$tel,$hp,$fax,$mail);
+    $stmt->bind_result( $seq
+                      , $theater_code
+                      , $name
+                      , $tel
+                      , $hp
+                      , $fax
+                      , $mail
+                      );
 
     while ($stmt->fetch())
     {
-        array_push($a_list, array("seq" => $seq
-                                  ,"theater_code" => $theater_code
-                                  ,"name" => $name
-                                  ,"tel" => $tel
-                                  ,"hp" => $hp
-                                  ,"fax" => $fax
-                                  ,"mail" => $mail
-                                  )
+        array_push($a_list, array( "seq" => $seq
+                                 , "theater_code" => $theater_code
+                                 , "name" => $name
+                                 , "tel" => $tel
+                                 , "hp" => $hp
+                                 , "fax" => $fax
+                                 , "mail" => $mail
+                                 )
                   ) ;
     }
     $stmt->close();

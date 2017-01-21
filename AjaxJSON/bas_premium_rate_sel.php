@@ -15,7 +15,11 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$affiliate_nm,$code,$direct_nm);
+    $stmt->bind_result( $seq
+                      , $affiliate_nm
+                      , $code
+                      , $direct_nm
+                      );
 
 
     while ($stmt->fetch())
@@ -29,7 +33,7 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$unaffiliate_nm);
+    $stmt->bind_result($seq, $unaffiliate_nm);
 
 
     while ($stmt->fetch())
@@ -48,10 +52,17 @@ require_once("../config/DB_CONNECT.php");
         $query= "CALL SP_LST_PREMIUM_RATE_BY_AFFILIATE_SEL(?,?,?)" ; // <-----    // 계열사,직위별 부율구하기
         $stmt = $mysqli->prepare($query);
 
-        $stmt->bind_param("sis",$p1,$p2,$p3);
+        $stmt->bind_param( "sis"
+                         , $p1
+                         , $p2
+                         , $p3
+                         );
         $stmt->execute();
 
-        $stmt->bind_result($seq,$location_nm,$premium_rate);
+        $stmt->bind_result( $seq
+                          , $location_nm
+                          , $premium_rate
+                          );
 
         $a_row = array("a_seq" => $affiliate[0]
                        ,"a_affiliate_nm" => $affiliate[1]
@@ -79,10 +90,16 @@ require_once("../config/DB_CONNECT.php");
         $query= "CALL SP_LST_PREMIUM_RATE_BY_UNAFFILIATE_SEL(?,?)" ; // <-----    // 비계열사별 부율구하기
         $stmt = $mysqli->prepare($query);
 
-        $stmt->bind_param("si",$p1,$p2);
+        $stmt->bind_param( "si"
+                         , $p1
+                         , $p2
+                         );
         $stmt->execute();
 
-        $stmt->bind_result($seq,$location_nm,$premium_rate);
+        $stmt->bind_result( $seq
+                          , $location_nm
+                          , $premium_rate
+                          );
 
         $a_row = array("a_seq" => ""
                        ,"a_affiliate_nm" => ""
@@ -102,7 +119,7 @@ require_once("../config/DB_CONNECT.php");
         array_push($a_list, $a_row);
     }
 
-    $a_json = array("result" => "ok", "list" => $a_list,"msg" => "");
+    $a_json = array("result" => "ok", "list" => $a_list, "msg" => "");
 
 require_once("../config/DB_DISCONNECT.php");
 

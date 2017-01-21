@@ -10,11 +10,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$unaffiliate_nm);
+    $stmt->bind_result($seq, $unaffiliate_nm);
 
     while ($stmt->fetch())
     {
-    	array_push($a_list, array("optionValue" => $seq, "optionText" => $unaffiliate_nm)) ;
+    	array_push($a_list, array( "optionValue" => $seq
+    	                         , "optionText" => $unaffiliate_nm
+    	                         )
+    	          ) ;
     }
     $stmt->close();
 

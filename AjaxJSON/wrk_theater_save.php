@@ -52,36 +52,36 @@ print_r( $_POST["distributor"] );
     $query= "CALL SP_WRK_THEATER_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
-    $stmt->bind_param("siiisiissssssssssssssssssssis"
-                     ,$post_code
-                     ,$post_loc1
-                     ,$post_loc2
-                     ,$post_affiliate_seq
-                     ,$post_isdirect
-                     ,$post_unaffiliate_seq
-                     ,$post_user_group_seq
-                     ,$post_open_dt
-                     ,$post_theater_nm
-                     ,$post_zip
-                     ,$post_addr1
-                     ,$post_addr2
-                     ,$post_score_tel
-                     ,$post_score_fax
-                     ,$post_score_mail
-                     ,$post_score_sms
-                     ,$post_premium_tel
-                     ,$post_premium_fax
-                     ,$post_premium_mail
-                     ,$post_premium_sms
-                     ,$post_memo
-                     ,$post_fund_free
-                     ,$post_gubun_code
-                     ,$post_saup_no
-                     ,$post_owner
-                     ,$post_sangho
-                     ,$post_homepage
-                     ,$post_images_no
-                     ,$post_unitPrices
+    $stmt->bind_param( "siiisiissssssssssssssssssssis"
+                     , $post_code
+                     , $post_loc1
+                     , $post_loc2
+                     , $post_affiliate_seq
+                     , $post_isdirect
+                     , $post_unaffiliate_seq
+                     , $post_user_group_seq
+                     , $post_open_dt
+                     , $post_theater_nm
+                     , $post_zip
+                     , $post_addr1
+                     , $post_addr2
+                     , $post_score_tel
+                     , $post_score_fax
+                     , $post_score_mail
+                     , $post_score_sms
+                     , $post_premium_tel
+                     , $post_premium_fax
+                     , $post_premium_mail
+                     , $post_premium_sms
+                     , $post_memo
+                     , $post_fund_free
+                     , $post_gubun_code
+                     , $post_saup_no
+                     , $post_owner
+                     , $post_sangho
+                     , $post_homepage
+                     , $post_images_no
+                     , $post_unitPrices
                      );
     $stmt->execute();
 
@@ -122,16 +122,16 @@ print_r( $_POST["distributor"] );
                 $query= "CALL SP_WRK_THEATER_CONTACT_SAVE(?,?,?,?,?,?,?,?,?)" ; // <-----
                 $stmt = $mysqli->prepare($query);
 
-                $stmt->bind_param("sisssssss"
-                                 ,$_CUD
-                                 ,$seq
-                                 ,$theater_code
-                                 ,$gbn_code
-                                 ,$name
-                                 ,$tel
-                                 ,$hp
-                                 ,$fax
-                                 ,$mail
+                $stmt->bind_param( "sisssssss"
+                                 , $_CUD
+                                 , $seq
+                                 , $theater_code
+                                 , $gbn_code
+                                 , $name
+                                 , $tel
+                                 , $hp
+                                 , $fax
+                                 , $mail
                                  );
                 $stmt->execute();
                 $stmt->close();
@@ -171,17 +171,17 @@ print_r( $_POST["distributor"] );
             $query= "CALL SP_WRK_THEATER_SHOWROOM_SAVE(?,?,?,?,?,?,?,?,?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
 
-            $stmt->bind_param("sissssiisi"
-                             ,$_CUD
-                             ,$seq
-                             ,$theater_code
-                             ,$room_nm
-                             ,$room_alias
-                             ,$art_room
-                             ,$seat
-                             ,$special_seq
-                             ,$special_etc
-                             ,$special_seat
+            $stmt->bind_param( "sissssiisi"
+                             , $_CUD
+                             , $seq
+                             , $theater_code
+                             , $room_nm
+                             , $room_alias
+                             , $art_room
+                             , $seat
+                             , $special_seq
+                             , $special_etc
+                             , $special_seat
                              );
             $stmt->execute();
             $stmt->close();
@@ -210,14 +210,14 @@ print_r( $_POST["distributor"] );
             $query= "CALL SP_WRK_THEATER_DISTRIBUTOR_SAVE(?,?,?,?,?,?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
 
-            $stmt->bind_param("sisisss"
-                             ,$_CUD
-                             ,$seq
-                             ,$theater_code
-                             ,$distributor_seq
-                             ,$theater_knm
-                             ,$theater_enm
-                             ,$theater_dcode
+            $stmt->bind_param( "sisisss"
+                             , $_CUD
+                             , $seq
+                             , $theater_code
+                             , $distributor_seq
+                             , $theater_knm
+                             , $theater_enm
+                             , $theater_dcode
                              );
             $stmt->execute();
             $stmt->close();

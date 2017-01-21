@@ -15,7 +15,10 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_user_id);
     $stmt->execute();
 
-    $stmt->bind_result($count,$del_flag,$delete_dt );
+    $stmt->bind_result( $count
+                      , $del_flag
+                      , $delete_dt
+                      );
 
 
     if ($stmt->fetch())

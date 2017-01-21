@@ -16,7 +16,10 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_user_id);
     $stmt->execute();
 
-    $stmt->bind_result($count,$del_flag,$delete_dt );
+    $stmt->bind_result( $count
+                      , $del_flag
+                      , $delete_dt
+                      );
 
 
     if ($stmt->fetch())
@@ -35,10 +38,13 @@ require_once("../config/DB_CONNECT.php");
             $query= "CALL SP_USR_LOGIN_IDPW_CHECK(?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
 
-            $stmt->bind_param("ss", $post_user_id, $post_user_pw);
+            $stmt->bind_param( "ss"
+                             , $post_user_id
+                             , $post_user_pw
+                             );
             $stmt->execute();
 
-            $stmt->bind_result($count,$user_seq );
+            $stmt->bind_result($count, $user_seq );
 
             if ($stmt->fetch())
             {

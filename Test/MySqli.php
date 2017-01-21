@@ -9,14 +9,17 @@ if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-	$query= "call pr2(?)" ; // <-----   
+	$query= "call pr2(?)" ; // <-----
 	$stmt = $mysqli->prepare($query);
 
 	$i = 1;
 	$stmt->bind_param("i", $i);
 	$stmt->execute();
 
-	$stmt->bind_result($id,$x,$y);
+	$stmt->bind_result( $id
+                	  , $x
+                	  , $y
+                	  );
 
 	while ($stmt->fetch())
 	{

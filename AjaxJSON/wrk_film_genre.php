@@ -14,14 +14,17 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$genre_nm,$genre_seq);
+    $stmt->bind_result( $seq
+                      , $genre_nm
+                      , $genre_seq
+                      );
 
     while ($stmt->fetch())
     {
-    	array_push($a_list, array("seq" => $seq
-    	                          ,"genre_nm" => $genre_nm
-    	                          ,"genre_seq" => $genre_seq
-    	                          )
+    	array_push($a_list, array( "seq" => $seq
+    	                         , "genre_nm" => $genre_nm
+    	                         , "genre_seq" => $genre_seq
+    	                         )
     	          ) ;
     }
     $stmt->close();

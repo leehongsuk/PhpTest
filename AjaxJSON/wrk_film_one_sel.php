@@ -17,11 +17,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$distributor_nm);
+    $stmt->bind_result($seq, $distributor_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $distributor_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $distributor_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -39,15 +42,18 @@ require_once("../config/DB_CONNECT.php");
     $stmt->bind_param("s", $post_code);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$genre_nm,$genre_seq);
+    $stmt->bind_result( $seq
+                      , $genre_nm
+                      , $genre_seq
+                      );
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("seq" => $seq
-       ,"genre_nm" => $genre_nm
-       ,"genre_seq" => $genre_seq
-     )
-       ) ;
+        array_push($a_list, array( "seq" => $seq
+                                 , "genre_nm" => $genre_nm
+                                 , "genre_seq" => $genre_seq
+                               )
+                  ) ;
     }
     $stmt->close();
 
@@ -63,11 +69,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($code,$gbn_nm);
+    $stmt->bind_result($code, $gbn_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $code, "optionText" => $gbn_nm)) ;
+        array_push($a_list, array( "optionValue" => $code
+                                 , "optionText" => $gbn_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -83,11 +92,15 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$grade_nm);
+    $stmt->bind_result($seq, $grade_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $grade_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $grade_nm
+                                 )
+                  ) ;
+
     }
     $stmt->close();
 
@@ -103,11 +116,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$play_print_nm);
+    $stmt->bind_result($seq, $play_print_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $play_print_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $play_print_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -123,11 +139,14 @@ require_once("../config/DB_CONNECT.php");
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
 
-    $stmt->bind_result($seq,$play_print_nm);
+    $stmt->bind_result($seq, $play_print_nm);
 
     while ($stmt->fetch())
     {
-     array_push($a_list, array("optionValue" => $seq, "optionText" => $play_print_nm)) ;
+        array_push($a_list, array( "optionValue" => $seq
+                                 , "optionText" => $play_print_nm
+                                 )
+                  ) ;
     }
     $stmt->close();
 
@@ -145,29 +164,29 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("s", $post_code);
         $stmt->execute();
 
-        $stmt->bind_result($seq
-                          ,$film_code
-                          ,$playprint1_seq
-                          ,$playprint1_nm
-                          ,$playprint2_seq
-                          ,$playprint2_nm
-                          ,$memo
-                          ,$cnt_theater
-                          ,$cnt_showroom
+        $stmt->bind_result( $seq
+                          , $film_code
+                          , $playprint1_seq
+                          , $playprint1_nm
+                          , $playprint2_seq
+                          , $playprint2_nm
+                          , $memo
+                          , $cnt_theater
+                          , $cnt_showroom
                           );
 
         while ($stmt->fetch())
         {
-            array_push($a_playprint, array("seq" => $seq
-                                           ,"film_code" => $film_code
-                                           ,"playprint1_seq" => $playprint1_seq
-                                           ,"playprint1_nm" => $playprint1_nm
-                                           ,"playprint2_seq" => $playprint2_seq
-                                           ,"playprint2_nm" => $playprint2_nm
-                                           ,"memo" => $memo
-                                           ,"cnt_theater" => $cnt_theater
-                                           ,"cnt_showroom" => $cnt_showroom
-                                           )
+            array_push($a_playprint, array( "seq" => $seq
+                                          , "film_code" => $film_code
+                                          , "playprint1_seq" => $playprint1_seq
+                                          , "playprint1_nm" => $playprint1_nm
+                                          , "playprint2_seq" => $playprint2_seq
+                                          , "playprint2_nm" => $playprint2_nm
+                                          , "memo" => $memo
+                                          , "cnt_theater" => $cnt_theater
+                                          , "cnt_showroom" => $cnt_showroom
+                                          )
                       ) ;
         }
         $stmt->close();
@@ -179,46 +198,45 @@ require_once("../config/DB_CONNECT.php");
         $stmt->bind_param("s", $post_code);
         $stmt->execute();
 
-        $stmt->bind_result($code
-                          ,$distributor_seq
-                          ,$distributor_cd
-                          ,$film_nm
-                          ,$grade_seq
-                          ,$first_play_dt
-                          ,$open_dt
-                          ,$close_dt
-                          ,$reopen_dt
-                          ,$reclose_dt
-                          ,$poster_yn
-                          ,$images_no
-                          ,$korabd_cd
-                          ,$del_flag
+        $stmt->bind_result( $code
+                          , $distributor_seq
+                          , $distributor_cd
+                          , $film_nm
+                          , $grade_seq
+                          , $first_play_dt
+                          , $open_dt
+                          , $close_dt
+                          , $reopen_dt
+                          , $reclose_dt
+                          , $poster_yn
+                          , $images_no
+                          , $korabd_cd
+                          , $del_flag
                           );
 
         if ($stmt->fetch())
         {
-            $a_json = array("code" => $code
-                           ,"distributor_seq" => $distributor_seq
-                           ,"distributor_cd" => $distributor_cd
-                           ,"film_nm" => $film_nm
-                           ,"grade_seq" => $grade_seq
-                           ,"first_play_dt" => $first_play_dt
-                           ,"open_dt" => $open_dt
-                           ,"close_dt" => $close_dt
-                           ,"reopen_dt" => $reopen_dt
-                           ,"reclose_dt" => $reclose_dt
-                           ,"poster_yn" => $poster_yn
-                           ,"images_no" => $images_no
-                           ,"korabd_cd" => $korabd_cd
-                           ,"del_flag" => $del_flag
-
-                           ,"playprints" => $a_playprint
-                           ,"distributors" => $a_distributors
-                           ,"genres" => $a_genres
-                           ,"korabdgbns" => $a_korabdgbns
-                           ,"grade" => $a_grade
-                           ,"playprint1" => $a_playprint1
-                           ,"playprint2" => $a_playprint2
+            $a_json = array( "code" => $code
+                           , "distributor_seq" => $distributor_seq
+                           , "distributor_cd" => $distributor_cd
+                           , "film_nm" => $film_nm
+                           , "grade_seq" => $grade_seq
+                           , "first_play_dt" => $first_play_dt
+                           , "open_dt" => $open_dt
+                           , "close_dt" => $close_dt
+                           , "reopen_dt" => $reopen_dt
+                           , "reclose_dt" => $reclose_dt
+                           , "poster_yn" => $poster_yn
+                           , "images_no" => $images_no
+                           , "korabd_cd" => $korabd_cd
+                           , "del_flag" => $del_flag
+                           , "playprints" => $a_playprint
+                           , "distributors" => $a_distributors
+                           , "genres" => $a_genres
+                           , "korabdgbns" => $a_korabdgbns
+                           , "grade" => $a_grade
+                           , "playprint1" => $a_playprint1
+                           , "playprint2" => $a_playprint2
                            );
         }
         $stmt->close();
@@ -226,28 +244,27 @@ require_once("../config/DB_CONNECT.php");
 
     if  ($post_mode=="APPEND")
     {
-        $a_json = array("code" => ""
-                       ,"distributor_seq" => $distributor_seq
-                       ,"distributor_cd" => $distributor_cd
-                       ,"film_nm" => $film_nm
-                       ,"grade_seq" => $grade_seq
-                       ,"first_play_dt" => $first_play_dt
-                       ,"open_dt" => $open_dt
-                       ,"close_dt" => $close_dt
-                       ,"reopen_dt" => $reopen_dt
-                       ,"reclose_dt" => $reclose_dt
-                       ,"poster_yn" => $poster_yn
-                       ,"images_no" => $images_no
-                       ,"korabd_cd" => $korabd_cd
-                       ,"del_flag" => $del_flag
-
-                       ,"playprints" => $a_playprint
-                       ,"distributors" => $a_distributors
-                       ,"genres" => $a_genres
-                       ,"korabdgbns" => $a_korabdgbns
-                       ,"grade" => $a_grade
-                       ,"playprint1" => $a_playprint1
-                       ,"playprint2" => $a_playprint2
+        $a_json = array( "code" => ""
+                       , "distributor_seq" => $distributor_seq
+                       , "distributor_cd" => $distributor_cd
+                       , "film_nm" => $film_nm
+                       , "grade_seq" => $grade_seq
+                       , "first_play_dt" => $first_play_dt
+                       , "open_dt" => $open_dt
+                       , "close_dt" => $close_dt
+                       , "reopen_dt" => $reopen_dt
+                       , "reclose_dt" => $reclose_dt
+                       , "poster_yn" => $poster_yn
+                       , "images_no" => $images_no
+                       , "korabd_cd" => $korabd_cd
+                       , "del_flag" => $del_flag
+                       , "playprints" => $a_playprint
+                       , "distributors" => $a_distributors
+                       , "genres" => $a_genres
+                       , "korabdgbns" => $a_korabdgbns
+                       , "grade" => $a_grade
+                       , "playprint1" => $a_playprint1
+                       , "playprint2" => $a_playprint2
                        );
      }
 

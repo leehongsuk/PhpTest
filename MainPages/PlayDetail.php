@@ -42,6 +42,8 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
 
+    <script type="text/javascript" src="<?=$path_Root?>/MainJavascript/CommonLib.js"></script>
+
     <style type="text/css">
         .modalProgramTitle{
             height:38px;
@@ -99,7 +101,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                 //defaultDate:"2013-05-15"
             });
 
-            jQuery("input[name=play_dt]").val('2017-01-15');
+            jQuery("input[name=play_dt]").val( GetToday() ); // 디폴트로 오늘 ...
 
             // 스코어그리드
             grid_PlayDetail.setConfig(
@@ -137,12 +139,14 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                         o['key'] = 'price';
                         o['label'] = '요금';
                         o['width'] = '100';
+                        o['align'] = 'right';
                         colgrp.push(o);
 
                         var o={} ;
                         o['key'] = 'sum';
                         o['label'] = '합계';
                         o['width'] = '90';
+                        o['align'] = 'right';
                         colgrp.push(o);
 
                         /** 회차 갯수 만큼 컬럼타이틀을 구성한다. **/
@@ -157,6 +161,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                             }
                             o['width'] = '70';
                             o['formatter'] = fnObj.formatter;// <input typw="text"> 태그를 단다...
+                            o['align'] = 'right';
 
                             colgrp.push(o);
                         }
@@ -215,8 +220,15 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
         // 스코어값으로 text박스를 만든다.
         formatter : function()
         {
-trace(this.value);
-            //var name = "pr_"+this.key+"_"+this.item.a_seq+"_"+this.item.id_code+"_"+this.item.ua_seq ;
+
+trace(this.item);
+
+            if  ((this.item.price == "합계") || (this.item.price == "금액") || (this.item.price == "전일"))
+            {
+                return 	this.value ;
+            }
+            else
+            {
 
             return   '<input type="text"                                    '
                    + '       name="'+name+'"                                '
@@ -226,6 +238,7 @@ trace(this.value);
                    + '       onkeyup="fnKeyup(this,event)"                        '
                    + '       onblur="fnBlur(this)"/>                        '
                     ;
+            }
         },
 
 
