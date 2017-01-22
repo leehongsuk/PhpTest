@@ -204,7 +204,7 @@
 
                                 jQuery("#btnSave").removeAttr("disabled"); // 저장가능하도록 한다.
 
-                                    // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
+                                // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
                                 $('body').on('keydown', 'input, select, textarea', function(e)
                                 {
                                     var self = $(this);

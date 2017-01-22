@@ -5,21 +5,17 @@ require_once("../config/DB_CONNECT.php");
     $values = "" ;
     $separator = "|" ;
 
-    foreach( $_REQUEST as $key => $val )
+    foreach( $_REQUEST as $key => $val ) // 모든 post요소를 다 뒤집어본다..
     {
         if  ($key == "KorabdGbn") $korabd_gbn = $val ;
         else
-       {
+        {
             if  (strlen($values) > 0)  $values .= $separator ;
 
             $values .= ($key."=".$val) ;
         }
-        //list($tmp,$loc_cd, $affiliate_seq, $isdirect_cd, $unaffiliate) = split('_', $key);
-
-        //echo $key."=".$val."<br>";
-        //echo $loc_cd.",".$affiliate_seq.",".$isdirect_cd.",".$unaffiliate ."=".$val."<br>";
     }
-    echo $values ;
+    //echo $values ;
 
     $query= "CALL SP_BAS_PREMIUM_RATE_SAVE(?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);

@@ -14,6 +14,7 @@ require_once("../config/DB_CONNECT.php");
     $a_list  = array() ;
     $a_row   = array() ;
     $a_score = array() ; // 일자-상영관-영화 에 해당하는 스코어를 구한다.
+    $a_score_agosum = array();
     $a_sum_score = array() ;
     $a_sum_price = array() ;
 
@@ -57,7 +58,8 @@ require_once("../config/DB_CONNECT.php");
     array_push($a_list,$a_row);
 
 
-    $query= "CALL SP_WRK_PLAY_DETAIL_SEL(?,?,?,?,?)" ; // <-----    // 스코어 정보
+    // 스코어 정보 (당일)
+    $query= "CALL SP_WRK_PLAY_DETAIL_CUR_SEL(?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param( "ssisi"
@@ -81,6 +83,64 @@ require_once("../config/DB_CONNECT.php");
         array_push($a_score,array($unitprice_seq, $unit_price, $inning_seq, $inning_nm, $score));
     }
     $stmt->close();
+    // 스코어 정보 (당일)
+
+
+    // 스코어 정보 (전일)
+    $query= "CALL SP_WRK_PLAY_DETAIL_AGO_SEL(?,?,?,?,?)" ; // <-----
+    $stmt = $mysqli->prepare($query);
+
+    $stmt->bind_param( "ssisi"
+                     , $post_play_dt
+                     , $post_theater_code
+                     , $post_showroom_seq
+                     , $post_film_code
+                     , $post_playprint_seq
+                     );
+    $stmt->execute();
+
+    $stmt->bind_result( $sum0
+                      , $sum1
+                      , $sum2
+                      , $sum3
+                      , $sum4
+                      , $sum5
+                      , $sum6
+                      , $sum7
+                      , $sum8
+                      , $sum9
+                      , $sum10
+                      , $sum11
+                      , $sum12
+                      , $sum13
+                      , $sum14
+                      , $sum15
+                      );
+
+    if ($stmt->fetch())
+    {
+        array_push($a_score_agosum,array( $sum0
+                                        , $sum1
+                                        , $sum2
+                                        , $sum3
+                                        , $sum4
+                                        , $sum5
+                                        , $sum6
+                                        , $sum7
+                                        , $sum8
+                                        , $sum9
+                                        , $sum10
+                                        , $sum11
+                                        , $sum12
+                                        , $sum13
+                                        , $sum14
+                                        , $sum15
+                                        )
+                  );
+    }
+    $stmt->close();
+    // 스코어 정보 (전일)
+
 
 
     foreach ($a_score as $score) // 퍼온가격정보 전체를 돌면서
@@ -135,6 +195,19 @@ require_once("../config/DB_CONNECT.php");
             {
                 $a_list[$i]["inn".$j] = $a_sum_price["inn".$j];
             }
+        }
+        if  ($a_list[$i]["price"] == "전일")
+        {
+            $sumsumPrice = 0 ;
+
+            for ($j=0 ; $j <= 15 ; $j++) // 0~15회차
+            {
+               $a_list[$i]["inn".$j] = $a_score_agosum[0][$j];
+
+               $sumsumPrice += $a_score_agosum[0][$j];
+            }
+
+            $a_list[$i]["sum"] = $sumsumPrice;
         }
         $i++;
     }

@@ -127,7 +127,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
             });
 
 
-            jQuery.post( "<?=$path_AjaxJSON?>/lst_inning.php", {})  // <-----
+            jQuery.post( "<?=$path_AjaxJSON?>/lst_inning.php", {})  // <----- 회차리스트를 구한다.
                   .done(function( data )
                   {
       				    jsonInning = eval("("+data+")");  // 회차리스트의 json
@@ -171,7 +171,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
 
                         var result = '' ;
                         grid_PlayDetail.setList({
-                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_play_detail_selected_sel.php",  // <-----
+                              ajaxUrl : "<?=$path_AjaxJSON?>/wrk_play_detail_selected_sel.php",  // <----- 선택된 일자-상영관-영화의 스코어정보를 구한다.
                               ajaxPars: {
                                   "play_dt"       : jQuery("input[name=play_dt]").val() ,
                                   "theater_code"  : '<?=$post_theater_code?>' ,
@@ -181,33 +181,30 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                               },
                               onLoad : function()
                               {
-                                  /*
-      							jsonPremiumRate = this;
+                                  jsonPlayDetail = this;
 
-                                jQuery("#btnSave").removeAttr("disabled"); // 저장가능하도록 한다.
+                                  // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
+                                  $('body').on('keydown', 'input, select, textarea', function(e)
+                                  {
+                                      var self = $(this);
+                                      var form = self.parents('form:eq(0)');
+                                      var focusable;
+                                       var next;
 
-                                    // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
-                                $('body').on('keydown', 'input, select, textarea', function(e)
-                                {
-                                    var self = $(this);
-                                    var form = self.parents('form:eq(0)');
-                                    var focusable;
-                                     var next;
+                                      if (e.keyCode == 13)
+                                      {
+                                          focusable = form.find('input,a,select,button,textarea').filter(':visible');
+                                          next = focusable.eq(focusable.index(this)+1);
+                                          if (next.length) {
+                                              next.focus();
+                                              next.select(); // 전체가 선택되도록 한다.
+                                          } else {
+                                              form.submit();
+                                          }
+                                          return false;
+                                      }
+                                  });
 
-                                    if (e.keyCode == 13)
-                                    {
-                                        focusable = form.find('input,a,select,button,textarea').filter(':visible');
-                                        next = focusable.eq(focusable.index(this)+1);
-                                        if (next.length) {
-                                            next.focus();
-                                            next.select(); // 전체가 선택되도록 한다.
-                                        } else {
-                                            form.submit();
-                                        }
-                                        return false;
-                                    }
-                                });
-                                  */
                               }
                         });
 
@@ -221,7 +218,6 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
         formatter : function()
         {
 
-trace(this.item);
 
             if  ((this.item.price == "합계") || (this.item.price == "금액") || (this.item.price == "전일"))
             {
@@ -229,15 +225,18 @@ trace(this.item);
             }
             else
             {
+//trace(this);
+                var name = "pd_"+this.item.price_seq+"_"+this.key ;
 
-            return   '<input type="text"                                    '
-                   + '       name="'+name+'"                                '
-                   + '       style="text-align: right; padding-right:5px;"  '
-                   + '       class="AXInput W40 dot"                        '
-                   + '       value="'+this.value +'"                        '
-                   + '       onkeyup="fnKeyup(this,event)"                        '
-                   + '       onblur="fnBlur(this)"/>                        '
-                    ;
+                return   '<input type="text"                                    '
+                       + '       name="'+name+'"                                '
+                       + '       style="text-align: right; padding-right:5px;"  '
+                       + '       class="AXInput W40 dot"                        '
+                       + '       value="'+this.value +'"                        '
+                       + '       maxlength="3"                                  ' // 3까지자리만..
+                       + '       onkeyup="fnKeyup(this,event)"                  '
+                       + '       onblur="fnBlur(this)"/>                        '
+                        ;
             }
         },
 
@@ -246,6 +245,34 @@ trace(this.item);
         save_premium_rate: function()
         {
             //trace(jsonPlayDetail.list);
+
+            var price_seqs = ""
+
+            jsonPlayDetail.list.forEach(function(e)
+            {
+	           // trace(e.price_seq);
+	            if (typeof e.price_seq != "undefined")
+	            {
+		            if (price_seqs != "") price_seqs += ",";
+
+	                price_seqs += e.price_seq
+	            }
+            });
+
+            jQuery('input:hidden[name=price_seqs]').val( price_seqs );
+
+            // 저장할 값들을 취합한다.
+            var formData = jQuery("form[name=frmPlayDetail]").serialize();
+
+            jQuery.ajax({
+                         type : "POST",
+                         url : "<?=$path_AjaxJSON?>/wrk_play_detail_save.php",  // <-----
+                         cache : false,
+                         data : formData,
+                         success : fnObj.onSuccessPreminumRate,
+                         error : fnObj.onErrorPreminumRate
+            });
+            /*
             var errorMsg = '' ;
 
             for (var i=0; i<jsonPlayDetail.list.length;i++)
@@ -266,7 +293,7 @@ trace(this.item);
                 var locs = jQuery(keys).not(nonLoc).get() ; // 지역이 아닌건 차집합으로 빼고.. 순수지역만..
 
                 jQuery.each(locs,function(idx,value){
-                    var name = "pr_"+value+"_"
+                    var name = "pD_"+value+"_"
                               + values[ jQuery.inArray('a_seq',keys) ]+"_"
                               + values[ jQuery.inArray('id_code',keys) ]+"_"
                               + values[ jQuery.inArray('ua_seq',keys) ] ;
@@ -290,17 +317,7 @@ trace(this.item);
 
             if (errorMsg == '')
             {
-                // 저장할 값들을 취합한다.
-                var formData = jQuery("form[name=frmPlayDetail]").serialize();
 
-                jQuery.ajax({
-                             type : "POST",
-                             url : "<?=$path_AjaxJSON?>/bas_premium_rate_upt.php",  // <-----
-                             cache : false,
-                             data : formData,
-                             success : fnObj.onSuccessPreminumRate,
-                             error : fnObj.onErrorPreminumRate
-                });
             }
             else
             {
@@ -308,6 +325,7 @@ trace(this.item);
 
                 fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
             }
+            */
 
         },
 
@@ -405,7 +423,7 @@ trace(this.item);
 
         if  (parseInput(value)!='')
         {
-            $(my).val(eval(value).toFixed(2));
+            $(my).val(eval(value).toFixed(0)); // 소수입력시 반올림 정수
         }
         else
         {
@@ -420,7 +438,14 @@ trace(this.item);
 
     <h1>스코어 입력</h1>
 
-    <form name="frmPlayDetail" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php" onsubmit="return false;">
+    <form name="frmPlayDetail" onsubmit="return false;">
+
+		<input type="hidden" name="price_seqs"  value="<?=$_POST["theater_code"]?>"> <!-- 가격대 -->
+
+        <input type="hidden" name="theater_code"  value="<?=$_POST["theater_code"]?>">
+        <input type="hidden" name="showroom_seq"  value="<?=$_POST["showroom_seq"]?>">
+        <input type="hidden" name="film_code"     value="<?=$_POST["film_code"]?>">
+        <input type="hidden" name="playprint_seq" value="<?=$_POST["playprint_seq"]?>">
 
         <input type="text" name="play_dt" id="AXInputDate" class="AXInput W100" /> <!-- 조회일 -->
 
