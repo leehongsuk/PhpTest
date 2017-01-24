@@ -172,7 +172,7 @@
             var affiliate   = jQuery("#AXSelect_Affiliate").val();
             var unaffiliate = jQuery("#AXSelect_Unaffiliate").val();
             var theaterNm   = jQuery("#AXText_TheaterNm").val();
-            var operation   = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
+            var onlylive    = "Y" ; // 폐관제외 (살아있는건만)...
             var fundFree    = '' ;
             var mappinged   = (jQuery("#AXCheck_Mappinged").prop('checked')) ? "Y" : "N" ;
 
@@ -185,7 +185,7 @@
                            ,"affiliate": affiliate
                            ,"unaffiliate": unaffiliate
                            ,"theaterNm": theaterNm
-                           ,"operation": operation
+                           ,"onlylive": onlylive
                            ,"fundFree": fundFree
                            ,"mappinged": mappinged
                 },

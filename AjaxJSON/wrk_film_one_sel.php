@@ -211,7 +211,6 @@ require_once("../config/DB_CONNECT.php");
                           , $poster_yn
                           , $images_no
                           , $korabd_cd
-                          , $del_flag
                           );
 
         if ($stmt->fetch())
@@ -229,7 +228,6 @@ require_once("../config/DB_CONNECT.php");
                            , "poster_yn" => $poster_yn
                            , "images_no" => $images_no
                            , "korabd_cd" => $korabd_cd
-                           , "del_flag" => $del_flag
                            , "playprints" => $a_playprint
                            , "distributors" => $a_distributors
                            , "genres" => $a_genres
@@ -257,7 +255,6 @@ require_once("../config/DB_CONNECT.php");
                        , "poster_yn" => $poster_yn
                        , "images_no" => $images_no
                        , "korabd_cd" => $korabd_cd
-                       , "del_flag" => $del_flag
                        , "playprints" => $a_playprint
                        , "distributors" => $a_distributors
                        , "genres" => $a_genres

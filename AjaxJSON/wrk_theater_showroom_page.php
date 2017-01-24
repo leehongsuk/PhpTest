@@ -7,7 +7,7 @@ require_once("../config/DB_CONNECT.php");
     $post_affiliate    = $_POST["affiliate"] ;
     $post_unaffiliate  = $_POST["unaffiliate"] ;
     $post_theaterNm    = $_POST["theaterNm"] ;
-    $post_operation    = $_POST["operation"] ;
+    $post_onlylive     = $_POST["onlylive"] ;
     $post_fundFree     = $_POST["fundFree"] ;
     $post_pageNo       = $_POST["pageNo"] ;
     $post_pageSize     = $_POST["pageSize"] ;
@@ -30,7 +30,7 @@ require_once("../config/DB_CONNECT.php");
                      , $post_affiliate
                      , $post_unaffiliate
                      , $post_theaterNm
-                     , $post_operation
+                     , $post_onlylive
                      , $post_fundFree
                      , $post_filmcode
                      , $post_playprintseq
@@ -53,7 +53,7 @@ require_once("../config/DB_CONNECT.php");
                      , $post_affiliate
                      , $post_unaffiliate
                      , $post_theaterNm
-                     , $post_operation
+                     , $post_onlylive
                      , $post_fundFree
                      , $post_filmcode
                      , $post_playprintseq

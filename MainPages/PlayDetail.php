@@ -45,16 +45,24 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
     <script type="text/javascript" src="<?=$path_Root?>/MainJavascript/CommonLib.js"></script>
 
     <style type="text/css">
-        .modalProgramTitle{
-            height:38px;
-            line-height:40px;
-            color:#282828;
-            font-size:14px;
-            font-weight:bold;
-            padding-left:15px;
-            border-bottom:1px solid #a6a6a6;
-            background-color: #DBDDE6;
-        }
+    .modalProgramTitle{
+        height:38px;
+        line-height:40px;
+        color:#282828;
+        font-size:14px;
+        font-weight:bold;
+        padding-left:15px;
+        border-bottom:1px solid #a6a6a6;
+        background-color: #DBDDE6;
+    }
+    .modalButtonBox{
+        padding:10px;
+        border-top:1px solid #ccc;
+    }
+    .label{
+        margin-left: 7px;
+        margin-right: 3px;
+    }
     </style>
 
 
@@ -101,8 +109,6 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                 //defaultDate:"2013-05-15"
             });
 
-            jQuery("input[name=play_dt]").val( GetToday() ); // 디폴트로 오늘 ...
-
             // 스코어그리드
             grid_PlayDetail.setConfig(
             {
@@ -126,7 +132,43 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                 }
             });
 
+            jQuery("input[name=play_dt]").val( GetToday() ); // 디폴트로 오늘 ...
 
+            // '조회' 버튼을 누른다..
+            fnObj.search_play_detail();
+
+
+        }, // end (pageStart: function())
+
+
+
+        // 스코어값으로 text박스를 만든다.
+        formatter : function()
+        {
+            if  ((this.item.price == "합계") || (this.item.price == "금액") || (this.item.price == "전일"))
+            {
+                return 	comma(this.value) ;
+            }
+            else
+            {
+//trace(this);
+                var name = "pd_"+this.item.price_seq+"_"+this.key ;
+
+                return   '<input type="text"                                    '
+                       + '       name="'+name+'"                                '
+                       + '       style="text-align: right; padding-right:5px;"  '
+                       + '       class="AXInput W40 dot"                        '
+                       + '       value="'+this.value +'"                        '
+                       + '       maxlength="3"                                  ' // 3까지자리만..
+                       + '       onkeyup="fnKeyup(this,event)"                  '
+                       + '       onblur="fnBlur(this)"/>                        '
+                        ;
+            }
+        },
+
+        // '조회' 버튼을 누를때..
+        search_play_detail: function()
+        {
             jQuery.post( "<?=$path_AjaxJSON?>/lst_inning.php", {})  // <----- 회차리스트를 구한다.
                   .done(function( data )
                   {
@@ -183,13 +225,28 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                               {
                                   jsonPlayDetail = this;
 
+                                  trace(jsonPlayDetail.play_mast);
+
+                                  var play_mast = jsonPlayDetail.play_mast[0] ;
+
+                                  jQuery("#play_mast").text(play_mast.theater_nm+' '+ play_mast.room_nm+'관 : '+play_mast.film_nm+' ('+play_mast.play_print_nm1+' '+play_mast.play_print_nm2+') ');
+
+                                  var val = (play_mast.confirm == 'Y') ? "확인" : "미확인" ; // 확인/미확인
+
+                                  jQuery("#confirm").val( val );
+
+                                  jQuery("textarea[name=memo]").text(play_mast.memo);
+
+                                  $(".AXInputSwitch").bindSwitch({ off:"미확인",on:"확인"});
+
+
                                   // 엔터키를 쳤을때 탭키를 친것과 같은 효과를 내도록 처리하는 jquery
                                   $('body').on('keydown', 'input, select, textarea', function(e)
                                   {
                                       var self = $(this);
                                       var form = self.parents('form:eq(0)');
                                       var focusable;
-                                       var next;
+                                      var next;
 
                                       if (e.keyCode == 13)
                                       {
@@ -210,39 +267,11 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
 
                   });
 
-        }, // end (pageStart: function())
-
-
-
-        // 스코어값으로 text박스를 만든다.
-        formatter : function()
-        {
-
-
-            if  ((this.item.price == "합계") || (this.item.price == "금액") || (this.item.price == "전일"))
-            {
-                return 	this.value ;
-            }
-            else
-            {
-//trace(this);
-                var name = "pd_"+this.item.price_seq+"_"+this.key ;
-
-                return   '<input type="text"                                    '
-                       + '       name="'+name+'"                                '
-                       + '       style="text-align: right; padding-right:5px;"  '
-                       + '       class="AXInput W40 dot"                        '
-                       + '       value="'+this.value +'"                        '
-                       + '       maxlength="3"                                  ' // 3까지자리만..
-                       + '       onkeyup="fnKeyup(this,event)"                  '
-                       + '       onblur="fnBlur(this)"/>                        '
-                        ;
-            }
         },
 
 
         // '저장' 버튼을 누를때
-        save_premium_rate: function()
+        save_play_detail: function()
         {
             //trace(jsonPlayDetail.list);
 
@@ -272,61 +301,6 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                          success : fnObj.onSuccessPreminumRate,
                          error : fnObj.onErrorPreminumRate
             });
-            /*
-            var errorMsg = '' ;
-
-            for (var i=0; i<jsonPlayDetail.list.length;i++)
-            {
-                var keys = Object.keys(jsonPlayDetail.list[i]) ;
-                var values = Object.values(jsonPlayDetail.list[i]) ;
-
-                var nonLoc = [ 'a_seq'
-                              ,'a_affiliate_nm'
-                              ,'id_code'
-                              ,'id_direct_nm'
-                              ,'ua_seq'
-                              ,'ua_affiliate_nm'
-                              ,'title1'
-                              ,'title2'
-                             ] ;
-
-                var locs = jQuery(keys).not(nonLoc).get() ; // 지역이 아닌건 차집합으로 빼고.. 순수지역만..
-
-                jQuery.each(locs,function(idx,value){
-                    var name = "pD_"+value+"_"
-                              + values[ jQuery.inArray('a_seq',keys) ]+"_"
-                              + values[ jQuery.inArray('id_code',keys) ]+"_"
-                              + values[ jQuery.inArray('ua_seq',keys) ] ;
-
-                    var premium_rate = jQuery('input[name='+name+']').val() ;
-                    var title1       = jQuery('input[name='+name+']').attr('title1') ;
-                    var title2       = jQuery('input[name='+name+']').attr('title2') ;
-                    var location_nm  = jQuery('input[name='+name+']').attr('location_nm') ;
-
-                    if  (premium_rate == '')
-                    {
-                        errorMsg += title1+title2+'의 '+location_nm+'에 값이없습니다.<br>';
-                    }
-                    else
-                    {
-                        if  (parseInput(premium_rate) >= 100.0)
-                            errorMsg += title1+title2+'의 '+location_nm+'에 값이100보다 크면 안됍니다.<br>';
-                    }
-                });
-            } // for (var i=0; i<jsonPlayDetail.list.length;i++)
-
-            if (errorMsg == '')
-            {
-
-            }
-            else
-            {
-                jQuery("#modalContent").html(errorMsg);
-
-                fnObj.modalOpen(500,-1,'입력오류',errorMsg,null) ;
-            }
-            */
-
         },
 
         onFnClose : function()
@@ -447,14 +421,55 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
         <input type="hidden" name="film_code"     value="<?=$_POST["film_code"]?>">
         <input type="hidden" name="playprint_seq" value="<?=$_POST["playprint_seq"]?>">
 
-        <input type="text" name="play_dt" id="AXInputDate" class="AXInput W100" /> <!-- 조회일 -->
+        <label class="label"><input type="text" name="play_dt" id="AXInputDate" class="AXInput W100" /></label> <!-- 조회일 -->
 
-        <button type="button" class="AXButton" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" ><i class="axi axi-save  W100"></i> 저장</button>
+        <button type="button" class="AXButton" id="btnSearch" tabindex="2" onclick="fnObj.search_play_detail();"><i class="axi axi-search2  W100"></i> 조회</button>
+
+        <button type="button" class="AXButton" id="btnSave" tabindex="3" onclick="fnObj.save_play_detail();" ><i class="axi axi-save  W100"></i> 저장</button>
+        <br>
         <br>
 
-         <div style="padding-top: 10px;">
-             <div id="AXgrid_PlayDetail"></div>
-         </div>
+
+        <table cellpadding="0" cellspacing="0" class="AXFormTable">
+            <colgroup>
+                <col width="100" />
+                <col />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>
+                        <div class="tdRel">상영정보</div>
+                    </th>
+                    <td class="last">
+                    	<div id="play_mast" style="font-weight: bold;  font-size: x-large;"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="last" colspan="2">
+                        <div style="padding-top: 10px;">
+                            <div id="AXgrid_PlayDetail"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="tdRel">확인 / 비고</div>
+                    </th>
+                    <td class="last">
+
+                        &nbsp;
+                        &nbsp;
+                    	<!-- 확인 / 미확인 -->
+                    	<input type="text" name="confirm" id="confirm"  value="Y"  class="AXInputSwitch" style="width:60px;height:21px;border:0px none;" >
+                        &nbsp;
+                        &nbsp;
+
+                    	<textarea name="memo" class="AXTextarea" style="width: 200px; height: 100px; resize:none;"></textarea>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
 
     </form>
 

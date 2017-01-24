@@ -421,11 +421,11 @@
 
     <form name="frmPremiumRate" action="<?=$path_AjaxJSON?>/bas_premium_rate_upt.php" onsubmit="return false;">
 
-        <select name="KorabdGbn" class="AXSelectSmall W100" id="AXSelect_KorabdGbn" tabindex="1"></select>
+        <select name="KorabdGbn" class="AXSelect W100" id="AXSelect_KorabdGbn" tabindex="1"></select>
 
-        <button type="button" class="AXButtonSmall" id="btnSearch" tabindex="2" onclick="fnObj.search_premium_rate();"><i class="axi axi-search2  W100"></i> 조회</button>
+        <button type="button" class="AXButton" id="btnSearch" tabindex="2" onclick="fnObj.search_premium_rate();"><i class="axi axi-search2  W100"></i> 조회</button>
 
-        <button type="button" class="AXButtonSmall" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" disabled="disabled"><i class="axi axi-save  W100"></i> 저장</button>
+        <button type="button" class="AXButton" id="btnSave" tabindex="3" onclick="fnObj.save_premium_rate();" disabled="disabled"><i class="axi axi-save  W100"></i> 저장</button>
 
         <br>
 

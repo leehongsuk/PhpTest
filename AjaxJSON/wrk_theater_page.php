@@ -9,7 +9,7 @@ require_once("../config/DB_CONNECT.php");
     $post_unaffiliate = $_POST["unaffiliate"] ;
     $post_usergroup   = $_POST["usergroup"] ;
     $post_theaterNm   = $_POST["theaterNm"] ;
-    $post_operation   = $_POST["operation"] ;
+    $post_onlylive    = $_POST["onlylive"] ;
     $post_fundFree    = $_POST["fundFree"] ;
     $post_pageNo      = $_POST["pageNo"] ;
     $post_pageSize    = $_POST["pageSize"] ;
@@ -30,9 +30,9 @@ require_once("../config/DB_CONNECT.php");
                      , $post_unaffiliate
                      , $post_usergroup
                      , $post_theaterNm
-                     , $post_operation
+                     , $post_onlylive
                      , $post_fundFree
-                     );
+                     ); // 9
     $stmt->execute();
     $stmt->bind_result($count);
     $stmt->fetch();
@@ -52,11 +52,11 @@ require_once("../config/DB_CONNECT.php");
                      , $post_unaffiliate
                      , $post_usergroup
                      , $post_theaterNm
-                     , $post_operation
+                     , $post_onlylive
                      , $post_fundFree
                      , $post_pageNo
                      , $post_pageSize
-                     );
+                     ); // 11
     $stmt->execute();
 
     $stmt->bind_result( $code
@@ -67,7 +67,7 @@ require_once("../config/DB_CONNECT.php");
                       , $unaffiliate_nm
                       , $user_group_nm
                       , $open_dt
-                      , $post_operation
+                      , $del_dt
                       , $theater_nm
                       , $zip
                       , $addr1
@@ -99,7 +99,7 @@ require_once("../config/DB_CONNECT.php");
                                  , "unaffiliate_nm" => $unaffiliate_nm
                                  , "user_group_nm" => $user_group_nm
                                  , "open_dt" => $open_dt
-                                 , "operation" => $post_operation
+                                 , "del_dt" => $del_dt
                                  , "theater_nm" => $theater_nm
                                  , "zip" => $zip
                                  , "address" => $addr1

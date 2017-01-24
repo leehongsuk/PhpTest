@@ -8,9 +8,26 @@ require_once("../config/DB_CONNECT.php");
     $post_showroom_seq   = $_POST["showroom_seq"] ;
     $post_film_code      = $_POST["film_code"] ;
     $post_playprint_seq  = $_POST["playprint_seq"] ;
+    $post_confirm        = ($_POST["confirm"]=="확인") ? "Y" : "N";
+    $post_memo           = $_POST["memo"] ;
+
+
+    $query= "CALL SP_WRK_PLAY_MAST_UPDATE(?,?,?,?,?,?)" ; // <-----
+    $stmt = $mysqli->prepare($query);
+
+    $stmt->bind_param( "sisiss"
+                     , $post_theater_code
+                     , $post_showroom_seq
+                     , $post_film_code
+                     , $post_playprint_seq
+                     , $post_confirm
+                     , $post_memo
+                     );
+    $stmt->execute();
+    $stmt->close();
+
 
     $separator = "," ;
-
 
     $price_seqs = explode (",", $post_price_seqs); // 가격대 분리
 
@@ -39,7 +56,7 @@ require_once("../config/DB_CONNECT.php");
             }
         }
 
-        print_r($price_vals."\n");
+        //print_r($price_vals."\n");
 
         $query= "CALL SP_WRK_PLAY_DETAIL_SAVE(?,?,?,?,?,?,?,?)" ; // <-----
         $stmt = $mysqli->prepare($query);

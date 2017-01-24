@@ -390,7 +390,7 @@ require_once("../config/DB_CONNECT.php");
                           , $unaffiliate_seq
                           , $user_group_seq
                           , $open_dt
-                          , $operation
+                          , $del_dt
                           , $theater_nm
                           , $zip
                           , $addr1
@@ -411,7 +411,7 @@ require_once("../config/DB_CONNECT.php");
                           , $sangho
                           , $homepage
                           , $images_no
-                          );
+                          ); // 29
 
         if ($stmt->fetch())
         {
@@ -423,7 +423,7 @@ require_once("../config/DB_CONNECT.php");
                            , "unaffiliate_seq"  => $unaffiliate_seq
                            , "user_group_seq"   => $user_group_seq
                            , "open_dt"          => $open_dt
-                           , "operation"        => $operation
+                           , "del_dt"           => $del_dt
                            , "theater_nm"       => $theater_nm
                            , "zip"              => $zip
                            , "addr1"            => $addr1
@@ -500,7 +500,7 @@ require_once("../config/DB_CONNECT.php");
                         , "unaffiliate_seq"  => $unaffiliate_seq
                         , "user_group_seq"   => $user_group_seq
                         , "open_dt"          => $open_dt
-                        , "operation"        => $operation
+                        , "del_dt"           => $del_dt
                         , "theater_nm"       => $theater_nm
                         , "zip"              => $zip
                         , "addr1"            => $addr1

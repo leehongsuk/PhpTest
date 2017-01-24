@@ -7,10 +7,10 @@ require_once ("../config/DB_CONNECT.php");
     $post_showroom_seq   = $_POST["showroom_seq"] ;
     $post_film_code      = $_POST["film_code"] ;
     $post_playprint_seq  = $_POST["playprint_seq"] ;
-    $post_change_value   = $_POST["change_value"] ;
+    $post_change_value   = $_POST["change_value"] ; //  (=='지정') ? 'Y' : 'N'
 
 
-    $query= "CALL SP_WRK_PLAY_MAST_SAVE(?,?,?,?,?)" ; // <-----
+    $query= "CALL SP_WRK_PLAY_MAST_CREATE(?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param( "sisis"
@@ -26,8 +26,6 @@ require_once ("../config/DB_CONNECT.php");
 
     // 결과만 반환한다.
     //echo json_encode($output,JSON_UNESCAPED_UNICODE);
-    /*
-     */
 
 require_once ("../config/DB_DISCONNECT.php");
 ?>

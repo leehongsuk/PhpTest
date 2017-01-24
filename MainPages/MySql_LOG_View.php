@@ -72,13 +72,23 @@
                         onLoad  : function(){
                             //gridTheater.goPageMove(1); // 상대적인 페이지 이동..
                             //gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
-                            setTimeout(fnObj.replash, 2000);
+                            setTimeout(fnObj.reflash, 2000);
                         }
                     });
         },
 
+        clear : function()
+        {
+            jQuery.ajax({
+                type : "POST",
+                url : "<?=$path_AjaxJSON?>/log_mysql_clear.php",  // <-----
+                cache : false,
+                success :  fnObj.reflash
+   			});
+        },
 
-    	replash :  function()
+
+    	reflash :  function()
     	{
 			jQuery.ajax({
                          type : "POST",
@@ -88,7 +98,7 @@
                          success : fnObj.onSuccess
             });
 
-			setTimeout(fnObj.replash, 2000);
+			setTimeout(fnObj.reflash, 2000);
         },
 
         onSuccess : function(data)
@@ -101,7 +111,9 @@
             //trace(obj['count']);
             rowCount = obj['count'];
         }
-    };
+
+
+    }; // var fnObj =
 
     jQuery(document).ready(fnObj.pageStart.delay(0.1));
 
@@ -110,7 +122,13 @@
 
 <body>
 
+
+    <div class="modalButtonBox" align="center">
+        <button type="button" class="AXButtonLarge W500" id="btnSave" onclick="fnObj.clear();"><i class="axi axi-save "></i> 비우기</button>
+    </div>
+	<br>
     <div id="AXGrid_MySqlLOG"></div>
+
 
 </body>
 </html>

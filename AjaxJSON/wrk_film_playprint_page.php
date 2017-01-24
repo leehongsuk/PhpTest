@@ -62,13 +62,12 @@ require_once("../config/DB_CONNECT.php");
                       , $poster_yn
                       , $images_no
                       , $korabd_gbn_nm
-                      , $del_flag
                       , $playprint_seq
                       , $play_print1_nm
                       , $play_print2_nm
                       , $mapping_dt
                       , $unmapping_dt
-                      );
+                      ); // 19
 
     while ($stmt->fetch())
     {

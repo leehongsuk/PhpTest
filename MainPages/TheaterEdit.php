@@ -402,7 +402,7 @@
                     {key:"dir_mng",         label:"직영여부",            width:"100"},
                     {key:"unaffiliate",     label:"비계열코드",          width:"100"},
                     {key:"user_group",      label:"사용자그룹코드",      width:"100"},
-                    {key:"operation",       label:"운영여부",            width: "40"},
+                    {key:"del_dt",          label:"폐관일자",            width:"100"},
                     {key:"theater_nnm",     label:"극장명",              width:"150"},
                     {key:"fund_free",       label:"기금면제여부",        width: "40"},
                     {key:"gubun_code",      label:"구분코드??",          width:"100"},
@@ -1259,7 +1259,7 @@
                     <td class="last">
                         <div class="tdRel">
                             <input type="text" name="gubun_code" placeholder="구분코드" value="" class="AXInput W200 av-bizno" />
-                            <label><input type="checkbox" name="fund_free" value="Y" id="AXCheck_Operation0" /> 기금면제여부</label>
+                            <label><input type="checkbox" name="fund_free" value="Y" id="AXCheck_0" /> 기금면제여부</label>
                         </div>
                     </td>
                 </tr>
@@ -1381,20 +1381,20 @@
                                 <td class="white_board">스코어</td>
                                 <td class="white_board">
                                     :
-                                    <label><input type="checkbox" name="score_tel" value="Y" id="AXCheck_Operation1" /> 전화</label>
-                                    <label><input type="checkbox" name="score_fax" value="Y" id="AXCheck_Operation2" /> FAX</label>
-                                    <label><input type="checkbox" name="score_mail" value="Y" id="AXCheck_Operation3" /> 메일</label>
-                                    <label><input type="checkbox" name="score_sms" value="Y" id="AXCheck_Operation4" /> SMS</label>
+                                    <label><input type="checkbox" name="score_tel" value="Y" id="AXCheck_1" /> 전화</label>
+                                    <label><input type="checkbox" name="score_fax" value="Y" id="AXCheck_2" /> FAX</label>
+                                    <label><input type="checkbox" name="score_mail" value="Y" id="AXCheck_3" /> 메일</label>
+                                    <label><input type="checkbox" name="score_sms" value="Y" id="AXCheck_4" /> SMS</label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="white_board">부금</td>
                                 <td class="white_board">
                                     :
-                                    <label><input type="checkbox" name="premium_tel" value="Y" id="AXCheck_Operation5" /> 전화</label>
-                                    <label><input type="checkbox" name="premium_fax" value="Y" id="AXCheck_Operation6" /> FAX</label>
-                                    <label><input type="checkbox" name="premium_mail" value="Y" id="AXCheck_Operation7" /> 메일</label>
-                                    <label><input type="checkbox" name="premium_sms" value="Y" id="AXCheck_Operation8" /> SMS</label>
+                                    <label><input type="checkbox" name="premium_tel" value="Y" id="AXCheck_5" /> 전화</label>
+                                    <label><input type="checkbox" name="premium_fax" value="Y" id="AXCheck_6" /> FAX</label>
+                                    <label><input type="checkbox" name="premium_mail" value="Y" id="AXCheck_7" /> 메일</label>
+                                    <label><input type="checkbox" name="premium_sms" value="Y" id="AXCheck_8" /> SMS</label>
                                 </td>
                             </tr>
                         </table>

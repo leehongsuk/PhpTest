@@ -52,7 +52,6 @@ require_once("../config/DB_CONNECT.php");
                       , $poster_yn
                       , $images_no
                       , $korabd_gbn_nm
-                      , $del_flag
                       , $cnt_playprint
                       );
 

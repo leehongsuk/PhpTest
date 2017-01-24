@@ -882,7 +882,7 @@
     				</th>
     				<td class="last">
 
-    					<label><input type="checkbox" name="poster_yn" value="Y" id="AXCheck_Operation0" /> 포스트사용 유무</label>
+    					<label><input type="checkbox" name="poster_yn" value="Y" id="AXCheck_PosterYn" /> 포스트사용 유무</label>
 
     					<div style="height: 10px;"></div>
     					<input type="button" value="업로드" class="AXButton" onclick="myUpload.uploadQueue(true);" />

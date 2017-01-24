@@ -44,7 +44,6 @@ require_once("../config/DB_CONNECT.php");
                       , $dir_mng
                       , $unaffiliate
                       , $user_group
-                      , $operation
                       , $theater_nnm
                       , $fund_free
                       , $gubun_code
@@ -53,8 +52,8 @@ require_once("../config/DB_CONNECT.php");
                       , $sangho
                       , $homepage
                       , $images_no
-                      );
-
+                      , $del_dt
+                      ); // 20
 
     while ($stmt->fetch())
     {
@@ -67,7 +66,7 @@ require_once("../config/DB_CONNECT.php");
                                  , "dir_mng" => $dir_mng
                                  , "unaffiliate" => $unaffiliate
                                  , "user_group" => $user_group
-                                 , "operation" => $operation
+                                 , "del_dt" => $del_dt
                                  , "theater_nnm" => $theater_nnm
                                  , "fund_free" => $fund_free
                                  , "gubun_code" => $gubun_code

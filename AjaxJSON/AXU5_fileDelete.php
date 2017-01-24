@@ -5,7 +5,7 @@ require_once("../config/DB_CONNECT.php");
     // $_SERVER["DOCUMENT_ROOT"]
     $file_server_path = realpath(__FILE__);
     $server_path = str_replace(basename(__FILE__), "", $file_server_path);
-    $upload_dir = $server_path . "files\\";
+    $upload_dir = $server_path . "files";
 
     //echo $server_path . "files\\"."<br>";
     //echo $_POST["uploadedPath"]."<br>";
@@ -18,9 +18,9 @@ require_once("../config/DB_CONNECT.php");
 
     //echo $upload_dir . $file ."<br>";
 
-    if  ( is_file($upload_dir . $file) )
+    if  ( is_file($upload_dir . "/" . $file) )
     {
-        unlink($upload_dir . $file);
+        unlink($upload_dir . "/" . $file);
 
         //echo "{result:'ok', msg:''}";
         $a_json = array("result" => "ok", "msg" => "");

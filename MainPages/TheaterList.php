@@ -152,7 +152,7 @@
                     {key:"unaffiliate_nm", label:"비계열", width:"90", align: "center"},
                     {key:"user_group_nm", label:"사용자그룹", width:"70", align: "center"},
                     {key:"open_dt", label:"개관일", width:"100", align: "center"},
-                    {key:"operation", label:"운영여부", width:"30", align: "center"},
+                    {key:"del_dt", label:"폐관일", width:"100", align: "center"},
                     {key:"location", label:"지역", width:"100"},
                     {key:"address", label:"주소", width:"120"},
                     {key:"meno", label:"비고(극장특징)", width:"100"},
@@ -244,7 +244,7 @@
             var unaffiliate = jQuery("#AXSelect_Unaffiliate").val();
             var usergroup   = jQuery("#AXSelect_Usergroup").val();
             var theaterNm   = jQuery("#AXText_TheaterNm").val();
-            var operation   = (jQuery("#AXCheck_Operation").prop('checked')) ? "Y" : "N" ;
+            var onlylive    = (jQuery("#AXCheck_OnlyLive").prop('checked')) ? "Y" : "N" ;
             var fundFree    = (jQuery("#AXCheck_FundFree").prop('checked')) ? "Y" : "N" ;
 
             gridTheater.setList({
@@ -257,7 +257,7 @@
                     "unaffiliate": unaffiliate,
                     "usergroup": usergroup,
                     "theaterNm": theaterNm,
-                    "operation": operation,
+                    "onlylive": onlylive,
                     "fundFree": fundFree
                 },
                 onLoad  : function(){
@@ -336,7 +336,7 @@
 		<div class="bodyHeightDiv"  style="height: 40px;">
 			<label>극장명 :</label><input type="text" name="input" value="" class="AXInput W150" id="AXText_TheaterNm"/>
 
-            <label><input type="checkbox" name="Operation" value="true" id="AXCheck_Operation" /> 폐관제외</label>
+            <label><input type="checkbox" name="OnlyLive" value="true" id="AXCheck_OnlyLive" /> 폐관제외</label>
             <label><input type="checkbox" name="FundFree" value="true" id="AXCheck_FundFree" /> 영진위기금면제</label>
 
             <button type="button" class="AXButton" id="button" tabindex="2" onclick="fnObj.searchTheater();"><i class="axi axi-search2"></i> 조회</button>
