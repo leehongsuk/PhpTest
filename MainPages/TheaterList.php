@@ -5,6 +5,31 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Language" content="ko" />
 
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/page.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- 공통요소 -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.css" />
 
@@ -21,6 +46,9 @@
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXInput.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXSelect.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXGrid.js"></script>
+
+    <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXToolBar.js"></script>
+    <script type="text/javascript" src="<?=$path_Root?>/MainJavascript/AXToolBar.js"></script>
 
     <!-- 아이콘사용을 위해서..(http://axicon.axisj.com/) -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axicon/axicon.min.css"/>
@@ -47,6 +75,8 @@
     {
         pageStart: function()
         {
+            fnToolbar.toolbar.init();
+
             // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
@@ -329,6 +359,13 @@
 </head>
 
 <body>
+
+	<div style="position: relative; z-index: 2;height: 50px;text-align: right;padding-top: 20px;">
+        ....님을 환영합니다...&nbsp;&nbsp;
+    <div style="position: relative;top:-30px;z-index: 3;">
+	    <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
+    </div>
+    </div>
 
     <h1>극장정보</h1>
     <div>

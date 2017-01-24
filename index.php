@@ -101,7 +101,7 @@ require_once("./config/CONFIG.php");
 			            	if  (obj.count_id == 0) errMsg += "등록되어 있지 않는 아이디입니다.<br>"
 			            	else
 			            	{
-				            	if  (obj.del_flag == 'Y') errMsg += obj.delete_dt+"에 이미 삭제된 아이디입니다.<br>"
+				            	if  (obj.delete_dt != null) errMsg += obj.delete_dt+"에 이미 삭제된 아이디입니다.<br>"
 				            	else
 				            	{
     								if  (obj.count_idpw == 0) errMsg += "암호가 올바르지 않습니다.<br>"

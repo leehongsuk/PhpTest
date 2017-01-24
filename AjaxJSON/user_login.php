@@ -17,7 +17,6 @@ require_once("../config/DB_CONNECT.php");
     $stmt->execute();
 
     $stmt->bind_result( $count
-                      , $del_flag
                       , $delete_dt
                       );
 
@@ -25,15 +24,14 @@ require_once("../config/DB_CONNECT.php");
     if ($stmt->fetch())
     {
          $a_json["count_id"]  = $count;
-         $a_json["del_flag"]  = $del_flag;
-         $a_json["delete_dt"] = $delete_dt;
+         $a_json["delete_dt"]  = $delete_dt;
     }
 
     $stmt->close();
 
     if  ($count == 1) // 아이디가 존재하고..
     {
-        if ($del_flag == "N") // 삭제되지않을 경우..
+        if ($delete_dt == null) // 삭제되지않을 경우..
         {
             $query= "CALL SP_USR_LOGIN_IDPW_CHECK(?,?)" ; // <-----
             $stmt = $mysqli->prepare($query);
