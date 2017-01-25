@@ -1,11 +1,12 @@
-<?php
-require_once("./config/CONFIG.php");
-?>
+<?php require_once("./config/CONFIG.php"); ?>
+<?php require_once("./config/SESSION_IN.php"); ?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Language" content="ko" />
+
+    <title>로그인 화면</title>
 
     <!-- 공통요소 -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.css" />
@@ -68,7 +69,7 @@ require_once("./config/CONFIG.php");
             jQuery('input[name=user_id]').focus();
         },
 
-		// 로그인 버튼
+		// '로그인' 버튼
         login: function()
         {
             var errMsg = "" ;
@@ -90,7 +91,7 @@ require_once("./config/CONFIG.php");
 			if  (errMsg == "")
 			{
 			    // 로그인을 한다.
-	            jQuery.post( "./AjaxJSON/user_login.php"  // <-----
+	            jQuery.post( "./AjaxSESSION/user_login.php"  // <-----
 	    	                ,{ user_id : user_id ,
 		    	               user_pw : String2Hex(user_pw) // 암호를 암호화한다.....
 		    	             })
@@ -107,7 +108,9 @@ require_once("./config/CONFIG.php");
     								if  (obj.count_idpw == 0) errMsg += "암호가 올바르지 않습니다.<br>"
     								else
     								{
-    								    location.reload(); // 이미 세션이 확보되었으므로..
+    								    //location.reload(); // 이미 세션이 확보되었으므로..
+    								    //location.href = './MainPages/' ;
+    								    location.replace("./MainPages/") ; // 히스토리에 저장이 되지않는다.   // <-----
     								}
 					            }
 			            	}
@@ -122,12 +125,11 @@ require_once("./config/CONFIG.php");
 			}
 			else
             {
-            	//fnObj.modalOpen(500,-1,'확인',errMsg,null)
             	dialog.push({title:'확인', body:errMsg, type:'Caution', onConfirm:fnObj.btnOnConfirm, data:''});
             }
         },
 
-		// 확인버튼을 누르면..
+		// '확인'버튼을 누르면..
         btnOnConfirm: function(data)
         {
             jQuery('input[name=user_id]').val(data);
@@ -218,8 +220,8 @@ require_once("./config/CONFIG.php");
 
     <div class="modalButtonBox" align="center"  style="">
 
-     	아이디 : <input type="text" class="AXInput W90" placeholder="아이디" name="user_id" onkeydown="fnObj.keydownID(this,event);"/>&nbsp;&nbsp;&nbsp;
-     	암호 : <input type="password" class="AXInput W90" placeholder="암호" name="user_pw" onkeyup="fnObj.keyupPW(this,event);"/>&nbsp;&nbsp;&nbsp;
+     	아이디 : <input type="text" value="admin" class="AXInput W90" placeholder="아이디" name="user_id" onkeydown="fnObj.keydownID(this,event);"/>&nbsp;&nbsp;&nbsp;
+     	암호 : <input type="password" value="admin" class="AXInput W90" placeholder="암호" name="user_pw" onkeyup="fnObj.keyupPW(this,event);"/>&nbsp;&nbsp;&nbsp;
 
      	<button type="button" class="AXButton W500" id="btnLogin" onclick="fnObj.login();"><i class="axi axi-save "></i> 로그인</button>
 

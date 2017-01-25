@@ -1,4 +1,5 @@
 <?php require_once("../config/CONFIG.php"); ?>
+<?php require_once("../config/SESSION_OUT.php"); ?>
 <?php
       $MODE = ($_SERVER["QUERY_STRING"] == null) ? "APPEND" : "EDIT";
 ?>
@@ -9,6 +10,7 @@
     <meta http-equiv="Content-Language" content="ko" />
 
     <!-- 공통요소 -->
+    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/page.css" />
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.css" />
 
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/jquery/jquery.min.js"></script>
@@ -26,6 +28,9 @@
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXGrid.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXUpload5.js"></script>
 
+	<script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXToolBar.js"></script>
+    <script type="text/javascript" src="<?=$path_Root?>/MainJavascript/AXToolBar.js"></script>
+
     <!-- 아이콘사용을 위해서..(http://axicon.axisj.com/) -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axicon/axicon.min.css"/>
 
@@ -37,6 +42,7 @@
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.min.css" />
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
+    <script type="text/javascript" src="<?=$path_Root?>/MainJavascript/CommonLib.js"></script>
 
     <style type="text/css">
     .modalProgramTitle{
@@ -123,6 +129,9 @@
 
         pageStart: function()
         {
+            // 툴바 생성
+            fnToolbar.toolbar.init();
+
             // 이걸하지않으면 디자인이 나오지 않는다.
             $('input[type=checkbox]').bindChecked();
             $('input[type=radio]').bindChecked();
@@ -764,6 +773,13 @@
 
 
 <body>
+
+    <div style="height: 70px;">
+       <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
+       <div style="text-align: right; margin-top: 5px;">
+           <a href="./index.php"><b>HOME</b></a> > &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_Root?>')"><b>로그아웃</b></a>&nbsp;
+       </div>
+    </div>
 
     <!-- button onclick="test();">test</button -->
     <?php

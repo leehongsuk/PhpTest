@@ -6,13 +6,17 @@
                     var menu =
                     [
                         {
-                            label   : "극장관리", addClass: "",
-                            onclick : function (menu, event) {
-                                trace("1", menu);
-                            },
+                            label   : "극장관리", 
+                            addClass: "",
+                            onclick : false,
                             menu    : [
                                 {
-                                    label: "극장정보", onclick: function (event) {}
+                                    label: "극장정보",
+                                    gotoUrl : "./TheaterList.php",
+                                    onclick: function (event) 
+                                    {
+                                        location.href = this.menu.gotoUrl ;
+                                    }
                                 }
                             ],
                             filter: function(){
@@ -20,11 +24,17 @@
                             }
                         },
                         {
-                            label   : "영화관리", addClass: "",
+                            label   : "영화관리", 
+                            addClass: "",
                             onclick : false,
                             menu    : [
                                 {
-                                    label: "영화정보", onclick: function (event) {}
+                                    label: "영화정보", 
+                                    gotoUrl : "./FilmList.php",
+                                    onclick: function (event) 
+                                    {
+                                        location.href = this.menu.gotoUrl ;
+                                    }
                                 },
                                 {
                                     label: "프린트정보", onclick: function (event) {}
@@ -32,7 +42,8 @@
                             ]
                         },
                         {
-                            label   : "스코어관리", addClass: "",
+                            label   : "스코어관리", 
+                            addClass: "",
                             onclick : false,
                             menu    : [
                                 {

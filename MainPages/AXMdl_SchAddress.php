@@ -124,7 +124,7 @@
     </script>
 
 </head>
-<body>
+<body style="margin: 0px;">
     <div class="bodyHeightDiv">
         <div class="modalProgramTitle">
             주소찾기

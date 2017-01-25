@@ -3,7 +3,7 @@
 
     // 로컬용 설정
     //if  ($_SERVER['REMOTE_ADDR']=="::1")
-    if  (($_SERVER["HTTP_HOST"] == "localhost.") || ($_SERVER["HTTP_HOST"] == "lhs0806.iptime.org"))
+    if  (($_SERVER["HTTP_HOST"] == "localhost.") || ($_SERVER["HTTP_HOST"] == "localhost") || ($_SERVER["HTTP_HOST"] == "lhs0806.iptime.org"))
     {
         // 값 변수
         $db_host   = "localhost";
@@ -36,27 +36,7 @@
         $path_Root     = "" ;
     }
 
-
     $PhpSelf = $_SERVER['PHP_SELF'];
-//echo "[".$PhpSelf;
-
-    //echo $PhpSelf;
-    if  (
-            ($PhpSelf == "/PhpTest/index.php") || ($PhpSelf == "/PhpTest/index.php")
-         || ($PhpSelf == "/index.php") || ($PhpSelf == "/index.php")
-        ) // 초기 화면..
-    {
-        // 초기화면에서 세션이 있으면 MainPages/ 로 이동한다.
-        if  ($_SESSION['user_seq'])  Header("Location:MainPages/"); // 이미 로그인 세션이 확보되어 있다면 MainPage쪽으로 간다.....
-    }
-    /***********************************************************************************
-    else
-    {
-        // 초기화면이 아닌 일반 화면에서 세션이 없다면 초기화면으로 간다.
-        if  (!$_SESSION['user_seq'])  Header("Location:/PhpTest/index.php"); // 로그인 세션이 확보되어 있지 않다면..
-    }
-    ***********************************************************************************/
-
 
     /*********************************************************************************************************************
      * 비번 복호화를 위해 사용한다.
@@ -75,4 +55,5 @@
 
         return $return ;
     }
+
 ?>

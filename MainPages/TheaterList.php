@@ -1,36 +1,13 @@
 <?php require_once("../config/CONFIG.php"); ?>
+<?php require_once("../config/SESSION_OUT.php"); ?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Language" content="ko" />
 
-
-
-
-
-
-
-
-
-
-    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/page.css" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- 공통요소 -->
+    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/page.css" />
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.css" />
 
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/jquery/jquery.min.js"></script>
@@ -58,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/font-awesome.min.css" />
 
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/MainCss/Common.css" />
-
+	<script type="text/javascript" src="<?=$path_Root?>/MainJavascript/CommonLib.js"></script>
 
     <script type="text/javascript">
 
@@ -75,6 +52,7 @@
     {
         pageStart: function()
         {
+            // 툴바 생성
             fnToolbar.toolbar.init();
 
             // 이걸하지않으면 디자인이 나오지 않는다.
@@ -360,14 +338,14 @@
 
 <body>
 
-	<div style="position: relative; z-index: 2;height: 50px;text-align: right;padding-top: 20px;">
-        ....님을 환영합니다...&nbsp;&nbsp;
-    <div style="position: relative;top:-30px;z-index: 3;">
-	    <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
-    </div>
+    <div style="height: 70px;">
+       <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
+       <div style="text-align: right; margin-top: 5px;">
+           <a href="./index.php"><b>HOME</b></a> > 극장관리 > 극장정보 &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_Root?>')"><b>로그아웃</b></a>&nbsp;
+       </div>
     </div>
 
-    <h1>극장정보</h1>
+    <!-- h1>극장정보</h1 -->
     <div>
 
 		<div class="bodyHeightDiv"  style="height: 40px;">

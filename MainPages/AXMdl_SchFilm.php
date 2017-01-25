@@ -172,7 +172,7 @@
     </script>
 
 </head>
-<body>
+<body style="margin: 0px;">
     <div class="bodyHeightDiv">
 
     	<form name="frmMain"></form>

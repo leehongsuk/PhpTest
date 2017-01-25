@@ -160,7 +160,7 @@
 	</style>
 </head>
 
-<body>
+<body style="margin: 0px;">
 
 <div id="AXPage">
 

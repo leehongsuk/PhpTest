@@ -1,4 +1,5 @@
 <?php require_once("../config/CONFIG.php"); ?>
+<?php require_once("../config/SESSION_IN.php"); ?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,6 +7,7 @@
     <meta http-equiv="Content-Language" content="ko" />
 
     <!-- 공통요소 -->
+    <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/page.css" />
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axisj-1.1.11/ui/arongi/AXJ.css" />
 
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/jquery/jquery.min.js"></script>
@@ -21,6 +23,9 @@
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXInput.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXSelect.js"></script>
     <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXGrid.js"></script>
+
+    <script type="text/javascript" src="<?=$path_Root?>/js/axisj-1.1.11/lib/AXToolBar.js"></script>
+    <script type="text/javascript" src="<?=$path_Root?>/MainJavascript/AXToolBar.js"></script>
 
     <!-- 아이콘사용을 위해서..(http://axicon.axisj.com/) -->
     <link rel="stylesheet" type="text/css" href="<?=$path_Root?>/js/axicon/axicon.min.css"/>
@@ -105,7 +110,7 @@
 
             if  (errMsg != "")
             {
-                dialog.push('<b>경고</b>\n'+errMsg);
+                dialog.push({title:'오류', body:'<b>경고</b>\n'+errMsg, type:'Caution'}); //
             }
         },
 
@@ -114,7 +119,7 @@
         {
             var obj = eval("("+data+")");
 
-            if  (obj.count_id == 1) dialog.push('<b>경고</b>\n아이디가 중복됩니다. 다른아이디를 입력하세요')
+            if  (obj.count_id == 1) dialog.push({title:'오류', body:'<b>경고</b>\n아이디가 중복됩니다. 다른아이디를 입력하세요', type:'Caution'})
             else                    jQuery("input:hidden[name=duplicate_check]").val("true");
         },
 
@@ -184,7 +189,7 @@
 
             if  (errMsg != "")
             {
-                dialog.push('<b>경고</b>\n'+errMsg);
+                dialog.push({title:'오류', body:'<b>경고</b>\n'+errMsg, type:'Caution'}); //
             }
             else
             {

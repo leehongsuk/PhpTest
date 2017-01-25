@@ -230,7 +230,7 @@
     </script>
 
 </head>
-<body>
+<body style="margin: 0px;">
     <div class="bodyHeightDiv">
         <div class="modalProgramTitle">
             상영관찾기 (<?=$_POST["filmName"]?>,<?=$_POST["playprintName"]?>)

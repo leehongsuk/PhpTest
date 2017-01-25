@@ -63,7 +63,7 @@ $content = $_POST["content"];
 
 </head>
 
-<body>
+<body style="margin: 0px;">
 
     <div class="bodyHeightDiv">
 

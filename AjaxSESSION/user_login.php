@@ -42,24 +42,22 @@ require_once("../config/DB_CONNECT.php");
                              );
             $stmt->execute();
 
-            $stmt->bind_result($count, $user_seq );
+            $stmt->bind_result($count, $user_seq, $user_name );
 
             if ($stmt->fetch())
             {
                 $a_json["count_idpw"] = $count;
                 $a_json["user_seq"]   = $user_seq;
+                $a_json["user_name"]  = $user_name;
 
-                if  ($count==1) $_SESSION['user_seq'] = $user_seq; // 로그인에 성공하였으므로 바로 세션은 만든다.
+                if  ($count==1)
+                {
+                    $_SESSION['user_seq'] = $user_seq; // 로그인에 성공하였으므로 바로 세션은 만든다.
+                    $_SESSION['user_name'] = $user_name;
+                }
             }
         }
     }
-
-    /*
-
-    $a_page = array("pageNo" => $post_pageNo, "pageCount" => $pageCount,"listCount" => $post_pageSize);
-
-    $a_json = array("result" => "ok", "list" => $a_list, "page" => $a_page, "msg" => "");
-    */
 
 require_once("../config/DB_DISCONNECT.php");
 
