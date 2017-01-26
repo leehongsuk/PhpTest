@@ -68,7 +68,7 @@
                     });
 
             gridMySqlLOG.setList({
-                        ajaxUrl : "<?=$path_AjaxJSON?>/log_mysql_page.php",  // <-----
+                        ajaxUrl : "<?=$path_AjaxLOGMYSQL?>/log_mysql_page.php",  // <-----
                         onLoad  : function(){
                             //gridTheater.goPageMove(1); // 상대적인 페이지 이동..
                             //gridTheater.setFocus(3);  // 페이지별 row의 위치 .. 0 부터..
@@ -81,7 +81,7 @@
         {
             jQuery.ajax({
                 type : "POST",
-                url : "<?=$path_AjaxJSON?>/log_mysql_clear.php",  // <-----
+                url : "<?=$path_AjaxLOGMYSQL?>/log_mysql_clear.php",  // <-----
                 cache : false,
                 success :  fnObj.reflash
    			});
@@ -92,7 +92,7 @@
     	{
 			jQuery.ajax({
                          type : "POST",
-                         url : "<?=$path_AjaxJSON?>/log_mysql_count.php",  // <-----
+                         url : "<?=$path_AjaxLOGMYSQL?>/log_mysql_count.php",  // <-----
                          cache : false,
                          //data : formData,
                          success : fnObj.onSuccess
