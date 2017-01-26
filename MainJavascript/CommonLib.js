@@ -47,7 +47,7 @@
     function log_out(logput_url)
     {
         // 로그아웃을 한다.
-        jQuery.post( logput_url+'/AjaxSESSION/user_logout.php',{})  // <-----                    
+        jQuery.post( logput_url+'/user_logout.php',{})  // <-----                    
               .done(function( data )
               {
                   dialog.push({title:'확인', body:"로그아웃 되었습니다.", onConfirm:btnOnConfirm, data:''}); // type:'Caution', 

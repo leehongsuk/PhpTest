@@ -2,10 +2,6 @@
 require_once ("../config/CONFIG.php");
 require_once ("../config/DB_CONNECT.php");
 
-
-
-
-
     $seq           = -1;
     $post_user_id  = $_POST["user_id"] ;
     $post_user_pw  = Hex2String($_POST["user_pw"]) ; // 암호를 복호화 한다.

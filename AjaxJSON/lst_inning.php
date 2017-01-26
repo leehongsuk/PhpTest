@@ -4,7 +4,6 @@ require_once("../config/CONFIG.php");
     $a_json  = array() ;
     $a_list  = array() ;
 
-
     for ($seq=0 ; $seq <= 15 ; $seq++) // 0~15회차
     {
         $name= ($seq==0) ? "특회" : $seq."회" ;

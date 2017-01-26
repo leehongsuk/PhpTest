@@ -13,8 +13,10 @@
         $db_name   = "my_test_db";
 
         // 경로 변수
-        $path_AjaxJSON = "../AjaxJSON" ;
-        $path_Root     = "/PhpTest" ;
+        $path_AjaxJSON    = "../AjaxJSON" ;
+        $path_AjaxSESSION = "../AjaxSESSION" ;
+        $path_AjaxLOGMYSQL= "../AjaxLOGMYSQL" ;
+        $path_Root        = "/PhpTest" ;
     }
     else
     {
@@ -32,8 +34,10 @@
         $db_name   = "cineon";
 
         // 경로 변수
-        $path_AjaxJSON = "../AjaxJSON" ;
-        $path_Root     = "" ;
+        $path_AjaxJSON    = "../AjaxJSON" ;
+        $path_AjaxSESSION = "../AjaxSESSION" ;
+        $path_AjaxLOGMYSQL= "../AjaxLOGMYSQL" ;
+        $path_Root        = "" ;
     }
 
     $PhpSelf = $_SERVER['PHP_SELF'];

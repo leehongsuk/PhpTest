@@ -1,6 +1,8 @@
 <?php
-require_once ("../config/CONFIG.php");
-require_once ("../config/DB_CONNECT.php");
+if  ($_SESSION['user_seq'])
+{
+    require_once ("../config/CONFIG.php");
+    require_once ("../config/DB_CONNECT.php");
 
 //    print_r ( $_REQUEST );
 /*
@@ -224,9 +226,16 @@ print_r( $_POST["distributor"] );
         }
     }
 
+    require_once ("../config/DB_DISCONNECT.php");
+
     // 결과만 반환한다.
     echo json_encode($output,JSON_UNESCAPED_UNICODE);
+}
+else
+{
+     $a_json = array("result" => "err", "msg" => "세션이 만료되었습니다.");
 
+     echo json_encode($a_json,JSON_UNESCAPED_UNICODE);
+}
 
-require_once ("../config/DB_DISCONNECT.php");
 ?>

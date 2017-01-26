@@ -1,6 +1,8 @@
 <?php
-require_once("../config/CONFIG.php");
-require_once("../config/DB_CONNECT.php");
+if  ($_SESSION['user_seq'])
+{
+    require_once("../config/CONFIG.php");
+    require_once("../config/DB_CONNECT.php");
 
     $post_code = $_POST["code"] ;
 
@@ -31,7 +33,12 @@ require_once("../config/DB_CONNECT.php");
 
     $a_json = array("result" => "ok", "options" => $a_list,"etcs" => "");
 
-require_once("../config/DB_DISCONNECT.php");
+    require_once("../config/DB_DISCONNECT.php");
+}
+else
+{
+    $a_json = array("result" => "err", "msg" => "세션이 만료되었습니다.");
+}
 
 echo json_encode($a_json,JSON_UNESCAPED_UNICODE);
 ?>

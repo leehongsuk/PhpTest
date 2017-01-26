@@ -1,6 +1,8 @@
 <?php
-require_once("../config/CONFIG.php");
-require_once("../config/DB_CONNECT.php");
+if  ($_SESSION['user_seq'])
+{
+    require_once("../config/CONFIG.php");
+    require_once("../config/DB_CONNECT.php");
 
     // $_SERVER["DOCUMENT_ROOT"]
     $file_server_path = realpath(__FILE__);
@@ -37,7 +39,12 @@ require_once("../config/DB_CONNECT.php");
         $a_json = array("result" => "err", "msg" => "파일을 찾을 수 없습니다. $upload_dir");
     }
 
-require_once("../config/DB_DISCONNECT.php");
+    require_once("../config/DB_DISCONNECT.php");
+}
+else
+{
+    $a_json = array("result" => "err", "msg" => "세션이 만료되었습니다.");
+}
 
 echo json_encode($a_json,JSON_UNESCAPED_UNICODE);
 ?>
