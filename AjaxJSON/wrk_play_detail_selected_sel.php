@@ -1,7 +1,8 @@
 <?php
+require_once("../config/CONFIG.php");
+
 if  ($_SESSION['user_seq'])
 {
-    require_once("../config/CONFIG.php");
     require_once("../config/DB_CONNECT.php");
 
     $post_play_dt       = $_POST["play_dt"] ; // 상영일..

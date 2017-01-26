@@ -177,7 +177,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
         // '조회' 버튼을 누를때..
         search_play_detail: function()
         {
-            jQuery.post( "<?=$path_AjaxJSON?>/lst_inning.php", {})  // <----- 회차리스트를 구한다.
+            jQuery.post( "<?=$path_AjaxJSON?>/lst_inning16.php", {})  // <----- 16회차리스트를 구한다.
                   .done(function( data )
                   {
       				    jsonInning = eval("("+data+")");  // 회차리스트의 json

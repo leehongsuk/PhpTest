@@ -1,19 +1,20 @@
 <?php
+require_once ("../config/CONFIG.php");
+
 if  ($_SESSION['user_seq'])
 {
-    require_once ("../config/CONFIG.php");
     require_once ("../config/DB_CONNECT.php");
 
-/*
-    print_r ( $_REQUEST );
-    foreach ( $_REQUEST as $key => $val )
-    {
-        echo $key."=".$val."<br>";
-    }
-print_r( $_POST["contacts"] );
-print_r( $_POST["showroom"] );
-print_r( $_POST["playprint"] );
- * */
+    /*
+        print_r ( $_REQUEST );
+        foreach ( $_REQUEST as $key => $val )
+        {
+            echo $key."=".$val."<br>";
+        }
+    print_r( $_POST["contacts"] );
+    print_r( $_POST["showroom"] );
+    print_r( $_POST["playprint"] );
+     * */
 
     $post_code             = $_POST["code"] ;
     $post_distributor_seq  = $_POST["distributor_seq"] ;
@@ -32,7 +33,6 @@ print_r( $_POST["playprint"] );
     if  (isset($_POST["genres"]))  $post_genres = implode(",", $_POST["genres"]) ; // 장르 ..
 
     $post_playprints      = $_POST["playprints"] ; // 상영프린트 JSON
-
 
 
     $query= "CALL SP_WRK_FILM_SAVE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,@newCode,@output)" ; // <-----
@@ -103,13 +103,13 @@ print_r( $_POST["playprint"] );
     require_once ("../config/DB_DISCONNECT.php");
 
     // 결과만 반환한다.
-    echo json_encode($output,JSON_UNESCAPED_UNICODE);
+    if  ($output==1)  $a_json = array("result" => "ok",  "output" => $output, "msg" => "저장이 완료되었습니다.");
+    else              $a_json = array("result" => "err", "output" => $output, "msg" => "저장 중 오류가 발생하였습니다.");
 }
 else
 {
     $a_json = array("result" => "err", "msg" => "세션이 만료되었습니다.");
-
-    echo json_encode($a_json,JSON_UNESCAPED_UNICODE);
 }
 
+echo json_encode($a_json,JSON_UNESCAPED_UNICODE);
 ?>

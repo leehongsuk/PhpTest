@@ -719,8 +719,8 @@
             var obj = eval("("+data+")");
             //trace(obj);
 
-            if  (obj=='-1') fnObj.modalOpen(500,-1,'확인','저장이 실패되었습니다.',null)
-            else            fnObj.modalOpen(500,-1,'확인','저장이 완료되었습니다.',fnObj.onFnClose) ;
+            if  (obj.result == 'ok') fnObj.modalOpen(500,-1,'확인',obj.msg,fnObj.onFnClose)
+            else                     fnObj.modalOpen(500,-1,'오류',obj.msg,null) ;
         },
 
         // 영화 저장이 실패하면..

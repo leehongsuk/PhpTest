@@ -1,7 +1,8 @@
 <?php
+require_once ("../config/CONFIG.php");
+
 if  ($_SESSION['user_seq'])
 {
-    require_once ("../config/CONFIG.php");
     require_once ("../config/DB_CONNECT.php");
 
     $a_json = array() ;
@@ -27,10 +28,10 @@ if  ($_SESSION['user_seq'])
     $stmt->execute();
     $stmt->close();
 
-    // 결과만 반환한다.
-    //echo json_encode($output,JSON_UNESCAPED_UNICODE);
+    require_once ("../config/DB_DISCONNECT.php");
 
-   require_once ("../config/DB_DISCONNECT.php");
+    // 결과만 반환한다.
+    $a_json = array("result" => "ok",  "msg" => "저장이 완료되었습니다.");
 }
 else
 {

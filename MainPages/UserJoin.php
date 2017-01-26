@@ -207,11 +207,26 @@
                              url : "<?=$path_AjaxSESSION?>/user_save.php",  // <-----
                              cache : false,
                              data : formData,
-                             success : fnObj.onSuccessFilm,
-                             error : fnObj.onErrorFilm
+                             success : fnObj.onSuccessUserJoin,
+                             error : fnObj.onErrorUserJoin
                 });
             }
+        },
 
+        // 사용자 가입이 성공적일때..
+        onSuccessUserJoin : function(data)
+        {
+            var obj = eval("("+data+")");
+            //trace(obj);
+
+            if  (obj.result == 'ok') dialog.push('<b>확인</b>\n'+obj.msg)
+            else                     dialog.push('<b>오류</b>\n'+obj.msg) ;
+        },
+
+        // 사용자 가입이 실패하면..
+        onErrorUserJoin : function(request,status,error)
+        {
+            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
 

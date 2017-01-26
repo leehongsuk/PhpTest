@@ -215,6 +215,12 @@
                             				                       )
                                                 		      .done(function( data )
                                                 			  {
+                                                		          var obj = eval("("+data+")");
+                                                		          //trace(obj);
+																  /*
+                                                		          if  (obj.result == 'ok') fnObj.modalOpen(500,-1,'확인',obj.msg,null) ;
+                                                		          else                     fnObj.modalOpen(500,-1,'오류',obj.msg,null) ;
+																  */
                                                 		      });
                                           			 }
         			                               });

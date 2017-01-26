@@ -1,9 +1,8 @@
 <?php
-$a_json = array() ;
+require_once("../config/CONFIG.php");
 
 if  ($_SESSION['user_seq'])
 {
-    require_once("../config/CONFIG.php");
     require_once("../config/DB_CONNECT.php");
 
     $post_price_seqs     = $_POST["price_seqs"] ;
@@ -15,6 +14,7 @@ if  ($_SESSION['user_seq'])
     $post_confirm        = ($_POST["confirm"]=="확인") ? "Y" : "N";
     $post_memo           = $_POST["memo"] ;
 
+    $a_json = array() ;
 
     $query= "CALL SP_WRK_PLAY_MAST_UPDATE(?,?,?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);

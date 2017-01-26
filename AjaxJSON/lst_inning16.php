@@ -1,6 +1,8 @@
 <?php
 require_once("../config/CONFIG.php");
 
+if  ($_SESSION['user_seq'])
+{
     $a_json  = array() ;
     $a_list  = array() ;
 
@@ -14,6 +16,11 @@ require_once("../config/CONFIG.php");
     }
 
     $a_json = array("result" => "ok", "options" => $a_list,"etcs" => "");
+}
+else
+{
+    $a_json = array("result" => "err", "msg" => "세션이 만료되었습니다.");
+}
 
 echo json_encode($a_json,JSON_UNESCAPED_UNICODE);
 ?>
