@@ -204,7 +204,7 @@
 
                 jQuery.ajax({
                              type : "POST",
-                             url : "<?=$path_AjaxSESSION?>/user_user_save.php",  // <-----
+                             url : "<?=$path_AjaxSESSION?>/user_save.php",  // <-----
                              cache : false,
                              data : formData,
                              success : fnObj.onSuccessFilm,

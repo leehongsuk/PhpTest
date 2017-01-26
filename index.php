@@ -226,8 +226,8 @@
      	<button type="button" class="AXButton W500" id="btnLogin" onclick="fnObj.login();"><i class="axi axi-save "></i> 로그인</button>
 
      	<div style="margin: 20px;">
-     	<label><a href="./MainPages/user_join.php">회원가입</a></label>
-     	<label><a href="./MainPages/user_find_idpw.php">아이디/비밀번호 찾기</a></label>
+     	<label><a href="./MainPages/UserJoin.php">회원가입</a></label>
+     	<label><a href="./MainPages/UserFindIdPw.php">아이디/비밀번호 찾기</a></label>
      	</div>
     </div>
 
