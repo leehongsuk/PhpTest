@@ -99,7 +99,7 @@
                 {
                     jQuery.ajax({
                                  type : "POST",
-                                 url : "<?=$path_AjaxJSON?>/usr_id_duplicate_check.php",  // <-----
+                                 url : "<?=$path_AjaxSESSION?>/user_id_duplicate_check.php",  // <-----
                                  cache : false,
                                  data : {user_id : user_id},
                                  success : fnObj.onSuccessTheater,
@@ -204,7 +204,7 @@
 
                 jQuery.ajax({
                              type : "POST",
-                             url : "<?=$path_AjaxJSON?>/usr_user_save.php",  // <-----
+                             url : "<?=$path_AjaxSESSION?>/user_user_save.php",  // <-----
                              cache : false,
                              data : formData,
                              success : fnObj.onSuccessFilm,
