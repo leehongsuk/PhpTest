@@ -13,10 +13,7 @@
                                 {
                                     label: "극장정보",
                                     gotoUrl : "./TheaterList.php",
-                                    onclick: function (event) 
-                                    {
-                                        location.href = this.menu.gotoUrl ;
-                                    }
+                                    onclick: function (event) { location.href = this.menu.gotoUrl ; }
                                 }
                             ],
                             filter: function(){
@@ -31,13 +28,12 @@
                                 {
                                     label: "영화정보", 
                                     gotoUrl : "./FilmList.php",
-                                    onclick: function (event) 
-                                    {
-                                        location.href = this.menu.gotoUrl ;
-                                    }
+                                    onclick: function (event) { location.href = this.menu.gotoUrl ; }
                                 },
                                 {
-                                    label: "프린트정보", onclick: function (event) {}
+                                    label: "기본부율", 
+                                    gotoUrl : "./PremiumRate.php",
+                                    onclick: function (event) { location.href = this.menu.gotoUrl ; }
                                 }
                             ]
                         },

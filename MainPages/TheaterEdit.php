@@ -1220,18 +1220,19 @@
 
 <body>
 
+    <?php
+    if ($MODE=="APPEND")  { $Title = "극장등록"; }
+    if ($MODE=="EDIT")    { $Title = "극장편집"; }
+    ?>
+
 	<div style="height: 70px;">
        <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
        <div style="text-align: right; margin-top: 5px;">
-           <a href="./index.php"><b>HOME</b></a> > &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_AjaxSESSION?>')"><b>로그아웃</b></a>&nbsp;
+           <a href="./index.php"><b>HOME</b></a> > 극장관리 > <?=$Title?> &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_AjaxSESSION?>')"><b>로그아웃</b></a>&nbsp;
        </div>
     </div>
 
     <!-- button onclick="test();">test</button-->
-    <?php
-    if ($MODE=="APPEND")  { ?><h1>극장 등록</h1><?php     }
-    if ($MODE=="EDIT")    { ?><h1>극장 편집</h1><?php     }
-    ?>
 
     <form name="frmThearter" onsubmit="return false;">
 

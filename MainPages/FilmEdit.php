@@ -774,18 +774,19 @@
 
 <body>
 
+    <?php
+    if ($MODE=="APPEND")  { $Title = "영화등록"; }
+    if ($MODE=="EDIT")    { $Title = "영화편집"; }
+    ?>
+
     <div style="height: 70px;">
        <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
        <div style="text-align: right; margin-top: 5px;">
-           <a href="./index.php"><b>HOME</b></a> > &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_AjaxSESSION?>')"><b>로그아웃</b></a>&nbsp;
+           <a href="./index.php"><b>HOME</b></a> > 영화관리 > <?=$Title?> &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_AjaxSESSION?>')"><b>로그아웃</b></a>&nbsp;
        </div>
     </div>
 
     <!-- button onclick="test();">test</button -->
-    <?php
-    if ($MODE=="APPEND")  { ?><h1>영화 등록</h1><?php     }
-    if ($MODE=="EDIT")    { ?><h1>영화 편집</h1><?php     }
-    ?>
 
     <form name="frmFilm" onsubmit="return false;">
 

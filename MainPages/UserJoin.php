@@ -219,8 +219,8 @@
             var obj = eval("("+data+")");
             //trace(obj);
 
-            if  (obj.result == 'ok') dialog.push('<b>확인</b>\n'+obj.msg)
-            else                     dialog.push('<b>오류</b>\n'+obj.msg) ;
+            if  (obj.result == 'ok') dialog.push({title:'확인', body:'<b>확인</b>\n'+obj.msg})
+            else                     dialog.push({title:'오류', body:'<b>오류</b>\n'+obj.msg, type:'Caution'});
         },
 
         // 사용자 가입이 실패하면..
