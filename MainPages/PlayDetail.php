@@ -233,7 +233,7 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
                               {
                                   jsonPlayDetail = this;
 
-                                  trace(jsonPlayDetail.play_mast);
+                                  //trace(jsonPlayDetail.play_mast);
 
                                   var play_mast = jsonPlayDetail.play_mast[0] ;
 
@@ -421,11 +421,11 @@ $post_playprint_seq = $_POST["playprint_seq"] ;
 	<div style="height: 70px;">
        <div class="toolBar" id="tool-bar" style="position: relative;border-bottom: 1px solid #d6d6d6;border: 1px solid #d6d6d6;"></div>
        <div style="text-align: right; margin-top: 5px;">
-           <a href="./index.php"><b>HOME</b></a> > &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_AjaxSESSION?>')"><b>로그아웃</b></a>&nbsp;
+           <a href="./index.php"><b>HOME</b></a> > 스코어 관리 > 스코어 입력 &nbsp;&nbsp; [<b><?=$_SESSION["user_name"]?></b>] 님을 환영합니다...&nbsp;&nbsp;<a href="#" onclick="log_out('<?=$path_AjaxSESSION?>')"><b>로그아웃</b></a>&nbsp;
        </div>
     </div>
 
-    <h1>스코어 입력</h1>
+    <!-- h1>스코어 입력</h1 -->
 
     <form name="frmPlayDetail" onsubmit="return false;">
 

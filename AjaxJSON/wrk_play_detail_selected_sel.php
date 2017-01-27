@@ -219,19 +219,7 @@ if  ($_SESSION['user_seq'])
 
 
     // play_mast 정보를 구한다...
-    $query= "SELECT THEATER_NM
-                   ,ROOM_NM
-                   ,FILM_NM
-                   ,PLAY_PRINT_NM1
-                   ,PLAY_PRINT_NM2
-                   ,CONFIRM
-                   ,MEMO
-               FROM VW_WRK_PLAY_MAST
-              WHERE THEATER_CODE  = ?
-                AND SHOWROOM_SEQ  = ?
-                AND FILM_CODE     = ?
-                AND PLAYPRINT_SEQ = ?
-            " ;
+    $query= "CALL SP_WRK_PLAY_MAST_SEL(?,?,?,?)" ; // <-----
     $stmt = $mysqli->prepare($query);
 
     $stmt->bind_param( "sisi"
